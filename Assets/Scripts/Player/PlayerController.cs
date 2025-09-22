@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Jump")]
     [SerializeField] private float jumpForce = 10f;
-    [SerializeField] private int maxJumps = 2; // số lần nhảy tối đa (1 = nhảy thường, 2 = double jump)
+    [SerializeField] private int maxJumps = 1; // số lần nhảy tối đa (1 = nhảy thường, 2 = double jump)
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform groundCheck;
     private int jumpCount;
