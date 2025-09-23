@@ -16,5 +16,9 @@ public class PlayerCollision : MonoBehaviour
             gameManager.AddScore(1);
             // Debug.Log("Coin");
         }
+        else if (collision.CompareTag("Trap"))
+        {
+            GetComponent<Health>().TakeDamage(1);
+        }
     }
 }
