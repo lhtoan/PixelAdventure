@@ -20,5 +20,10 @@ public class PlayerCollision : MonoBehaviour
         {
             GetComponent<Health>().TakeDamage(1);
         }
+        else if (collision.CompareTag("Heart"))
+        {
+            GetComponent<Health>().AddHealth(1);
+            Destroy(collision.gameObject);
+        }
     }
 }
