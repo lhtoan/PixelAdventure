@@ -7,6 +7,7 @@ TagManager:
   - Coin
   - Trap
   - Heart
+  - CheckPoint
   layers:
   - Default
   - TransparentFX
@@ -53,14 +54,14 @@ TagManager:
   - name: ForeGround
     uniqueID: 3885386117
     locked: 0
-  - name: Player
-    uniqueID: 3339545541
-    locked: 0
   - name: Item
     uniqueID: 3200117959
     locked: 0
   - name: UI
     uniqueID: 4252170031
+    locked: 0
+  - name: Player
+    uniqueID: 3339545541
     locked: 0
   m_RenderingLayers:
   - Default

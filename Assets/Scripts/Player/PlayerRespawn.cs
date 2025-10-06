@@ -1,33 +1,5 @@
-// using UnityEngine;
-
-// public class PlayerRespawn : MonoBehaviour
-// {
-//     private Transform currentCheckpoint;
-//     private Health playerHealth;
-
-//     private void Awake()
-//     {
-//         playerHealth = GetComponent<Health>();
-//     }
-
-//     public void Respawn()
-//     {
-//         playerHealth.Respawn(); //Restore player health and reset animation
-//         transform.position = currentCheckpoint.position; //Move player to checkpoint location
-
-//     }
-//     private void OnTriggerEnter2D(Collider2D collision)
-//     {
-//         if (collision.gameObject.tag == "Checkpoint")
-//         {
-//             currentCheckpoint = collision.transform;
-//             collision.GetComponent<Collider2D>().enabled = false;
-//         }
-//     }
-// }
-
 using UnityEngine;
-using UnityEngine.SceneManagement; // để load lại scene khi hết mạng
+using UnityEngine.SceneManagement; 
 
 public class PlayerRespawn : MonoBehaviour
 {
@@ -68,7 +40,7 @@ public class PlayerRespawn : MonoBehaviour
     // private void GameOver()
     // {
     //     Debug.Log("Game Over! Hết mạng.");
-    //     // Tùy bạn: reset scene, load màn hình Game Over, ...
+    //     //load màn hình Game Over, ...
     //     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     // }
 
