@@ -8,6 +8,7 @@ TagManager:
   - Trap
   - Heart
   - CheckPoint
+  - Enemies
   layers:
   - Default
   - TransparentFX
@@ -18,7 +19,7 @@ TagManager:
   - Ground
   - Player
   - Enemy
-  - 
+  - Can_Jump
   - 
   - 
   - 
@@ -47,6 +48,9 @@ TagManager:
     locked: 0
   - name: BackGround
     uniqueID: 3618682525
+    locked: 0
+  - name: Trap
+    uniqueID: 2652216691
     locked: 0
   - name: Ground
     uniqueID: 4258188271
