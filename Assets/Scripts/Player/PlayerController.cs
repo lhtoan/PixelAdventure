@@ -159,7 +159,7 @@ public class PlayerController : MonoBehaviour
     {
         HandleMovement();
         HandleJump();
-        // UpdateAnimation();
+        UpdateAnimation();
     }
 
     private void HandleMovement()
@@ -171,6 +171,8 @@ public class PlayerController : MonoBehaviour
             transform.localScale = new Vector3(1, 1, 1);
         else if (moveInput < 0)
             transform.localScale = new Vector3(-1, 1, 1);
+
+        animator.SetBool("isRun", Mathf.Abs(rb.linearVelocity.x) > 0.1f);
     }
 
     private void HandleJump()
@@ -187,14 +189,17 @@ public class PlayerController : MonoBehaviour
         }
 
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+
     }
 
-    // private void UpdateAnimation()
-    // {
-    //     bool isRunning = Mathf.Abs(rb.linearVelocity.x) > 0.1f;
-    //     bool isJumping = !isGrounded;
+   
 
-    //     animator.SetBool("isRunning", isRunning);
-    //     animator.SetBool("isJumping", isJumping);
-    // }
+    private void UpdateAnimation()
+    {
+        
+        bool isJumping = !isGrounded;
+
+        
+        animator.SetBool("isJump", isJumping);
+    }
 }
