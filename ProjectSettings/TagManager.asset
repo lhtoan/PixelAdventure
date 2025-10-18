@@ -67,5 +67,8 @@ TagManager:
   - name: Player
     uniqueID: 3339545541
     locked: 0
+  - name: Fireball
+    uniqueID: 4032888705
+    locked: 0
   m_RenderingLayers:
   - Default
