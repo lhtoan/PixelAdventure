@@ -32,6 +32,11 @@ public class Projecttile : MonoBehaviour
         hit = true;
         boxCollider.enabled = false;
         anim.SetTrigger("explode");
+
+        if (collision.CompareTag("Enemies"))
+        {
+            collision.GetComponent<EnemyHealth>()?.TakeDamage(1f);
+        }
     }
 
     public void SetDirection(float _direction)
