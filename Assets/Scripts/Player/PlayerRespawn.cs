@@ -1,55 +1,35 @@
 using UnityEngine;
-using UnityEngine.SceneManagement; 
 
 public class PlayerRespawn : MonoBehaviour
 {
+    [SerializeField] private AudioClip checkpoint;
     private Transform currentCheckpoint;
     private Health playerHealth;
-
-    [SerializeField] private int maxLives = 3;
-    private int currentLives;
 
     private void Awake()
     {
         playerHealth = GetComponent<Health>();
-        currentLives = maxLives;
     }
 
-    public void PlayerDied()
+    public void RespawnCheck()
     {
-        currentLives--;
-
-        if (currentLives > 0)
+        if (currentCheckpoint == null)
         {
-            Respawn();
+            return;
         }
-        else
-        {
-            // GameOver();
-        }
+
+        playerHealth.Respawn(); //Restore player health and reset animation
+        transform.position = currentCheckpoint.position; //Move player to checkpoint location
+
     }
-
-    private void Respawn()
-    {
-        playerHealth.Respawn(); // hồi máu
-        transform.position = currentCheckpoint != null
-            ? currentCheckpoint.position
-            : transform.position; // nếu chưa chạm checkpoint thì ở nguyên chỗ cũ
-    }
-
-    // private void GameOver()
-    // {
-    //     Debug.Log("Game Over! Hết mạng.");
-    //     //load màn hình Game Over, ...
-    //     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    // }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("CheckPoint"))
+        if (collision.gameObject.tag == "CheckPoint")
         {
             currentCheckpoint = collision.transform;
-            collision.GetComponent<Collider2D>().enabled = false; // tắt checkpoint sau khi chạm
+            collision.GetComponent<Collider2D>().enabled = false;
+            collision.GetComponent<Animator>().SetTrigger("appear");
+            Debug.Log("checkpoint");
         }
     }
 }

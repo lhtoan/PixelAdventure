@@ -9,6 +9,7 @@ TagManager:
   - Heart
   - CheckPoint
   - Enemies
+  - Enemy
   layers:
   - Default
   - TransparentFX

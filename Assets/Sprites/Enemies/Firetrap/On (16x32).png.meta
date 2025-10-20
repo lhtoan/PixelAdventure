@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: 2a159d8c8b5792e47aede0d6c4b04952
+guid: 2cbdeb1368e40114e9b8df1b5cd70ddd
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7000715807348034875
-    second: Checkpoint (No Flag)_0
+      213: -4039912110816036059
+    second: On (16x32)_0
+  - first:
+      213: 6853643782822115200
+    second: On (16x32)_1
+  - first:
+      213: -3538277728090221592
+    second: On (16x32)_2
+  - first:
+      213: 966344637685339192
+    second: On (16x32)_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +109,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Checkpoint (No Flag)_0
+      name: On (16x32)_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 64
-        height: 64
+        width: 16
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +124,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5c2fe89801678de90800000000000000
-      internalID: -7000715807348034875
+      spriteID: 52bf20fe6595fe7c0800000000000000
+      internalID: -4039912110816036059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: On (16x32)_1
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0873d2455b80d1f50800000000000000
+      internalID: 6853643782822115200
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: On (16x32)_2
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 16
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8e39184272385eec0800000000000000
+      internalID: -3538277728090221592
       vertices: []
       indices: 
       edges: []
@@ -125,7 +178,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 1db936c4dd46d064fa5ba2b5a577a0d4
+    spriteID: 109a3fdf04d4843448e952b0385d8f15
     internalID: 0
     vertices: []
     indices: 
@@ -135,9 +188,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":16.0,"y":32.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Checkpoint (No Flag)_0: -7000715807348034875
+      On (16x32)_0: -4039912110816036059
+      On (16x32)_1: 6853643782822115200
+      On (16x32)_2: -3538277728090221592
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
