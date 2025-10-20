@@ -20,38 +20,66 @@ public class Firetrap : MonoBehaviour
         spriteRend = GetComponent<SpriteRenderer>();
     }
 
+    // private void OnTriggerEnter2D(Collider2D collision)
+    // {
+    //     if (collision.tag == "Player")
+    //     {
+    //         if (!triggered)
+    //         {
+    //             StartCoroutine(ActivateFiretrap());
+    //         }
+    //         if (active)
+    //         {
+    //             collision.GetComponent<Health>().TakeDamage(damage);
+    //         }
+
+    //     }
+    // }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player")
+        if (collision.CompareTag("Player") && active)
         {
-            if (!triggered)
-            {
-                StartCoroutine(ActivateFiretrap());
-            }
-            if (active)
-            {
-                collision.GetComponent<Health>().TakeDamage(damage);
-            }
-                
+            collision.GetComponent<Health>().TakeDamage(damage);
         }
     }
 
-    private IEnumerator ActivateFiretrap()
+
+    // private IEnumerator ActivateFiretrap()
+    // {
+    //     //turn the sprite red to notify the player and trigger the trap
+    //     triggered = true;
+    //     spriteRend.color = Color.red;
+
+    //     //Wait for delay, activate trap, turn on animation, return color back to normal
+    //     yield return new WaitForSeconds(activationDelay);
+    //     spriteRend.color = Color.white; //turn the sprite back to its initial color
+    //     active = true;
+    //     anim.SetBool("activated", true);
+
+    //     //Wait until X seconds, deactivate trap and reset all variables and animator
+    //     yield return new WaitForSeconds(activeTime);
+    //     active = false;
+    //     triggered = false;
+    //     anim.SetBool("activated", false);
+    // }
+
+    private void Start()
     {
-        //turn the sprite red to notify the player and trigger the trap
-        triggered = true;
-        spriteRend.color = Color.red;
-
-        //Wait for delay, activate trap, turn on animation, return color back to normal
-        yield return new WaitForSeconds(activationDelay);
-        spriteRend.color = Color.white; //turn the sprite back to its initial color
-        active = true;
-        anim.SetBool("activated", true);
-
-        //Wait until X seconds, deactivate trap and reset all variables and animator
-        yield return new WaitForSeconds(activeTime);
-        active = false;
-        triggered = false;
-        anim.SetBool("activated", false);
+        StartCoroutine(ActivateFiretrapAuto());
     }
+
+    private IEnumerator ActivateFiretrapAuto()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(activationDelay);
+            anim.SetBool("activated", true);
+            active = true;
+
+            yield return new WaitForSeconds(activeTime);
+            anim.SetBool("activated", false);
+            active = false;
+        }
+    }
+
 }
