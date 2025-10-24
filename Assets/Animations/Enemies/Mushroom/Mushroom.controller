@@ -62,7 +62,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: Hit
+    m_ConditionEvent: die
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -6135472439371132460}
@@ -112,7 +112,7 @@ AnimatorController:
   m_Name: Mushroom
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: Hit
+  - m_Name: die
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0

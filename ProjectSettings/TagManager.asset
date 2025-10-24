@@ -11,6 +11,7 @@ TagManager:
   - Enemies
   - Enemy
   - Ground
+  - Box
   layers:
   - Default
   - TransparentFX

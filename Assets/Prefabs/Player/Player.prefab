@@ -280,7 +280,10 @@ MonoBehaviour:
   startingHealth: 4
   iFramesDuration: 2
   numberOfFlashes: 3
-  components: []
+  components:
+  - {fileID: 2600082982986570033}
+  - {fileID: 1358560060250160733}
+  - {fileID: 5261224380121240622}
 --- !u!114 &8148221024012534001
 MonoBehaviour:
   m_ObjectHideFlags: 0

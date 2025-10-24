@@ -37,6 +37,14 @@ public class Projecttile : MonoBehaviour
         {
             collision.GetComponent<EnemyHealth>()?.TakeDamage(1f);
         }
+        else if (collision.CompareTag("Enemy"))
+        {
+            collision.GetComponent<Health>().TakeDamage(1);
+        }
+        else if (collision.CompareTag("Box"))
+        {
+            collision.GetComponent<BreakableBox>()?.TakeDamage(1);
+        }
     }
 
     public void SetDirection(float _direction)

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
-    [SerializeField] private float maxHealth = 3f;
+    [SerializeField] private float maxHealth = 2f;
     private float currentHealth;
     private bool dead;
     private Animator anim;
@@ -29,7 +29,7 @@ public class EnemyHealth : MonoBehaviour
     {
         dead = true;
 
-        anim.SetTrigger("Hit");
+        anim.SetTrigger("die");
 
         
         Collider2D col = GetComponent<Collider2D>();

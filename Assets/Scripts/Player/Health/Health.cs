@@ -1,89 +1,3 @@
-// using System.Collections;
-// using UnityEngine;
-
-// public class Health : MonoBehaviour
-// {
-//     [SerializeField] private float startingHealth = 3f;
-//     public float currentHealth { get; private set; }
-//     private Animator anim;
-//     private bool dead;
-
-//     [SerializeField] private float iFramesDuration = 1f;
-//     [SerializeField] private int numberOfFlashes = 3;
-//     private SpriteRenderer spriteRend;
-
-//     private PlayerRespawn respawnManager;
-
-//     private void Awake()
-//     {
-//         currentHealth = startingHealth;
-//         spriteRend = GetComponent<SpriteRenderer>();
-//         respawnManager = GetComponent<PlayerRespawn>();
-//         anim = GetComponent<Animator>();
-//     }
-
-//     public void TakeDamage(float _damage)
-//     {
-//         if (dead) return;
-
-//         currentHealth = Mathf.Clamp(currentHealth - _damage, 0, startingHealth);
-
-//         if (currentHealth > 0)
-//         {
-//             StartCoroutine(Invunerability());
-//             anim.SetTrigger("hurt");
-//         }
-//         else
-//         {
-//             // Player die
-//             if (!dead)
-//             {
-//                 dead = true;
-//                 anim.SetTrigger("die");
-//                 GetComponent<PlayerController>().enabled = false;
-
-
-//             }
-
-
-//         }
-//     }
-
-//     public void AddHealth(float _value)
-//     {
-//         if (dead) return;
-//         currentHealth = Mathf.Clamp(currentHealth + _value, 0, startingHealth);
-//     }
-
-//     private IEnumerator Invunerability()
-//     {
-//         Physics2D.IgnoreLayerCollision(7, 8, true);
-//         for (int i = 0; i < numberOfFlashes; i++)
-//         {
-//             spriteRend.color = new Color(1, 0, 0, 0.5f);
-//             yield return new WaitForSeconds(iFramesDuration / (numberOfFlashes * 2));
-//             spriteRend.color = Color.white;
-//             yield return new WaitForSeconds(iFramesDuration / (numberOfFlashes * 2));
-//         }
-//         Physics2D.IgnoreLayerCollision(7, 8, false);
-//     }
-
-//     public void Respawn()
-//     {
-//         AddHealth(startingHealth);
-//         anim.ResetTrigger("die");
-//         anim.Play("Idle");
-//         StartCoroutine(Invunerability());
-//     }
-
-
-//     public void OnPlayerDeathAnimationEnd()
-//     {
-//         respawnManager.PlayerDied();
-//     }
-
-// }
-
 using UnityEngine;
 using System.Collections;
 
@@ -131,7 +45,7 @@ public class Health : MonoBehaviour
         {
             if (!dead)
             {
-                //Deactivate all attached component classes
+                // Deactivate all attached component classes
                 foreach (Behaviour component in components)
                     component.enabled = false;
 
@@ -140,6 +54,27 @@ public class Health : MonoBehaviour
                 dead = true;
 
                 StartCoroutine(DieCoroutine());
+
+                // anim.SetTrigger("die");
+
+                // //Player 
+                // if (GetComponent<PlayerController>() != null)
+                // {
+                //     GetComponent<PlayerController>().enabled = false;
+                // }
+
+                // //Enemy
+                // if (GetComponentInParent<EnemyPatrol>() != null)
+                // {
+                //     GetComponentInParent<EnemyPatrol>().enabled = false;
+                // }
+                
+                // if(GetComponent<MeleeEnemy>() != null)
+                // {
+                //     GetComponent<MeleeEnemy>().enabled = false;
+                // }
+                
+                // dead = true;
             }
         }
     }
