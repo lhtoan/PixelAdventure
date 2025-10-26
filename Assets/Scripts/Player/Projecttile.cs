@@ -3,6 +3,8 @@ using UnityEngine;
 public class Projecttile : MonoBehaviour
 {
     [SerializeField] private float speed;
+    [SerializeField] private float maxDistance = 3;
+    private Vector3 startPosition;
     private float direction;
 
     private bool hit;
@@ -24,6 +26,13 @@ public class Projecttile : MonoBehaviour
         transform.Translate(movementSpeed, 0, 0);
 
         lifetime += Time.deltaTime;
+
+        if (Vector3.Distance(transform.position, startPosition) > maxDistance)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
+
         if (lifetime > 5) gameObject.SetActive(false);
     }
 
@@ -54,6 +63,8 @@ public class Projecttile : MonoBehaviour
         gameObject.SetActive(true);
         hit = false;
         boxCollider.enabled = true;
+
+        startPosition = transform.position;
 
         float localScaleX = transform.localScale.x;
         if (Mathf.Sign(localScaleX) != _direction)

@@ -19,6 +19,7 @@ public class PlayerAttack : MonoBehaviour
     {
         if (Input.GetMouseButton(0) && cooldownTimer > attackCooldown && playerController.canAttack())
         {
+            playerController.UseAttackStamina();
             Attack();
         }
         cooldownTimer += Time.deltaTime;

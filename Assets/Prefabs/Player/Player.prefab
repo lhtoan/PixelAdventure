@@ -253,6 +253,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   groundCheck: {fileID: 8559340391375505157}
+  maxStamina: 10
+  staminaRegenRate: 2
+  jumpStaminaCost: 2
+  attackStaminaCost: 3
 --- !u!114 &5261224380121240622
 MonoBehaviour:
   m_ObjectHideFlags: 0
