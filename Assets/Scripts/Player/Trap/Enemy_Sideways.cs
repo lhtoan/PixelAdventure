@@ -44,4 +44,6 @@ public class Enemy_Sideways : MonoBehaviour
             collision.GetComponent<Health>().TakeDamage(damage);
         }
     }
+
+   
 }
