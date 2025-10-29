@@ -12,6 +12,10 @@ TagManager:
   - Enemy
   - Ground
   - Box
+  - Teleporter
+  - Ladder
+  - LadderTop
+  - LadderTopTrigger
   layers:
   - Default
   - TransparentFX
@@ -23,7 +27,7 @@ TagManager:
   - Player
   - Enemy
   - Can_Jump
-  - 
+  - LadderTop
   - 
   - 
   - 
@@ -63,6 +67,9 @@ TagManager:
     locked: 0
   - name: Item
     uniqueID: 3200117959
+    locked: 0
+  - name: HiddenArea
+    uniqueID: 1261084871
     locked: 0
   - name: UI
     uniqueID: 4252170031
