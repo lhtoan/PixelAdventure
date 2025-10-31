@@ -20,6 +20,8 @@ public class EnemyPatrol : MonoBehaviour
 
     [Header("Enemy Animator")]
     [SerializeField] private Animator anim;
+    [HideInInspector] public bool isFrozen = false;
+
 
     private void Awake()
     {
@@ -30,8 +32,31 @@ public class EnemyPatrol : MonoBehaviour
         anim.SetBool("moving", false);
     }
 
+    // private void Update()
+    // {
+    //     if (movingLeft)
+    //     {
+    //         if (enemy.position.x >= leftEdge.position.x)
+    //             MoveInDirection(-1);
+    //         else
+    //             DirectionChange();
+    //     }
+    //     else
+    //     {
+    //         if (enemy.position.x <= rightEdge.position.x)
+    //             MoveInDirection(1);
+    //         else
+    //             DirectionChange();
+    //     }
+    // }
     private void Update()
     {
+        if (isFrozen)
+        {
+            anim.SetBool("moving", false);
+            return; // ❄️ Không di chuyển khi bị đóng băng
+        }
+
         if (movingLeft)
         {
             if (enemy.position.x >= leftEdge.position.x)
@@ -47,6 +72,7 @@ public class EnemyPatrol : MonoBehaviour
                 DirectionChange();
         }
     }
+
 
     private void DirectionChange()
     {
@@ -69,5 +95,11 @@ public class EnemyPatrol : MonoBehaviour
         //Move in that direction
         enemy.position = new Vector3(enemy.position.x + Time.deltaTime * _direction * speed,
             enemy.position.y, enemy.position.z);
+    }
+
+    public void SetFrozen(bool frozen)
+    {
+        isFrozen = frozen;
+        anim.SetBool("moving", !frozen);
     }
 }
