@@ -38,7 +38,9 @@ public class Health : MonoBehaviour
 
         if (currentHealth > 0)
         {
-            anim.SetTrigger("hurt");
+            if (HasParameter(anim, "hurt"))
+                anim.SetTrigger("hurt");
+
             StartCoroutine(Invunerability());
         }
         else
@@ -49,7 +51,9 @@ public class Health : MonoBehaviour
                 foreach (Behaviour component in components)
                     component.enabled = false;
 
-                anim.SetTrigger("die");
+                if (HasParameter(anim, "die"))
+                    anim.SetTrigger("die");
+
 
                 dead = true;
 
@@ -131,4 +135,15 @@ public class Health : MonoBehaviour
 
         StartCoroutine(Invunerability());
     }
+
+    private bool HasParameter(Animator animator, string paramName)
+    {
+        foreach (AnimatorControllerParameter param in animator.parameters)
+        {
+            if (param.name == paramName)
+                return true;
+        }
+        return false;
+    }
+
 }

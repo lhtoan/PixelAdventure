@@ -125,11 +125,7 @@ public class Projecttile : MonoBehaviour
         boxCollider.enabled = false;
         anim.SetTrigger("explode");
 
-        if (collision.CompareTag("Enemies"))
-        {
-            collision.GetComponent<EnemyHealth>()?.TakeDamage(1f);
-        }
-        else if (collision.CompareTag("Enemy"))
+        if (collision.CompareTag("Enemy"))
         {
             collision.GetComponent<Health>()?.TakeDamage(1);
         }
