@@ -17,6 +17,8 @@ TagManager:
   - LadderTop
   - LadderTopTrigger
   - Ice
+  - Fire
+  - HiddenArea
   layers:
   - Default
   - TransparentFX
@@ -30,7 +32,7 @@ TagManager:
   - Can_Jump
   - LadderTop
   - PlayerProjectile
-  - 
+  - HideArea
   - 
   - 
   - 
