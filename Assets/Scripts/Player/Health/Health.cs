@@ -58,30 +58,37 @@ public class Health : MonoBehaviour
                 dead = true;
 
                 StartCoroutine(DieCoroutine());
-
-                // anim.SetTrigger("die");
-
-                // //Player 
-                // if (GetComponent<PlayerController>() != null)
-                // {
-                //     GetComponent<PlayerController>().enabled = false;
-                // }
-
-                // //Enemy
-                // if (GetComponentInParent<EnemyPatrol>() != null)
-                // {
-                //     GetComponentInParent<EnemyPatrol>().enabled = false;
-                // }
-                
-                // if(GetComponent<MeleeEnemy>() != null)
-                // {
-                //     GetComponent<MeleeEnemy>().enabled = false;
-                // }
-                
-                // dead = true;
             }
         }
     }
+
+    public void TakeDamage(float _damage, bool triggerAnimation = true)
+    {
+        if (invulnerable && triggerAnimation) return;
+
+        currentHealth = Mathf.Clamp(currentHealth - _damage, 0, startingHealth);
+
+        if (currentHealth > 0)
+        {
+            if (triggerAnimation && HasParameter(anim, "hurt"))
+                anim.SetTrigger("hurt");
+
+            if (triggerAnimation)
+                StartCoroutine(Invunerability());
+        }
+        else if (!dead)
+        {
+            foreach (Behaviour component in components)
+                component.enabled = false;
+
+            if (HasParameter(anim, "die"))
+                anim.SetTrigger("die");
+
+            dead = true;
+            StartCoroutine(DieCoroutine());
+        }
+    }
+
 
     private IEnumerator DieCoroutine()
     {
@@ -145,5 +152,8 @@ public class Health : MonoBehaviour
         }
         return false;
     }
+
+    public float GetStartingHealth() => startingHealth;
+
 
 }

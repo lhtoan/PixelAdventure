@@ -3,13 +3,13 @@ using UnityEngine.UI;
 
 public class StaminaBar : MonoBehaviour
 {
-    [SerializeField] private PlayerController player; // Gắn PlayerController có mana vào đây
-    [SerializeField] private Image totalStaminaBar;   // Thanh stamina tổng (màu nhạt)
-    [SerializeField] private Image currentStaminaBar; // Thanh stamina hiện tại (màu đậm)
+    [SerializeField] private PlayerStamina playerStamina; // 🔹 Gắn script PlayerStamina
+    [SerializeField] private Image totalStaminaBar;       // Thanh tổng (màu nền)
+    [SerializeField] private Image currentStaminaBar;     // Thanh hiện tại (màu đậm)
 
     private void Start()
     {
-        if (player != null)
+        if (playerStamina != null && totalStaminaBar != null)
         {
             totalStaminaBar.fillAmount = 1f; // luôn đầy 100%
         }
@@ -17,9 +17,9 @@ public class StaminaBar : MonoBehaviour
 
     private void Update()
     {
-        if (player != null)
+        if (playerStamina != null && currentStaminaBar != null)
         {
-            float ratio = player.CurrentMana / player.MaxMana;
+            float ratio = playerStamina.CurrentStamina / playerStamina.MaxStamina;
             currentStaminaBar.fillAmount = ratio;
         }
     }

@@ -71,6 +71,9 @@ TagManager:
   - name: Item
     uniqueID: 3200117959
     locked: 0
+  - name: Enemy
+    uniqueID: 1414066947
+    locked: 0
   - name: HiddenArea
     uniqueID: 1261084871
     locked: 0
@@ -82,6 +85,9 @@ TagManager:
     locked: 0
   - name: Fireball
     uniqueID: 4032888705
+    locked: 0
+  - name: HPBar
+    uniqueID: 415830739
     locked: 0
   m_RenderingLayers:
   - Default

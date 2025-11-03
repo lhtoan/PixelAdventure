@@ -8,31 +8,27 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Transform groundCheck;
 
-    [Header("Stamina Settings")]
-    [SerializeField] private float maxStamina = 10f;         // tổng stamina
-    [SerializeField] private float staminaRegenRate = 2f;    // tốc độ hồi
-    [SerializeField] private float jumpStaminaCost = 2f;     // tốn khi nhảy
-    // [SerializeField] private float attackStaminaCost = 1f;   // tốn khi tấn công
+    [Header("Jump Settings")]
+    [SerializeField] private float jumpStaminaCost = 2f;
 
-    private float currentStamina;
     private bool isGrounded;
     private bool canDoubleJump;
 
     private Animator animator;
     private Rigidbody2D rb;
+    private PlayerStamina stamina;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        currentStamina = maxStamina;
+        stamina = GetComponent<PlayerStamina>();
     }
 
     private void Update()
     {
         HandleMovement();
         HandleJump();
-        RegenerateStamina();
     }
 
     private void HandleMovement()
@@ -52,57 +48,19 @@ public class PlayerController : MonoBehaviour
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
 
-        if (Input.GetButtonDown("Jump") && isGrounded && HasEnoughStamina(jumpStaminaCost))
+        if (Input.GetButtonDown("Jump") && isGrounded && stamina.CanUse(jumpStaminaCost))
         {
-            ConsumeStamina(jumpStaminaCost);
+            stamina.Use(jumpStaminaCost);
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             canDoubleJump = true;
         }
-        else if (canDoubleJump && Input.GetButtonDown("Jump") && HasEnoughStamina(jumpStaminaCost))
+        else if (canDoubleJump && Input.GetButtonDown("Jump") && stamina.CanUse(jumpStaminaCost))
         {
-            ConsumeStamina(jumpStaminaCost);
+            stamina.Use(jumpStaminaCost);
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             canDoubleJump = false;
         }
 
         animator.SetBool("isJump", !isGrounded);
     }
-
-    // --- Hồi stamina dần ---
-    private void RegenerateStamina()
-    {
-        if (currentStamina < maxStamina)
-        {
-            currentStamina += staminaRegenRate * Time.deltaTime;
-            currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
-        }
-    }
-
-    // --- Xử lý năng lượng ---
-    private bool HasEnoughStamina(float cost)
-    {
-        return currentStamina >= cost;
-    }
-
-    private void ConsumeStamina(float cost)
-    {
-        currentStamina -= cost;
-        currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
-    }
-
-    // --- Getter cho UI ---
-    public float CurrentMana => currentStamina;
-    public float MaxMana => maxStamina;
-
-    public bool CanUseStamina(float cost)
-    {
-        return currentStamina >= cost;
-    }
-
-    public void UseStamina(float cost)
-    {
-        currentStamina -= cost;
-        currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
-    }
-
 }
