@@ -7,8 +7,8 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private Transform firePoint;
 
     [Header("Projectiles")]
-    [SerializeField] private GameObject[] fireballs; // Chuột trái (3 tia)
-    [SerializeField] private GameObject[] iceballs;  // Chuột phải (1 tia)
+    [SerializeField] private GameObject[] fireballs; // Fire mode
+    [SerializeField] private GameObject[] iceballs;  // Ice mode
 
     [Header("Stamina Costs")]
     [SerializeField] private float fireCost = 1.5f;
@@ -17,6 +17,9 @@ public class PlayerAttack : MonoBehaviour
     private Animator anim;
     private PlayerStamina stamina;
     private float cooldownTimer = Mathf.Infinity;
+
+    private enum Element { Fire, Ice }
+    private Element currentElement = Element.Fire; // 🔥 Mặc định Fire
 
     private void Awake()
     {
@@ -28,23 +31,44 @@ public class PlayerAttack : MonoBehaviour
     {
         cooldownTimer += Time.deltaTime;
 
-        if (Input.GetMouseButton(0) && cooldownTimer > attackCooldown)
-            TryFireAttack();
-
-        if (Input.GetMouseButton(1) && cooldownTimer > attackCooldown)
-            TryIceAttack();
-    }
-
-    private void TryFireAttack()
-    {
-        if (!stamina.CanUse(fireCost))
+        // 🔄 Đổi hệ khi nhấn Tab
+        if (Input.GetKeyDown(KeyCode.F))
         {
-            Debug.Log("❌ Không đủ stamina để bắn Fire!");
-            return;
+            currentElement = (currentElement == Element.Fire) ? Element.Ice : Element.Fire;
+            Debug.Log("Chuyển sang hệ: " + currentElement);
         }
 
-        stamina.Use(fireCost);
-        FireAttack();
+        // 🔫 Chuột trái tấn công theo hệ hiện tại
+        if (Input.GetMouseButton(0) && cooldownTimer > attackCooldown)
+        {
+            TryAttack();
+        }
+    }
+
+    private void TryAttack()
+    {
+        switch (currentElement)
+        {
+            case Element.Fire:
+                if (!stamina.CanUse(fireCost))
+                {
+                    Debug.Log("❌ Không đủ stamina để bắn Fire!");
+                    return;
+                }
+                stamina.Use(fireCost);
+                FireAttack();
+                break;
+
+            case Element.Ice:
+                if (!stamina.CanUse(iceCost))
+                {
+                    Debug.Log("❌ Không đủ stamina để bắn Ice!");
+                    return;
+                }
+                stamina.Use(iceCost);
+                IceAttack();
+                break;
+        }
     }
 
     private void FireAttack()
@@ -63,18 +87,6 @@ public class PlayerAttack : MonoBehaviour
             fireball.GetComponent<Projecttile>().SetDirection(dir, angle);
             fireball.tag = "Fire";
         }
-    }
-
-    private void TryIceAttack()
-    {
-        if (!stamina.CanUse(iceCost))
-        {
-            Debug.Log("❌ Không đủ stamina để bắn Ice!");
-            return;
-        }
-
-        stamina.Use(iceCost);
-        IceAttack();
     }
 
     private void IceAttack()

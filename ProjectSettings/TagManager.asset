@@ -33,7 +33,7 @@ TagManager:
   - LadderTop
   - PlayerProjectile
   - HideArea
-  - 
+  - Skill
   - 
   - 
   - 
@@ -79,6 +79,9 @@ TagManager:
     locked: 0
   - name: UI
     uniqueID: 4252170031
+    locked: 0
+  - name: Skill
+    uniqueID: 3753827679
     locked: 0
   - name: Player
     uniqueID: 3339545541
