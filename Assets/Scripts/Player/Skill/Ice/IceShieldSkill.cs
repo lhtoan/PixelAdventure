@@ -13,11 +13,13 @@ public class IceShieldSkill : MonoBehaviour
 
     private bool isActive = false;
     private PlayerStamina playerStamina;
+    private PlayerAttack playerAttack;
     private Dictionary<GameObject, float> enemyTickTimers = new Dictionary<GameObject, float>();
 
     private void Awake()
     {
         playerStamina = GetComponentInParent<PlayerStamina>();
+        playerAttack = GetComponentInParent<PlayerAttack>();
 
         if (shieldObject != null)
             shieldObject.SetActive(false);
@@ -25,7 +27,8 @@ public class IceShieldSkill : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        // ✅ Luôn lắng nghe phím, nhưng chỉ kích hoạt được khi hệ là Ice
+        if (Input.GetKeyDown(KeyCode.E) && playerAttack.CurrentElement == PlayerAttack.Element.Ice)
         {
             TryActivateShield();
         }
@@ -34,6 +37,13 @@ public class IceShieldSkill : MonoBehaviour
     private void TryActivateShield()
     {
         if (isActive) return;
+
+        // ✅ Chỉ cho phép dùng nếu đang ở hệ Ice
+        if (playerAttack == null)
+        {
+            Debug.Log("❌ Không thể bật Ice Shield khi không ở hệ Ice!");
+            return;
+        }
 
         if (playerStamina == null)
         {
@@ -47,6 +57,7 @@ public class IceShieldSkill : MonoBehaviour
             return;
         }
 
+        // Trừ stamina và bật shield
         playerStamina.Use(staminaCost);
         StartCoroutine(ActivateShield());
     }
@@ -59,20 +70,29 @@ public class IceShieldSkill : MonoBehaviour
         if (shieldObject != null)
             shieldObject.SetActive(true);
 
-        Debug.Log("🧊 Shield bật! (Tốn " + staminaCost + " stamina)");
+        Debug.Log($"🧊 Ice Shield bật! (Tốn {staminaCost} stamina)");
+
+        // ✅ Miễn sát thương cho player
+        Health playerHealth = GetComponentInParent<Health>();
+        if (playerHealth != null)
+            playerHealth.SetShieldProtection(true);
 
         yield return new WaitForSeconds(duration);
 
+        // ❌ Hết thời gian → tắt shield
         if (shieldObject != null)
             shieldObject.SetActive(false);
 
+        if (playerHealth != null)
+            playerHealth.SetShieldProtection(false);
+
         isActive = false;
-        Debug.Log("🧊 Shield tắt!");
+        Debug.Log("🧊 Ice Shield tắt!");
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (!isActive || !shieldObject.activeSelf) return;
+        if (!isActive || shieldObject == null || !shieldObject.activeSelf) return;
         if (!collision.gameObject.CompareTag("Enemy")) return;
 
         GameObject enemy = collision.gameObject;

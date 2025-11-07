@@ -17,6 +17,7 @@ public class Health : MonoBehaviour
     [Header("Components")]
     [SerializeField] private Behaviour[] components;
     private bool invulnerable;
+    private bool shieldActive;
 
     private PlayerRespawn respawnManager;
 
@@ -33,6 +34,7 @@ public class Health : MonoBehaviour
     }
     public void TakeDamage(float _damage)
     {
+        if(shieldActive) return;
         if (invulnerable) return;
         currentHealth = Mathf.Clamp(currentHealth - _damage, 0, startingHealth);
 
@@ -64,6 +66,7 @@ public class Health : MonoBehaviour
 
     public void TakeDamage(float _damage, bool triggerAnimation = true)
     {
+        if (shieldActive) return;
         if (invulnerable && triggerAnimation) return;
 
         currentHealth = Mathf.Clamp(currentHealth - _damage, 0, startingHealth);
@@ -87,6 +90,16 @@ public class Health : MonoBehaviour
             dead = true;
             StartCoroutine(DieCoroutine());
         }
+    }
+
+    // Kiểm tra player có đang bật khiên hay không nếu có không trừ máu
+    public void SetShieldProtection(bool state)
+    {
+        shieldActive = state;
+        if (state)
+            Debug.Log("🧊 Player đang được Ice Shield bảo vệ!");
+        else
+            Debug.Log("🧊 Ice Shield tắt bảo vệ!");
     }
 
 

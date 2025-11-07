@@ -18,8 +18,9 @@ public class PlayerAttack : MonoBehaviour
     private PlayerStamina stamina;
     private float cooldownTimer = Mathf.Infinity;
 
-    private enum Element { Fire, Ice }
-    private Element currentElement = Element.Fire; // 🔥 Mặc định Fire
+    public enum Element { Fire, Ice }
+    [SerializeField] private Element currentElement = Element.Fire; //mặc định Fire
+    public Element CurrentElement => currentElement;
 
     private void Awake()
     {
@@ -31,14 +32,14 @@ public class PlayerAttack : MonoBehaviour
     {
         cooldownTimer += Time.deltaTime;
 
-        // 🔄 Đổi hệ khi nhấn Tab
-        if (Input.GetKeyDown(KeyCode.F))
+        // Đổi hệ bằng chuột phải
+        if (Input.GetMouseButtonDown(1))
         {
             currentElement = (currentElement == Element.Fire) ? Element.Ice : Element.Fire;
             Debug.Log("Chuyển sang hệ: " + currentElement);
         }
 
-        // 🔫 Chuột trái tấn công theo hệ hiện tại
+        // 🔫 Chuột trái = tấn công chính
         if (Input.GetMouseButton(0) && cooldownTimer > attackCooldown)
         {
             TryAttack();
@@ -52,7 +53,7 @@ public class PlayerAttack : MonoBehaviour
             case Element.Fire:
                 if (!stamina.CanUse(fireCost))
                 {
-                    Debug.Log("❌ Không đủ stamina để bắn Fire!");
+                    // Debug.Log("❌ Không đủ stamina để bắn Fire!");
                     return;
                 }
                 stamina.Use(fireCost);
@@ -62,7 +63,7 @@ public class PlayerAttack : MonoBehaviour
             case Element.Ice:
                 if (!stamina.CanUse(iceCost))
                 {
-                    Debug.Log("❌ Không đủ stamina để bắn Ice!");
+                    // Debug.Log("❌ Không đủ stamina để bắn Ice!");
                     return;
                 }
                 stamina.Use(iceCost);

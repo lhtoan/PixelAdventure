@@ -45,21 +45,20 @@ public class FreezeEnemy : MonoBehaviour
     public void TriggerIceHit()
     {
         if (health != null && health.currentHealth <= 0) return;
+        if (isFrozen) return; // 🔒 Khi đã bị đóng băng thì không cộng stack nữa
 
-        // Mỗi lần trúng đòn → reset bộ đếm reset stack
+        // Reset timer reset stack mỗi khi bị trúng đòn
         if (resetCoroutine != null)
             StopCoroutine(resetCoroutine);
         resetCoroutine = StartCoroutine(ResetStackAfterDelay());
 
         iceHitCount++;
-        // Debug.Log($"{name} Ice stack: {iceHitCount}/{iceHitsToFreeze}");
-
         ShowIceState(iceHitCount);
 
         if (iceHitCount >= iceHitsToFreeze)
         {
             TriggerFreeze(freezeDuration);
-            iceHitCount = 1;
+            // ❌ KHÔNG reset stack ở đây — sẽ reset khi rã băng
         }
     }
 
@@ -67,16 +66,11 @@ public class FreezeEnemy : MonoBehaviour
     {
         yield return new WaitForSeconds(stackResetDelay);
 
-        // Sau khi chờ xong mà chưa đủ đòn → reset
+        // Nếu chưa bị đóng băng mà không trúng thêm → reset stack
         if (!isFrozen && iceHitCount > 0)
         {
             iceHitCount = 0;
-            // Debug.Log($"{name} ❄️ Ice stack reset (không trúng thêm sau {stackResetDelay}s)");
-            if (iceStates != null)
-            {
-                foreach (var s in iceStates)
-                    StartCoroutine(FadeOutState(s));
-            }
+            HideAllIceStates();
         }
     }
 
@@ -84,59 +78,27 @@ public class FreezeEnemy : MonoBehaviour
     {
         if (iceStates == null || iceStates.Length == 0) return;
 
+        // Ẩn toàn bộ, rồi hiển thị mức stack hiện tại
         for (int i = 0; i < iceStates.Length; i++)
-            StartCoroutine(FadeOutState(iceStates[i]));
+            iceStates[i].SetActive(false);
 
         int index = Mathf.Clamp(count - 1, 0, iceStates.Length - 1);
-        StartCoroutine(FadeInState(iceStates[index]));
+        iceStates[index].SetActive(true);
     }
 
-    private IEnumerator FadeInState(GameObject state)
+    private void HideAllIceStates()
     {
-        state.SetActive(true);
-        SpriteRenderer s = state.GetComponent<SpriteRenderer>();
-        if (s == null) yield break;
+        if (iceStates == null) return;
 
-        Color c = s.color;
-        c.a = 0;
-        s.color = c;
-
-        float t = 0;
-        while (t < fadeDuration)
-        {
-            t += Time.deltaTime;
-            c.a = Mathf.Lerp(0, 1, t / fadeDuration);
-            s.color = c;
-            yield return null;
-        }
-        s.color = new Color(c.r, c.g, c.b, 1);
-    }
-
-    private IEnumerator FadeOutState(GameObject state)
-    {
-        if (!state.activeSelf) yield break;
-
-        SpriteRenderer s = state.GetComponent<SpriteRenderer>();
-        if (s == null) { state.SetActive(false); yield break; }
-
-        Color c = s.color;
-        float t = 0;
-        while (t < fadeDuration)
-        {
-            t += Time.deltaTime;
-            c.a = Mathf.Lerp(1, 0, t / fadeDuration);
-            s.color = c;
-            yield return null;
-        }
-        state.SetActive(false);
+        foreach (var s in iceStates)
+            s.SetActive(false);
     }
 
     public void TriggerFreeze(float duration)
     {
-        if (health != null && health.currentHealth <= 0) return;
         if (isFrozen) return;
+        if (health != null && health.currentHealth <= 0) return;
 
-        // Ngừng reset stack khi đã đóng băng
         if (resetCoroutine != null)
             StopCoroutine(resetCoroutine);
 
@@ -146,6 +108,14 @@ public class FreezeEnemy : MonoBehaviour
     private IEnumerator Freeze(float duration)
     {
         isFrozen = true;
+
+        // Hiển thị trạng thái "băng đầy" khi đóng băng
+        if (iceStates != null && iceStates.Length > 0)
+        {
+            foreach (var s in iceStates)
+                s.SetActive(false);
+            iceStates[iceStates.Length - 1].SetActive(true);
+        }
 
         if (anim != null) anim.speed = 0;
         if (patrolScript != null) patrolScript.isFrozen = true;
@@ -176,15 +146,9 @@ public class FreezeEnemy : MonoBehaviour
         else if (customMovementScript != null) customMovementScript.enabled = true;
 
         if (sr != null) sr.color = Color.white;
+
         isFrozen = false;
-
-        if (iceStates != null)
-        {
-            foreach (var s in iceStates)
-                StartCoroutine(FadeOutState(s));
-        }
-
-        // Reset toàn bộ stack khi rã băng
-        iceHitCount = 0;
+        iceHitCount = 0; // ✅ Reset stack khi rã băng
+        HideAllIceStates(); // ✅ Ẩn hết hiệu ứng băng
     }
 }

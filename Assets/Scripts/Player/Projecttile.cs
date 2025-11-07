@@ -4,9 +4,12 @@ public class Projecttile : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float maxDistance = 3;
+    [SerializeField] private float fireDamage = 5; // 🔥 Damage cho Fire
+    [SerializeField] private float iceDamage = 5; // ❄️ Damage cho Ice
+    [SerializeField] private float defaultDamage = 1f; // ⚪ Dự phòng
+
     private Vector3 startPosition;
     private float direction;
-
     private bool hit;
     private float lifetime;
 
@@ -22,6 +25,7 @@ public class Projecttile : MonoBehaviour
     private void Update()
     {
         if (hit) return;
+
         float movementSpeed = speed * Time.deltaTime * direction;
         transform.Translate(movementSpeed, 0, 0);
 
@@ -35,8 +39,6 @@ public class Projecttile : MonoBehaviour
 
         if (lifetime > 5) gameObject.SetActive(false);
     }
-
-
 
     public void SetDirection(float _direction, float angle = 0f)
     {
@@ -53,11 +55,8 @@ public class Projecttile : MonoBehaviour
             localScaleX = -localScaleX;
 
         transform.localScale = new Vector3(localScaleX, transform.localScale.y, transform.localScale.z);
-
-        // Hướng xoay để bắn lệch
         transform.rotation = Quaternion.Euler(0, 0, angle * -_direction);
     }
-
 
     private void Deactivate()
     {
@@ -71,26 +70,29 @@ public class Projecttile : MonoBehaviour
         if (anim != null)
             anim.SetTrigger("explode");
 
-
         if (collision.CompareTag("Enemy"))
         {
-            collision.GetComponent<Health>()?.TakeDamage(1);
+            float damageToApply = defaultDamage;
 
-            // ❄️ Iceball effect
+            // 💥 Xác định damage theo hệ
+            if (CompareTag("Fire"))
+                damageToApply = fireDamage;
+            else if (CompareTag("Ice"))
+                damageToApply = iceDamage;
+
+            collision.GetComponent<Health>()?.TakeDamage(damageToApply);
+
+            // ❄️ Hiệu ứng Ice
             if (CompareTag("Ice"))
             {
                 var freeze = collision.GetComponent<FreezeEnemy>();
-                if (freeze != null)
-                    freeze.TriggerIceHit(); // cộng stack và check freeze
+                freeze?.TriggerIceHit();
             }
+            // 🔥 Hiệu ứng Fire
             else if (CompareTag("Fire"))
             {
                 var burn = collision.GetComponent<BurnEnemy>();
-                if (burn != null)
-                {
-                    Debug.Log($"{collision.name} trúng Fireball → Bắt đầu cháy!");
-                    burn.TriggerBurn();
-                }
+                burn?.TriggerBurn();
             }
         }
         else if (collision.CompareTag("Box"))
@@ -98,11 +100,8 @@ public class Projecttile : MonoBehaviour
             collision.GetComponent<BreakableBox>()?.TakeDamage(1);
         }
     }
-
-
-
-
 }
+
 
 
 // private void OnTriggerEnter2D(Collider2D collision)
