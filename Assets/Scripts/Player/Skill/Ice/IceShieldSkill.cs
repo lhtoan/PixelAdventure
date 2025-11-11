@@ -12,14 +12,19 @@ public class IceShieldSkill : MonoBehaviour
     [SerializeField] private GameObject shieldObject;
 
     private bool isActive = false;
+
     private PlayerStamina playerStamina;
     private PlayerAttack playerAttack;
+    private PlayerSkill playerSkill;   // ⭐ NEW — thêm skill system
+
     private Dictionary<GameObject, float> enemyTickTimers = new Dictionary<GameObject, float>();
+
 
     private void Awake()
     {
         playerStamina = GetComponentInParent<PlayerStamina>();
         playerAttack = GetComponentInParent<PlayerAttack>();
+        playerSkill = GetComponentInParent<PlayerSkill>();   // ⭐ Lấy PlayerSkill từ Player
 
         if (shieldObject != null)
             shieldObject.SetActive(false);
@@ -27,8 +32,9 @@ public class IceShieldSkill : MonoBehaviour
 
     private void Update()
     {
-        // ✅ Luôn lắng nghe phím, nhưng chỉ kích hoạt được khi hệ là Ice
-        if (Input.GetKeyDown(KeyCode.E) && playerAttack.CurrentElement == PlayerAttack.Element.Ice)
+        // ⭐ NHẤN E + đúng hệ + đúng skill
+        if (Input.GetKeyDown(KeyCode.E) &&
+            playerAttack.CurrentElement == PlayerAttack.Element.Ice)
         {
             TryActivateShield();
         }
@@ -38,7 +44,13 @@ public class IceShieldSkill : MonoBehaviour
     {
         if (isActive) return;
 
-        // ✅ Chỉ cho phép dùng nếu đang ở hệ Ice
+        // ⭐ CHƯA MỞ KHÓA — KHÔNG CHO DÙNG
+        if (!playerSkill.IsSkillUnlocked(PlayerSkill.SkillType.Ice_E))
+        {
+            Debug.Log("❌ Skill Ice E (Ice Shield) chưa mở khóa!");
+            return;
+        }
+
         if (playerAttack == null)
         {
             Debug.Log("❌ Không thể bật Ice Shield khi không ở hệ Ice!");
@@ -72,14 +84,13 @@ public class IceShieldSkill : MonoBehaviour
 
         Debug.Log($"🧊 Ice Shield bật! (Tốn {staminaCost} stamina)");
 
-        // ✅ Miễn sát thương cho player
         Health playerHealth = GetComponentInParent<Health>();
         if (playerHealth != null)
             playerHealth.SetShieldProtection(true);
 
         yield return new WaitForSeconds(duration);
 
-        // ❌ Hết thời gian → tắt shield
+        // Tắt shield
         if (shieldObject != null)
             shieldObject.SetActive(false);
 
@@ -87,6 +98,7 @@ public class IceShieldSkill : MonoBehaviour
             playerHealth.SetShieldProtection(false);
 
         isActive = false;
+
         Debug.Log("🧊 Ice Shield tắt!");
     }
 
