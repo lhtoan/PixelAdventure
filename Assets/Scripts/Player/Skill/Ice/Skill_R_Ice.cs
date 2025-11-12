@@ -70,21 +70,23 @@ public class Skill_R_Ice : MonoBehaviour
     {
         isOnCooldown = true;
 
+        // 🔹 Ghi lại hướng và vị trí player ngay lúc cast
         float direction = Mathf.Sign(playerAttack.transform.localScale.x);
+        Vector3 castOrigin = icePoint.position; // snapshot vị trí cast
 
-        // 3 cột băng liên tục
+        // 🔹 Spawn spike cố định theo hướng đó
         for (int i = 0; i < iceSpikePool.Count; i++)
         {
             GameObject spike = iceSpikePool[i];
-
             if (spike == null)
                 continue;
 
-            Vector3 spawnPos = icePoint.position + new Vector3(i * spikeDistance * direction, 0f, 0f);
+            // vị trí spawn dựa trên snapshot
+            Vector3 spawnPos = castOrigin + new Vector3(i * spikeDistance * direction, 0f, 0f);
 
             spike.transform.position = spawnPos;
 
-            // xoay đúng hướng player
+            // hướng cố định theo lúc cast
             Vector3 scale = spike.transform.localScale;
             scale.x = Mathf.Abs(scale.x) * direction;
             spike.transform.localScale = scale;
@@ -93,12 +95,13 @@ public class Skill_R_Ice : MonoBehaviour
 
             StartCoroutine(DeactivateSpike(spike, spikeLifetime));
 
-            yield return new WaitForSeconds(0.3f); // delay nhẹ giữa mỗi spike
+            yield return new WaitForSeconds(0.3f); // delay giữa các spike
         }
 
         yield return new WaitForSeconds(cooldown);
         isOnCooldown = false;
     }
+
 
     private IEnumerator DeactivateSpike(GameObject spike, float delay)
     {
