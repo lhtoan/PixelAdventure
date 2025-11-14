@@ -8,8 +8,10 @@ public class Skill_E_Fire : MonoBehaviour
     [SerializeField] private Transform firePoint;
     [SerializeField] private List<GameObject> fireballs;
     [SerializeField] private PlayerAttack playerAttack;
-    [SerializeField] private PlayerStamina playerStamina;   // ⭐ thêm stamina
+    [SerializeField] private PlayerStamina playerStamina;   //stamina
     [SerializeField] private PlayerSkill playerSkill;
+    [SerializeField] private UI_SkillBarIcon skillBarIcon;   // UI icon của skill này
+
 
 
     [Header("Settings")]
@@ -17,7 +19,7 @@ public class Skill_E_Fire : MonoBehaviour
     [SerializeField] private float damage = 8f;
     [SerializeField] private float cooldown = 4f;
     [SerializeField] private float spreadRadius = 1f;
-    [SerializeField] private float staminaCost = 4f;        // ⭐ stamina cost
+    [SerializeField] private float staminaCost = 4f;        //stamina cost
 
     [Header("Multi-Circle Settings")]
     [SerializeField] private int fireballPerCircle = 8;
@@ -32,7 +34,8 @@ public class Skill_E_Fire : MonoBehaviour
         playerAttack = GetComponentInParent<PlayerAttack>();
         playerStamina = GetComponentInParent<PlayerStamina>(); // ⭐ auto lấy stamina từ Player
         playerSkill = GetComponentInParent<PlayerSkill>();
-
+        if (skillBarIcon == null)
+            Debug.LogWarning("⚠ Fire_E missing skillBarIcon reference in Inspector!");
     }
 
     private void Update()
@@ -60,6 +63,11 @@ public class Skill_E_Fire : MonoBehaviour
     private IEnumerator DoubleFireBurst()
     {
         isOnCooldown = true;
+
+        if (skillBarIcon != null)
+        {
+            skillBarIcon.StartCooldown(cooldown);
+        }
 
         // ⭐ TRỪ STAMINA khi dùng chiêu
         playerStamina.Use(staminaCost);

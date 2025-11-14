@@ -28,6 +28,7 @@ public class PlayerAttack : MonoBehaviour
         stamina = GetComponent<PlayerStamina>();
     }
 
+
     private void Update()
     {
         cooldownTimer += Time.deltaTime;
@@ -35,8 +36,14 @@ public class PlayerAttack : MonoBehaviour
         // Đổi hệ bằng chuột phải
         if (Input.GetMouseButtonDown(1))
         {
+            Element oldElement = currentElement;
             currentElement = (currentElement == Element.Fire) ? Element.Ice : Element.Fire;
             Debug.Log("Chuyển sang hệ: " + currentElement);
+            if (currentElement != oldElement)
+            {
+                FindFirstObjectByType<UI_SkillBar>()?.UpdateElementUI(currentElement);
+                FindFirstObjectByType<UI_ElementPanel>()?.UpdateElement(currentElement);
+            }
         }
 
         // 🔫 Chuột trái = tấn công chính

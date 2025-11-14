@@ -96,10 +96,10 @@ public class Health : MonoBehaviour
     public void SetShieldProtection(bool state)
     {
         shieldActive = state;
-        if (state)
-            Debug.Log("🧊 Player đang được Ice Shield bảo vệ!");
-        else
-            Debug.Log("🧊 Ice Shield tắt bảo vệ!");
+        // if (state)
+        //     Debug.Log("🧊 Player đang được Ice Shield bảo vệ!");
+        // else
+        //     Debug.Log("🧊 Ice Shield tắt bảo vệ!");
     }
 
 

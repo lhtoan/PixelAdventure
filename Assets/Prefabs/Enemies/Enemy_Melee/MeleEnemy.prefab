@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 9086887289807374506}
   - component: {fileID: 7720688989178269228}
   - component: {fileID: 2665701261089209621}
+  - component: {fileID: 6425666082919548377}
+  - component: {fileID: 6034139400349816188}
   m_Layer: 8
   m_Name: MeleEnemy
   m_TagString: Enemy
@@ -57,6 +59,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -78,6 +82,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1642750605
   m_SortingLayer: 2
   m_SortingOrder: 0
@@ -210,3 +215,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
+--- !u!114 &6425666082919548377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2841537262026265120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b42d74af154ee624c86966210aadc2c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customMovementScript: {fileID: 0}
+  iceHitsToFreeze: 3
+  freezeDuration: 5
+  iceStateParent: {fileID: 0}
+  fadeDuration: 0.2
+  stackResetDelay: 2
+--- !u!114 &6034139400349816188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2841537262026265120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99aa14064120e624b9669140c5a65a34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  burnDuration: 3
+  burnDamagePerSecond: 5

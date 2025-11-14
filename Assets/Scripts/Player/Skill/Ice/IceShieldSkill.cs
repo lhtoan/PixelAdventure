@@ -11,11 +11,16 @@ public class IceShieldSkill : MonoBehaviour
     [SerializeField] private float tickInterval = 2f;
     [SerializeField] private GameObject shieldObject;
 
+    [Header("Cooldown Settings")]
+    [SerializeField] private float cooldown = 6f;               // ⭐ NEW
+    [SerializeField] private UI_SkillBarIcon skillBarIcon;      // ⭐ NEW
+
     private bool isActive = false;
+    private bool isOnCooldown = false;                          // ⭐ NEW
 
     private PlayerStamina playerStamina;
     private PlayerAttack playerAttack;
-    private PlayerSkill playerSkill;   // ⭐ NEW — thêm skill system
+    private PlayerSkill playerSkill;
 
     private Dictionary<GameObject, float> enemyTickTimers = new Dictionary<GameObject, float>();
 
@@ -24,7 +29,10 @@ public class IceShieldSkill : MonoBehaviour
     {
         playerStamina = GetComponentInParent<PlayerStamina>();
         playerAttack = GetComponentInParent<PlayerAttack>();
-        playerSkill = GetComponentInParent<PlayerSkill>();   // ⭐ Lấy PlayerSkill từ Player
+        playerSkill = GetComponentInParent<PlayerSkill>();
+        if (skillBarIcon == null)
+            Debug.LogWarning("⚠ Ice_E missing skillBarIcon reference in Inspector!");
+
 
         if (shieldObject != null)
             shieldObject.SetActive(false);
@@ -32,6 +40,9 @@ public class IceShieldSkill : MonoBehaviour
 
     private void Update()
     {
+        // ⭐ CHẶN KHI ĐANG COOLDOWN
+        if (isOnCooldown) return;
+
         // ⭐ NHẤN E + đúng hệ + đúng skill
         if (Input.GetKeyDown(KeyCode.E) &&
             playerAttack.CurrentElement == PlayerAttack.Element.Ice)
@@ -44,22 +55,10 @@ public class IceShieldSkill : MonoBehaviour
     {
         if (isActive) return;
 
-        // ⭐ CHƯA MỞ KHÓA — KHÔNG CHO DÙNG
+        // Check mở khóa
         if (!playerSkill.IsSkillUnlocked(PlayerSkill.SkillType.Ice_E))
         {
             Debug.Log("❌ Skill Ice E (Ice Shield) chưa mở khóa!");
-            return;
-        }
-
-        if (playerAttack == null)
-        {
-            Debug.Log("❌ Không thể bật Ice Shield khi không ở hệ Ice!");
-            return;
-        }
-
-        if (playerStamina == null)
-        {
-            Debug.LogWarning("⚠ Không tìm thấy PlayerStamina!");
             return;
         }
 
@@ -69,7 +68,13 @@ public class IceShieldSkill : MonoBehaviour
             return;
         }
 
-        // Trừ stamina và bật shield
+        // ⭐ BẮT ĐẦU COOLDOWN
+        isOnCooldown = true;
+
+        if (skillBarIcon != null)
+            skillBarIcon.StartCooldown(cooldown);
+
+        // ⭐ Trừ stamina và bật shield
         playerStamina.Use(staminaCost);
         StartCoroutine(ActivateShield());
     }
@@ -88,6 +93,7 @@ public class IceShieldSkill : MonoBehaviour
         if (playerHealth != null)
             playerHealth.SetShieldProtection(true);
 
+        // Shield duy trì trong duration
         yield return new WaitForSeconds(duration);
 
         // Tắt shield
@@ -100,6 +106,11 @@ public class IceShieldSkill : MonoBehaviour
         isActive = false;
 
         Debug.Log("🧊 Ice Shield tắt!");
+
+        // ⭐ CHỜ HỒI CHIÊU
+        yield return new WaitForSeconds(cooldown);
+
+        isOnCooldown = false;
     }
 
     private void OnCollisionStay2D(Collision2D collision)

@@ -9,7 +9,8 @@ public class Skill_R_Fire : MonoBehaviour
     [SerializeField] private List<GameObject> tornadoPool;
     [SerializeField] private PlayerAttack playerAttack;
     [SerializeField] private PlayerStamina playerStamina;
-    [SerializeField] private PlayerSkill playerSkill;   // ⭐ NEW
+    [SerializeField] private PlayerSkill playerSkill;
+    [SerializeField] private UI_SkillBarIcon skillBarIcon;
 
     [Header("Skill Settings")]
     [SerializeField] private float cooldown = 8f;
@@ -21,7 +22,9 @@ public class Skill_R_Fire : MonoBehaviour
     {
         playerAttack = GetComponentInParent<PlayerAttack>();
         playerStamina = GetComponentInParent<PlayerStamina>();
-        playerSkill = GetComponentInParent<PlayerSkill>(); // ⭐ auto lấy từ Player
+        playerSkill = GetComponentInParent<PlayerSkill>();
+        if (skillBarIcon == null)
+            Debug.LogWarning("⚠ Fire_R missing skillBarIcon reference in Inspector!");
 
         // Ensure all pool objects start inactive
         for (int i = 0; i < tornadoPool.Count; i++)
@@ -54,7 +57,9 @@ public class Skill_R_Fire : MonoBehaviour
     {
         isOnCooldown = true;
 
-        // ⭐ TRỪ STAMINA
+        if (skillBarIcon != null)
+            skillBarIcon.StartCooldown(cooldown);
+
         playerStamina.Use(staminaCost);
 
         if (R_FirePoint == null)
@@ -73,9 +78,9 @@ public class Skill_R_Fire : MonoBehaviour
 
         Vector3 spawnPos = R_FirePoint.position;
 
-        // tìm object inactive trong pool
         GameObject orbObj = null;
 
+        // Tìm object chưa active
         for (int i = 0; i < tornadoPool.Count; i++)
         {
             if (!tornadoPool[i].activeSelf)
@@ -85,33 +90,29 @@ public class Skill_R_Fire : MonoBehaviour
             }
         }
 
-        // nếu tất cả đều active → reset object đầu tiên
+        // Nếu tất cả đều active → reset object đầu tiên
         if (orbObj == null)
         {
             orbObj = tornadoPool[0];
-            orbObj.SetActive(false);
+            orbObj.SetActive(false); // reset
         }
 
-        // SPAWN NGAY
+        // SPAWN
         orbObj.transform.position = spawnPos;
         orbObj.transform.rotation = Quaternion.identity;
 
-        orbObj.SetActive(false);
         orbObj.SetActive(true);
 
         FireChasingOrb orb = orbObj.GetComponent<FireChasingOrb>();
 
         if (orb != null)
-        {
-            orb.Initialize(Vector2.zero); // orb tự tìm enemy
-        }
+            orb.Initialize(Vector2.zero);
         else
-        {
-            Debug.LogError("[Skill_R_Fire] Prefab does NOT contain FireChasingOrb script!");
-        }
+            Debug.LogError("[Skill_R_Fire] Prefab missing FireChasingOrb!");
 
         StartCoroutine(CooldownRoutine());
     }
+
 
     private IEnumerator CooldownRoutine()
     {

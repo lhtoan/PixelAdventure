@@ -19,12 +19,16 @@ public class Skill_R_Ice : MonoBehaviour
     private PlayerAttack playerAttack;
     private PlayerStamina playerStamina;
     private PlayerSkill playerSkill;
+    [SerializeField] private UI_SkillBarIcon skillBarIcon;
 
     private void Awake()
     {
         playerAttack = GetComponentInParent<PlayerAttack>();
         playerStamina = GetComponentInParent<PlayerStamina>();
         playerSkill = GetComponentInParent<PlayerSkill>();
+        if (skillBarIcon == null)
+            Debug.LogWarning("⚠ Ice_E missing skillBarIcon reference in Inspector!");
+
 
         // đảm bảo tất cả spike trong pool đều tắt lúc start
         for (int i = 0; i < iceSpikePool.Count; i++)
@@ -69,6 +73,10 @@ public class Skill_R_Ice : MonoBehaviour
     private IEnumerator CastIceSpikes()
     {
         isOnCooldown = true;
+
+        if (skillBarIcon != null)
+            skillBarIcon.StartCooldown(cooldown);
+
 
         // 🔹 Ghi lại hướng và vị trí player ngay lúc cast
         float direction = Mathf.Sign(playerAttack.transform.localScale.x);

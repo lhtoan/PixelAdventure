@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyPatrol : MonoBehaviour
+public class EnemyPatrol : MonoBehaviour, IEnemyMovement
 {
     [Header("Patrol Points")]
     [SerializeField] public Transform leftEdge;
@@ -22,6 +22,11 @@ public class EnemyPatrol : MonoBehaviour
     [SerializeField] private Animator anim;
     [HideInInspector] public bool isFrozen = false;
 
+
+    public void EnableMovement(bool enable)
+    {
+        this.enabled = enable;
+    }
 
     private void Awake()
     {
