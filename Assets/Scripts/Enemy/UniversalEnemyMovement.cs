@@ -9,9 +9,12 @@ public class UniversalEnemyMovement : MonoBehaviour, IEnemyMovement
     public float moveSpeed = 2f;
     public bool isFlying = false;
 
+    [Header("Flip Settings")]
+    public bool flipInverted = false;    // ⭐ ONLY mushroom bật cái này
+
     [Header("Follow Range")]
-    public float followRange = 5f;    // Enemy chỉ follow trong phạm vi này
-    public float stopDistance = 0.5f; // Enemy đứng lại khi quá gần
+    public float followRange = 5f;
+    public float stopDistance = 0.5f;
 
     [Header("Components")]
     public Transform enemyModel;
@@ -36,29 +39,31 @@ public class UniversalEnemyMovement : MonoBehaviour, IEnemyMovement
     {
         if (isFrozen)
         {
-            anim.SetBool("moving", false);
+            if (HasParameter("moving"))
+                anim.SetBool("moving", false);
             return;
         }
 
         if (target == null)
         {
-            anim.SetBool("moving", false);
+            if (HasParameter("moving"))
+                anim.SetBool("moving", false);
             return;
         }
 
         float distance = Vector2.Distance(transform.position, target.position);
 
-        // ❌ Nếu target quá xa → không follow
         if (distance > followRange)
         {
-            anim.SetBool("moving", false);
+            if (HasParameter("moving"))
+                anim.SetBool("moving", false);
             return;
         }
 
-        // ❌ Nếu quá gần → đứng lại
         if (distance < stopDistance)
         {
-            anim.SetBool("moving", false);
+            if (HasParameter("moving"))
+                anim.SetBool("moving", false);
             return;
         }
 
@@ -69,12 +74,23 @@ public class UniversalEnemyMovement : MonoBehaviour, IEnemyMovement
     {
         float direction = target.position.x - transform.position.x;
 
-        // Flip theo hướng
+        // ⭐ Flip đúng hướng (hoặc ngược nếu flipInverted)
         if (direction != 0)
-            enemyModel.localScale = new Vector3(Mathf.Abs(initScale.x) * Mathf.Sign(direction),
-                                                initScale.y, initScale.z);
+        {
+            float flipDir = Mathf.Sign(direction);
 
-        anim.SetBool("moving", true);
+            if (flipInverted)
+                flipDir = -flipDir;
+
+            enemyModel.localScale = new Vector3(
+                Mathf.Abs(initScale.x) * flipDir,
+                initScale.y,
+                initScale.z
+            );
+        }
+
+        if (HasParameter("moving"))
+            anim.SetBool("moving", true);
 
         Vector3 moveDir = (target.position - transform.position).normalized;
 
@@ -91,13 +107,24 @@ public class UniversalEnemyMovement : MonoBehaviour, IEnemyMovement
 
     private void OnDisable()
     {
-        anim.SetBool("moving", false);
+        if (HasParameter("moving"))
+            anim.SetBool("moving", false);
     }
-
 
     public void SetFrozen(bool frozen)
     {
         isFrozen = frozen;
-        anim.SetBool("moving", !frozen);
+        if (HasParameter("moving"))
+            anim.SetBool("moving", !frozen);
+    }
+
+    private bool HasParameter(string paramName)
+    {
+        foreach (AnimatorControllerParameter param in anim.parameters)
+        {
+            if (param.name == paramName)
+                return true;
+        }
+        return false;
     }
 }

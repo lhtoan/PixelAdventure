@@ -10,7 +10,7 @@ public class FreezeEnemy : MonoBehaviour
     [SerializeField] private int iceHitsToFreeze = 3;
     [SerializeField] private float freezeDuration = 2f;
     [SerializeField] private Transform iceStateParent;
-    [SerializeField] private float fadeDuration = 0.2f;
+    // [SerializeField] private float fadeDuration = 0.2f;
     [SerializeField] private float stackResetDelay = 2f; // ⏳ Thời gian tự reset stack
 
     private Animator anim;
