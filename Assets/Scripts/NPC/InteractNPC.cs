@@ -6,6 +6,10 @@ public class InteractNPC : MonoBehaviour
     public EnemySpawner spawner;   // gắn SpawnPoint
     public Transform player;       // gắn Player
     public GameObject buttonF;     // gắn Button_F
+    public TrapManager trapManager;
+    public UI_ProtectMission timerUI;
+
+
 
     [Header("Settings")]
     public float interactRange = 2f;
@@ -70,6 +74,12 @@ public class InteractNPC : MonoBehaviour
         // Ẩn button khi bắt đầu nhiệm vụ
         if (buttonF != null)
             buttonF.SetActive(false);
+
+        if (timerUI != null)
+            timerUI.StartTimer(spawner.totalSpawnTime);
+
+        if (trapManager != null)
+            trapManager.StartTrapCycle();
 
         // Bắt đầu spawn enemy
         spawner.StartSpawning();

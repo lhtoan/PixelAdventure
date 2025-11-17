@@ -231,4 +231,25 @@ public class EnemySpawner : MonoBehaviour
 
         return 0;
     }
+
+    public void StopSpawning()
+    {
+        spawning = false;
+        StopAllCoroutines();
+        Debug.Log("Enemy Spawning STOPPED!");
+    }
+
+    public void ClearAllEnemies()
+    {
+        if (enemyParent == null) return;
+
+        foreach (Transform child in enemyParent)
+        {
+            Destroy(child.gameObject);
+        }
+
+        Debug.Log("Tất cả enemy đã bị xóa");
+    }
+
+
 }

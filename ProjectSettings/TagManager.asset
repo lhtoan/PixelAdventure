@@ -81,11 +81,11 @@ TagManager:
   - name: Skill
     uniqueID: 3753827679
     locked: 0
-  - name: Player
-    uniqueID: 3339545541
-    locked: 0
   - name: NPC
     uniqueID: 3080941717
+    locked: 0
+  - name: Player
+    uniqueID: 3339545541
     locked: 0
   - name: UI
     uniqueID: 4252170031
