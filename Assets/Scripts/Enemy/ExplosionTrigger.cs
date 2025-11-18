@@ -67,6 +67,10 @@ public class ExplosionTriggerWithDeath : MonoBehaviour
             Health hp = hit.GetComponent<Health>();
             if (hp != null)
                 hp.TakeDamage(explosionDamage);
+
+            BurnEnemy burn = hit.GetComponent<BurnEnemy>();
+            if (burn != null)
+                burn.TriggerBurn();
         }
     }
 
