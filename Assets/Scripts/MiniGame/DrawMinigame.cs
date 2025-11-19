@@ -1,223 +1,3 @@
-// using UnityEngine;
-// using UnityEngine.UI;
-// using System.Collections;
-
-// public class DrawMinigame : MonoBehaviour
-// {
-//     [Header("UI References")]
-//     public CanvasGroup canvasGroup;
-//     public Image dimBackground;
-//     public float fadeDuration = 0.25f;
-//     public bool pauseGameWhenOpen = true;
-
-//     [Header("Player Control")]
-//     private PlayerController playerController;
-//     private PlayerAttack playerAttack;
-
-//     private bool isOpen = false;
-//     private Coroutine fadeUIRoutine;
-//     private Coroutine fadeDimRoutine;
-
-//     [Header("Symbol")]
-//     public DrawSymbol currentSymbol;
-//     public SymbolDisplay symbolDisplay;
-
-//     [Header("Draw System")]
-//     public GameObject drawArea;
-//     public DrawLine drawLineScript;
-//     public DrawLine drawLine;
-
-
-
-//     private void Awake()
-//     {
-//         GameObject playerObj = GameObject.FindWithTag("Player");
-//         if (playerObj != null)
-//         {
-//             playerController = playerObj.GetComponent<PlayerController>();
-//             playerAttack = playerObj.GetComponent<PlayerAttack>();
-//         }
-//     }
-
-//     private void Start()
-//     {
-//         // Ẩn UI hoàn toàn lúc đầu
-//         SetCanvasVisible(false, true);
-//         SetDimVisible(false, true);
-
-//         // Tắt SymbolTarget lúc đầu
-//         if (symbolDisplay != null)
-//             symbolDisplay.gameObject.SetActive(false);
-//     }
-
-//     private void Update()
-//     {
-//         if (Input.GetKeyDown(KeyCode.L))
-//             ToggleMinigame();
-
-//         if (Input.GetKeyDown(KeyCode.Escape) && isOpen)
-//             CloseMinigame();
-//     }
-
-//     // -----------------------------------------------------------
-//     // TOGGLE Minigame
-//     // -----------------------------------------------------------
-//     private void ToggleMinigame()
-//     {
-//         isOpen = !isOpen;
-
-//         SetCanvasVisible(isOpen);
-//         SetDimVisible(isOpen);
-//         LockPlayerControls(isOpen);
-
-//         if (pauseGameWhenOpen)
-//             Time.timeScale = isOpen ? 0f : 1f;
-
-//         if (isOpen)
-//         {
-//             symbolDisplay.gameObject.SetActive(true);
-
-//             drawArea.SetActive(true);
-//             drawLineScript.enabled = true;
-
-//             OpenMinigame();
-//         }
-//         else
-//         {
-//             symbolDisplay.gameObject.SetActive(false);
-
-//             drawArea.SetActive(false);
-//             drawLineScript.enabled = false;
-
-//             if (drawLineScript != null)
-//                 drawLineScript.ResetLine();
-//         }
-//     }
-
-
-//     // -----------------------------------------------------------
-//     // CLOSE Minigame
-//     // -----------------------------------------------------------
-//     private void CloseMinigame()
-//     {
-//         isOpen = false;
-
-//         SetCanvasVisible(false);
-//         SetDimVisible(false);
-//         LockPlayerControls(false);
-
-//         if (pauseGameWhenOpen)
-//             Time.timeScale = 1f;
-
-//         symbolDisplay.gameObject.SetActive(false);
-
-//         if (drawLine != null)
-//         {
-//             drawLine.ResetLine();
-//         }
-//     }
-
-
-//     // -----------------------------------------------------------
-//     // LOCK PLAYER INPUT
-//     // -----------------------------------------------------------
-//     private void LockPlayerControls(bool locked)
-//     {
-//         if (playerController != null)
-//             playerController.enabled = !locked;
-
-//         if (playerAttack != null)
-//             playerAttack.enabled = !locked;
-//     }
-
-//     // -----------------------------------------------------------
-//     // FADE UI CANVAS
-//     // -----------------------------------------------------------
-//     private void SetCanvasVisible(bool visible, bool instant = false)
-//     {
-//         if (canvasGroup == null) return;
-
-//         if (fadeUIRoutine != null) StopCoroutine(fadeUIRoutine);
-//         fadeUIRoutine = StartCoroutine(FadeCanvas(canvasGroup, visible, instant));
-//     }
-
-//     private IEnumerator FadeCanvas(CanvasGroup cg, bool visible, bool instant)
-//     {
-//         float target = visible ? 1f : 0f;
-//         float start = cg.alpha;
-//         float t = 0f;
-
-//         cg.interactable = visible;
-//         cg.blocksRaycasts = visible;
-
-//         if (instant)
-//         {
-//             cg.alpha = target;
-//             yield break;
-//         }
-
-//         while (t < fadeDuration)
-//         {
-//             t += Time.unscaledDeltaTime;
-//             cg.alpha = Mathf.Lerp(start, target, t / fadeDuration);
-//             yield return null;
-//         }
-//     }
-
-//     // -----------------------------------------------------------
-//     // FADE BACKGROUND DIM
-//     // -----------------------------------------------------------
-//     private void SetDimVisible(bool visible, bool instant = false)
-//     {
-//         if (dimBackground == null) return;
-
-//         if (fadeDimRoutine != null) StopCoroutine(fadeDimRoutine);
-//         fadeDimRoutine = StartCoroutine(FadeDim(dimBackground, visible, instant));
-//     }
-
-//     private IEnumerator FadeDim(Image img, bool visible, bool instant)
-//     {
-//         float target = visible ? 0.75f : 0f;
-//         float start = img.color.a;
-//         float t = 0f;
-
-//         if (instant)
-//         {
-//             var c = img.color;
-//             c.a = target;
-//             img.color = c;
-//             yield break;
-//         }
-
-//         while (t < fadeDuration)
-//         {
-//             t += Time.unscaledDeltaTime;
-
-//             var c = img.color;
-//             c.a = Mathf.Lerp(start, target, t / fadeDuration);
-//             img.color = c;
-
-//             yield return null;
-//         }
-//     }
-
-//     // -----------------------------------------------------------
-//     // RANDOM SYMBOL
-//     // -----------------------------------------------------------
-//     void OpenMinigame()
-//     {
-//         int count = Random.Range(1, 6);  // 1–5 symbols
-//         DrawSymbol[] arr = new DrawSymbol[count];
-
-//         for (int i = 0; i < count; i++)
-//             arr[i] = (DrawSymbol)Random.Range(0, System.Enum.GetValues(typeof(DrawSymbol)).Length);
-
-//         symbolDisplay.SetSymbols(arr);
-//     }
-
-
-// }
-
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
@@ -247,10 +27,20 @@ public class DrawMinigame : MonoBehaviour
     public bool enableRecording = false;
     public GestureRecorder recorder;
 
+    
+
+    [Header("Challenge Settings")]
+    public int roundsRequired = 3;     // số chuỗi phải hoàn thành
+    private int roundsCompleted = 0;   // count: số chuỗi đã hoàn thành
+
+    [Header("Draw Time")]
+    public GameObject drawTimeObject;     // Object chứa UI thanh thời gian (DrawTime)
+    public DrawTimeBar drawTimeBar;       // Script điều khiển thanh thời gian
+    public float timePerRound = 3f;       // Thời gian cho mỗi round
+
+
     [Header("Templates (Matching)")]
     public List<GestureTemplateSO> templates;
-
-
     // ============================================================
     // 2. --- INTERNAL STATE ---
     // ============================================================
@@ -340,7 +130,20 @@ public class DrawMinigame : MonoBehaviour
             symbolDisplay.gameObject.SetActive(false);
 
         if (drawLineScript != null)
+        {
             drawLineScript.ResetLine();
+            drawLineScript.enabled = false;   // ⛔ Tắt vẽ ngay khi minigame đóng
+        }
+
+
+        // ⛔ Dừng timer ngay lập tức
+        if (drawTimeBar != null)
+            drawTimeBar.StopTimer();
+
+        // ⛔ Tắt UI thời gian
+        if (drawTimeObject != null)
+            drawTimeObject.SetActive(false);
+
     }
 
 
@@ -352,6 +155,11 @@ public class DrawMinigame : MonoBehaviour
         symbolDisplay.gameObject.SetActive(true);
         drawArea.SetActive(true);
         drawLineScript.enabled = true;
+
+        // 🔥 Bật UI thời gian vẽ
+        if (drawTimeObject != null)
+            drawTimeObject.SetActive(true);
+
     }
 
     private void CloseUI()
@@ -370,10 +178,20 @@ public class DrawMinigame : MonoBehaviour
     // ============================================================
     private void OpenMinigameLogic()
     {
+        roundsCompleted = 0;
         GenerateRandomSequence();
+
+        // ⏳ Bắt đầu thời gian vẽ cho round đầu
+        if (drawTimeBar != null)
+        {
+            drawTimeBar.OnTimeOut = OnDrawTimeOut;
+            drawTimeBar.StartTimer(timePerRound);
+        }
+
 
         if (enableRecording && recorder != null)
             recorder.BeginRecording();
+            
     }
 
     private void HandleRecording(List<Vector2> normalizedPts)
@@ -400,6 +218,9 @@ public class DrawMinigame : MonoBehaviour
         // ----- CORRECT -----
         if (result == expected)
         {
+            // Ẩn icon ký hiệu đã vẽ đúng
+            symbolDisplay.HideIndex(currentIndex);
+
             Debug.Log($"CORRECT ({currentIndex + 1}/{currentSequence.Length})");
 
             currentIndex++;
@@ -415,6 +236,7 @@ public class DrawMinigame : MonoBehaviour
         else
         {
             Debug.Log($"❌ SAI! Expected {expected} but got {result}");
+            symbolDisplay.ShakeWrong(currentIndex);
             OnWrongSymbol();
         }
 
@@ -427,7 +249,9 @@ public class DrawMinigame : MonoBehaviour
     // ============================================================
     public void OnPlayerDrawFinished(List<Vector2> normalizedPts)
     {
-        Debug.Log($"[DrawMinigame] Player Draw = {(normalizedPts?.Count ?? 0)} pts");
+        if (!isOpen)
+            return;
+        // Debug.Log($"[DrawMinigame] Player Draw = {(normalizedPts?.Count ?? 0)} pts");
 
         if (enableRecording)
         {
@@ -467,8 +291,35 @@ public class DrawMinigame : MonoBehaviour
     {
         // Ở đây bạn muốn làm gì thì làm
         // Hiện tại chỉ log
-        Debug.Log("⚡ Chuỗi ký hiệu đã hoàn thành! Skill kích hoạt!");
+        roundsCompleted++;
+        Debug.Log($"✔ Round {roundsCompleted}/{roundsRequired} completed!");
+
+        // nếu hoàn thành tất cả
+        if (roundsCompleted >= roundsRequired)
+        {
+            Debug.Log("⚡ TẤT CẢ ROUND HOÀN THÀNH! SKILL KÍCH HOẠT!");
+            CloseMinigame();
+            return;
+        }
+
+        // 🔄 Reset thời gian cho round tiếp theo
+        if (drawTimeBar != null)
+            drawTimeBar.StartTimer(timePerRound);
+
+
+        // Nếu chưa đủ round → tạo chuỗi mới cho round tiếp theo
+        GenerateRandomSequence();
     }
+
+    // ============================================================
+    // --- XỬ LÝ HẾT THỜI GIAN VẼ ---
+    // ============================================================
+    private void OnDrawTimeOut()
+    {
+        Debug.Log("⏳ HẾT THỜI GIAN VẼ! THẤT BẠI ROUND!");
+        CloseMinigame();
+    }
+
 
     private void OnWrongSymbol()
     {
