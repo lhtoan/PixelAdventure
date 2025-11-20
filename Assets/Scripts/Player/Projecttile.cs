@@ -104,7 +104,7 @@ public class Projecttile : MonoBehaviour
         }
 
         // ⭐ Wall hoặc Box → explode
-        if (collision.CompareTag("Wall") || collision.CompareTag("Box"))
+        if (collision.CompareTag("Box"))
         {
             boxCollider.enabled = false;
             anim?.SetTrigger("explode");

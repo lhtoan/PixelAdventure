@@ -16,6 +16,8 @@ public class PlayerAttack : MonoBehaviour
 
     private Animator anim;
     private PlayerStamina stamina;
+    public bool inputLocked = false;
+
     private float cooldownTimer = Mathf.Infinity;
 
     public enum Element { Fire, Ice }
@@ -31,6 +33,8 @@ public class PlayerAttack : MonoBehaviour
 
     private void Update()
     {
+        if (inputLocked) return;   // chặn chỉ input, không tắt script
+
         cooldownTimer += Time.deltaTime;
 
         // Đổi hệ bằng chuột phải

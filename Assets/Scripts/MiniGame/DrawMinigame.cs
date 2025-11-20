@@ -27,7 +27,10 @@ public class DrawMinigame : MonoBehaviour
     public bool enableRecording = false;
     public GestureRecorder recorder;
 
-    
+
+    [Header("InteractwithMiniggame")]
+    private InteractwithMiniggame currentTreasure;
+
 
     [Header("Challenge Settings")]
     public int roundsRequired = 3;     // số chuỗi phải hoàn thành
@@ -297,7 +300,15 @@ public class DrawMinigame : MonoBehaviour
         // nếu hoàn thành tất cả
         if (roundsCompleted >= roundsRequired)
         {
-            Debug.Log("⚡ TẤT CẢ ROUND HOÀN THÀNH! SKILL KÍCH HOẠT!");
+            Debug.Log("Hoàn thành!!!!!!!!!!!!!!!!");
+
+            if (currentTreasure != null)
+            {
+                currentTreasure.OpenChest();
+                currentTreasure = null;
+            }
+
+
             CloseMinigame();
             return;
         }
@@ -404,4 +415,35 @@ public class DrawMinigame : MonoBehaviour
             yield return null;
         }
     }
+
+    //call minigame
+    public void OpenFromTreasure(InteractwithMiniggame treasure)
+    {
+        currentTreasure = treasure;
+        ToggleMinigame(true);   // ép mở minigame
+    }
+
+    public void ToggleMinigame(bool forceOpen)
+    {
+        isOpen = forceOpen;
+
+        SetCanvasVisible(isOpen);
+        SetDimVisible(isOpen);
+        LockPlayerControls(isOpen);
+
+        if (pauseGameWhenOpen)
+            Time.timeScale = isOpen ? 0f : 1f;
+
+        if (isOpen)
+        {
+            OpenUI();
+            OpenMinigameLogic();
+        }
+        else
+        {
+            CloseUI();
+        }
+    }
+
+
 }

@@ -14,40 +14,57 @@ public class UI_SkillBar : MonoBehaviour
     private void Start()
     {
         playerSkill = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerSkill>();
+
+        // 🔥 Tắt toàn bộ icon con khi bắt đầu game (skill bar trống)
+        InitEmptyState(fireE_Icon);
+        InitEmptyState(fireR_Icon);
+        InitEmptyState(iceE_Icon);
+        InitEmptyState(iceR_Icon);
+
         RefreshSkillBar();
         PlayerAttack.Element current = FindFirstObjectByType<PlayerAttack>().CurrentElement;
         UpdateElementUI(current);
     }
 
-    public void RefreshSkillBar()
+    private void InitEmptyState(GameObject iconObj)
     {
-        CheckUnlockAnimation(fireE_Icon, PlayerSkill.SkillType.Fire_E);
-        CheckUnlockAnimation(fireR_Icon, PlayerSkill.SkillType.Fire_R);
-        CheckUnlockAnimation(iceE_Icon, PlayerSkill.SkillType.Ice_E);
-        CheckUnlockAnimation(iceR_Icon, PlayerSkill.SkillType.Ice_R);
+        UI_SkillBarIcon icon = iconObj.GetComponent<UI_SkillBarIcon>();
+        if (icon == null) return;
+
+        icon.unlockedIcon.SetActive(false);
+        icon.lockedFill.gameObject.SetActive(false);
     }
 
-    // 🟢 Check + chạy hiệu ứng unlock
-    private void CheckUnlockAnimation(GameObject icon, PlayerSkill.SkillType type)
+    public void RefreshSkillBar()
     {
+        UpdateUnlockState(fireE_Icon, PlayerSkill.SkillType.Fire_E);
+        UpdateUnlockState(fireR_Icon, PlayerSkill.SkillType.Fire_R);
+        UpdateUnlockState(iceE_Icon, PlayerSkill.SkillType.Ice_E);
+        UpdateUnlockState(iceR_Icon, PlayerSkill.SkillType.Ice_R);
+    }
+
+    private void UpdateUnlockState(GameObject iconObj, PlayerSkill.SkillType type)
+    {
+        UI_SkillBarIcon icon = iconObj.GetComponent<UI_SkillBarIcon>();
+        if (icon == null) return;
+
         bool unlocked = playerSkill.IsSkillUnlocked(type);
 
-        // Skill chưa unlock → ẩn icon
         if (!unlocked)
         {
-            icon.SetActive(false);
+            icon.unlockedIcon.SetActive(false);
+            icon.lockedFill.gameObject.SetActive(false);
             return;
         }
 
-        // Nếu icon vừa được bật lần đầu → chạy animation
-        if (!icon.activeSelf)
+        // Nếu mới unlock → hiện icon + animation
+        if (!icon.unlockedIcon.activeSelf)
         {
-            icon.SetActive(true);
-            StartCoroutine(UnlockAnimation(icon.transform));
+            icon.unlockedIcon.SetActive(true);
+            StartCoroutine(UnlockAnimation(icon.unlockedIcon.transform));
         }
     }
 
-    // 🔥 Animation pop + fade
     private IEnumerator UnlockAnimation(Transform target)
     {
         float time = 0.15f;
@@ -63,21 +80,19 @@ public class UI_SkillBar : MonoBehaviour
         cg.alpha = 0f;
         target.localScale = small;
 
-        // Fade + scale tăng
         float t = 0f;
         while (t < time)
         {
-            t += Time.deltaTime * 1.5f;
+            t += Time.unscaledDeltaTime * 1.5f;
             target.localScale = Vector3.Lerp(small, big, t / time);
             cg.alpha = t / time;
             yield return null;
         }
 
-        // Thu nhỏ về scale chuẩn
         t = 0f;
         while (t < time)
         {
-            t += Time.deltaTime * 2f;
+            t += Time.unscaledDeltaTime * 2f;
             target.localScale = Vector3.Lerp(big, normal, t / time);
             yield return null;
         }
@@ -105,20 +120,45 @@ public class UI_SkillBar : MonoBehaviour
             playerSkill.IsSkillUnlocked(PlayerSkill.SkillType.Ice_R));
     }
 
-    private void UpdateOneIcon(GameObject iconObj, bool isUnlockedForCurrentElement)
+    // private void UpdateOneIcon(GameObject iconObj, bool active)
+    // {
+    //     UI_SkillBarIcon icon = iconObj.GetComponent<UI_SkillBarIcon>();
+    //     if (icon == null) return;
+
+    //     icon.unlockedIcon.SetActive(active);
+    //     icon.lockedFill.gameObject.SetActive(!active);
+
+    //     if (!active)
+    //         icon.lockedFill.fillAmount = 1f;
+    // }
+    private void UpdateOneIcon(GameObject iconObj, bool active)
     {
         UI_SkillBarIcon icon = iconObj.GetComponent<UI_SkillBarIcon>();
         if (icon == null) return;
 
-        // icon màu bật nếu đang ở hệ tương ứng
-        icon.unlockedIcon.SetActive(isUnlockedForCurrentElement);
+        // hiển thị icon đúng hệ
+        icon.unlockedIcon.SetActive(active);
 
-        // lockedFill bật nếu KHÔNG phù hợp hệ
-        icon.lockedFill.gameObject.SetActive(!isUnlockedForCurrentElement);
+        // hiển thị grey sai hệ
+        icon.greyIcon.SetActive(!active);
 
-        // đảm bảo fillAmount = 0 nếu không cooldown
-        if (!isUnlockedForCurrentElement)
-            icon.lockedFill.fillAmount = 1f; // full grayscale
+        // xử lý cooldown
+        if (!active)
+        {
+            // sai hệ → chỉ hiện cooldown nếu đang chạy
+            bool hasCooldown = icon.currentCooldownFill > 0f;
+            icon.lockedFill.gameObject.SetActive(hasCooldown);
+            if (hasCooldown)
+                icon.lockedFill.fillAmount = icon.currentCooldownFill;
+        }
+        else
+        {
+            // đúng hệ → nếu cooldown đang chạy thì overlay phải bật
+            bool hasCooldown = icon.currentCooldownFill > 0f;
+            icon.lockedFill.gameObject.SetActive(hasCooldown);
+            if (hasCooldown)
+                icon.lockedFill.fillAmount = icon.currentCooldownFill;
+        }
     }
 
 

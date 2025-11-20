@@ -111,7 +111,7 @@ public class UI_SkillTree : MonoBehaviour
             playerController.enabled = !locked;
 
         if (playerAttack != null)
-            playerAttack.enabled = !locked;
+            playerAttack.inputLocked = locked;
 
         // Nếu bạn có thêm script khác (teleport, climb, detector...)
         // thì có thể thêm vào đây tương tự

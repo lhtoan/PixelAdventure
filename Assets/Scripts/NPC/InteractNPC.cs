@@ -3,18 +3,17 @@ using UnityEngine;
 public class InteractNPC : MonoBehaviour
 {
     [Header("References")]
-    public EnemySpawner spawner;   // gắn SpawnPoint
-    public Transform player;       // gắn Player
-    public GameObject buttonF;     // gắn Button_F
-    public TrapManager trapManager;
+    public EnemySpawner spawner;
+    public Transform player;
+    public GameObject buttonF;
+    // public TrapManager trapManager;
     public UI_ProtectMission timerUI;
-
-
+    public CameraMissionController cameraControl;   // ⭐ NEW
 
     [Header("Settings")]
     public float interactRange = 2f;
 
-    [Header("Button Offset (tự động theo hướng player)")]
+    [Header("Button Offset")]
     public Vector3 leftOffset = new Vector3(-1f, 0.5f, 0f);
     public Vector3 rightOffset = new Vector3(1f, 0.5f, 0f);
 
@@ -23,7 +22,7 @@ public class InteractNPC : MonoBehaviour
     void Start()
     {
         if (buttonF != null)
-            buttonF.SetActive(false);   // ẩn button ngay từ đầu
+            buttonF.SetActive(false);
     }
 
     void Update()
@@ -33,35 +32,22 @@ public class InteractNPC : MonoBehaviour
 
         float dist = Vector2.Distance(player.position, transform.position);
 
-        // ⭐ Nếu player trong phạm vi tương tác
         if (dist <= interactRange)
         {
             if (buttonF != null)
             {
                 buttonF.SetActive(true);
-
-                // ⭐ Auto hướng bên Player
-                if (player.position.x < transform.position.x)
-                {
-                    // Player bên trái NPC
-                    buttonF.transform.position = transform.position + leftOffset;
-                }
-                else
-                {
-                    // Player bên phải NPC
-                    buttonF.transform.position = transform.position + rightOffset;
-                }
+                buttonF.transform.position =
+                    player.position.x < transform.position.x ?
+                    transform.position + leftOffset :
+                    transform.position + rightOffset;
             }
 
-            // Nhấn F để bắt đầu
             if (Input.GetKeyDown(KeyCode.F))
-            {
                 StartMission();
-            }
         }
         else
         {
-            // ⭐ Player rời xa → ẩn nút F
             if (buttonF != null)
                 buttonF.SetActive(false);
         }
@@ -71,18 +57,20 @@ public class InteractNPC : MonoBehaviour
     {
         missionStarted = true;
 
-        // Ẩn button khi bắt đầu nhiệm vụ
         if (buttonF != null)
             buttonF.SetActive(false);
 
         if (timerUI != null)
             timerUI.StartTimer(spawner.totalSpawnTime);
 
-        if (trapManager != null)
-            trapManager.StartTrapCycle();
+        // if (trapManager != null)
+        //     trapManager.StartTrapCycle();
 
-        // Bắt đầu spawn enemy
         spawner.StartSpawning();
-        Debug.Log("Mission Started! Protect the NPC!");
+        Debug.Log("Mission Started!");
+
+        // ⭐ Camera zoom-out + pixel perfect change
+        if (cameraControl != null)
+            cameraControl.ApplyMissionCamera();
     }
 }
