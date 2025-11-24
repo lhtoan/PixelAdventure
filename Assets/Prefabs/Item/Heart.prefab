@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2330069716690309495}
   - component: {fileID: 5247381050125016659}
   - component: {fileID: 8432988705942497906}
+  - component: {fileID: 8889133891779246166}
   m_Layer: 0
   m_Name: Heart
   m_TagString: Heart
@@ -54,6 +55,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -75,6 +78,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1094849337
   m_SortingLayer: 5
   m_SortingOrder: 0
@@ -157,3 +161,15 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.70979667, y: 0.66565335}
   m_EdgeRadius: 0
+--- !u!114 &8889133891779246166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7665941253087677646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d08e3ff748f12342974faca3f7165a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
