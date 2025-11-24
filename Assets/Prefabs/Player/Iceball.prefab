@@ -81,7 +81,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -262078591
-  m_SortingLayer: 12
+  m_SortingLayer: 13
   m_SortingOrder: 0
   m_Sprite: {fileID: 893803297946197341, guid: 359250e6d04e641438f0b69388b3437f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -107,16 +107,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  maxDistance: 5
+  maxDistance: 10
   fireDamage: 5
   iceDamage: 5
-  defaultDamage: 1
-  aoeRadius: 1.2
-  aoeDamage: 3
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 256
-  aoeEffectPrefab: {fileID: 0}
+  defaultDamage: 5
 --- !u!50 &5284731254372758061
 Rigidbody2D:
   serializedVersion: 5
