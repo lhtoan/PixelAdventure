@@ -27,9 +27,18 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        // Nếu đang stun → không cho điều khiển
+        if (animator.GetBool("isStun"))
+        {
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+            animator.SetBool("isRun", false);
+            return;
+        }
+
         HandleMovement();
         HandleJump();
     }
+
 
     private void HandleMovement()
     {

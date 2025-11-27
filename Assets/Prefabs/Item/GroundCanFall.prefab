@@ -212,8 +212,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fallDelay: 1
-  destroyDelay: 1
+  respawnTime: 3
   rb: {fileID: 6365772754713621265}
+  platformVisual: {fileID: 108867077083871541}
 --- !u!251 &9043914179997228189
 PlatformEffector2D:
   m_ObjectHideFlags: 0

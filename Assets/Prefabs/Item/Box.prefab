@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6072371139630803610}
   - component: {fileID: 2168181634347642857}
   - component: {fileID: 342321498403930734}
+  - component: {fileID: 4530732288269338736}
   m_Layer: 9
   m_Name: Box
   m_TagString: Box
@@ -56,6 +57,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -77,6 +80,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1094849337
   m_SortingLayer: 5
   m_SortingOrder: 0
@@ -199,3 +203,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 1
+--- !u!114 &4530732288269338736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8485035155294339687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66c921f9c0f23c84f92a757174494770, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  drops:
+  - itemPrefab: {fileID: 6861500951425828209, guid: 3f28e200d7d49944f82bb16619e86c16, type: 3}
+    minAmount: 1
+    maxAmount: 10
+    dropChance: 1

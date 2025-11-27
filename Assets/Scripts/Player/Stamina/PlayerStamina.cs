@@ -50,4 +50,12 @@ public class PlayerStamina : MonoBehaviour
         currentStamina += amount;
         currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
     }
+
+    public void IncreaseMaxStamina(float amount)
+    {
+        maxStamina += amount;
+        currentStamina += amount;
+        currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
+    }
+
 }

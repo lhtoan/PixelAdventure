@@ -9,6 +9,35 @@ public class UI_SkillTree : MonoBehaviour
     [SerializeField] private UI_SkillButton fireR_UI;
     [SerializeField] private UI_SkillButton iceE_UI;
     [SerializeField] private UI_SkillButton iceR_UI;
+    [SerializeField] private UI_SkillButton healthUp_UI;
+    [SerializeField] private UI_SkillButton staminaUp_UI;
+    [SerializeField] private UI_SkillButton healthUp2_UI;
+
+
+    [Header("Skill Costs")]
+    public int fireE_SkillCost = 1;
+    public int fireE_CoinCost = 100;
+
+    public int fireR_SkillCost = 2;
+    public int fireR_CoinCost = 150;
+
+    public int iceE_SkillCost = 1;
+    public int iceE_CoinCost = 80;
+
+    public int iceR_SkillCost = 2;
+    public int iceR_CoinCost = 120;
+
+    [Header("Extra Skill Costs")]
+    public int healthUp_SkillCost = 0;
+    public int healthUp_CoinCost = 120;
+
+    public int staminaUp_SkillCost = 0;
+    public int staminaUp_CoinCost = 140;
+
+    public int healthUp2_SkillCost = 0;
+    public int healthUp2_CoinCost = 180;
+
+
 
     [Header("UI Components")]
     [SerializeField] private CanvasGroup canvasGroup;  // CanvasGroup của Skill_Tree
@@ -53,6 +82,10 @@ public class UI_SkillTree : MonoBehaviour
             iceE_UI.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Ice_E));
         if (iceR_UI != null)
             iceR_UI.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Ice_R));
+        healthUp_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Health_Up));
+        staminaUp_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Stamina_Up));
+        healthUp2_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Health_Up_2));
+
 
         // 🔹 Ẩn UI ban đầu
         SetCanvasVisible(false, true);
@@ -191,6 +224,124 @@ public class UI_SkillTree : MonoBehaviour
     }
 
     // 🔓 Unlock skill
+    // private void Unlock(PlayerSkill.SkillType type)
+    // {
+    //     if (playerSkill == null)
+    //     {
+    //         Debug.LogError("❌ playerSkill NULL — không thể unlock!");
+    //         return;
+    //     }
+
+    //     playerSkill.UnlockSkill(type);
+    //     RefreshUI();
+
+    //     if (skillBar != null)
+    //     {
+    //         skillBar.RefreshSkillBar();
+    //         PlayerAttack.Element current = FindFirstObjectByType<PlayerAttack>().CurrentElement;
+    //         skillBar.UpdateElementUI(current);
+    //     }
+
+
+    //     Debug.Log($"⭐ Unlocked: {type}");
+    // }
+    // private void Unlock(PlayerSkill.SkillType type)
+    // {
+    //     if (playerSkill == null)
+    //     {
+    //         Debug.LogError("❌ playerSkill NULL — không thể unlock!");
+    //         return;
+    //     }
+
+    //     // Lấy GameManager để check coin + skill point
+    //     GameManager gm = FindFirstObjectByType<GameManager>();
+    //     if (gm == null)
+    //     {
+    //         Debug.LogError("❌ Không tìm thấy GameManager!");
+    //         return;
+    //     }
+
+    //     // Lấy cost skill
+    //     int costSkillPoint = 0;
+    //     int costCoins = 0;
+
+    //     switch (type)
+    //     {
+    //         case PlayerSkill.SkillType.Fire_E:
+    //             costSkillPoint = fireE_SkillCost;
+    //             costCoins = fireE_CoinCost;
+    //             break;
+
+    //         case PlayerSkill.SkillType.Fire_R:
+    //             costSkillPoint = fireR_SkillCost;
+    //             costCoins = fireR_CoinCost;
+    //             break;
+
+    //         case PlayerSkill.SkillType.Ice_E:
+    //             costSkillPoint = iceE_SkillCost;
+    //             costCoins = iceE_CoinCost;
+    //             break;
+
+    //         case PlayerSkill.SkillType.Ice_R:
+    //             costSkillPoint = iceR_SkillCost;
+    //             costCoins = iceR_CoinCost;
+    //             break;
+    //         case PlayerSkill.SkillType.Health_Up:
+    //             costSkillPoint = healthUp_SkillCost;
+    //             costCoins = healthUp_CoinCost;
+    //             break;
+
+    //         case PlayerSkill.SkillType.Stamina_Up:
+    //             costSkillPoint = staminaUp_SkillCost;
+    //             costCoins = staminaUp_CoinCost;
+    //             break;
+
+    //         case PlayerSkill.SkillType.Health_Up_2:
+    //             costSkillPoint = healthUp2_SkillCost;
+    //             costCoins = healthUp2_CoinCost;
+    //             break;
+    //     }
+
+    //     // KIỂM TRA ĐỦ SKILL POINT
+    //     if (gm.SkillPoints < costSkillPoint)
+    //     {
+    //         Debug.Log($"❌ Không đủ Skill Point! Cần {costSkillPoint}, đang có {gm.SkillPoints}");
+    //         return;
+    //     }
+
+    //     // KIỂM TRA ĐỦ COIN
+    //     if (gm.Score < costCoins)
+    //     {
+    //         Debug.Log($"❌ Không đủ Coins! Cần {costCoins}, đang có {gm.Score}");
+    //         return;
+    //     }
+
+    //     // TRỪ TÀI NGUYÊN
+    //     gm.AddSkillPoint(-costSkillPoint); // trừ skill point
+    //     gm.AddScore(-costCoins);          // trừ coin
+
+    //     // MỞ SKILL
+    //     // playerSkill.UnlockSkill(type);
+    //     bool unlocked = playerSkill.UnlockSkill(type);
+
+    //     if (!unlocked)
+    //         return; // không mở được thì thoát ra
+
+
+    //     // REFRESH UI
+    //     RefreshUI();
+
+    //     if (skillBar != null)
+    //     {
+    //         skillBar.RefreshSkillBar();
+    //         PlayerAttack.Element current =
+    //             FindFirstObjectByType<PlayerAttack>().CurrentElement;
+    //         skillBar.UpdateElementUI(current);
+    //     }
+
+    //     Debug.Log($"⭐ Unlocked: {type} (SP -{costSkillPoint}, Coin -{costCoins})");
+    // }
+
     private void Unlock(PlayerSkill.SkillType type)
     {
         if (playerSkill == null)
@@ -199,19 +350,107 @@ public class UI_SkillTree : MonoBehaviour
             return;
         }
 
-        playerSkill.UnlockSkill(type);
+        GameManager gm = FindFirstObjectByType<GameManager>();
+        if (gm == null)
+        {
+            Debug.LogError("❌ Không tìm thấy GameManager!");
+            return;
+        }
+
+        // Lấy cost skill
+        int costSkillPoint = 0;
+        int costCoins = 0;
+
+        switch (type)
+        {
+            case PlayerSkill.SkillType.Fire_E:
+                costSkillPoint = fireE_SkillCost;
+                costCoins = fireE_CoinCost;
+                break;
+
+            case PlayerSkill.SkillType.Fire_R:
+                costSkillPoint = fireR_SkillCost;
+                costCoins = fireR_CoinCost;
+                break;
+
+            case PlayerSkill.SkillType.Ice_E:
+                costSkillPoint = iceE_SkillCost;
+                costCoins = iceE_CoinCost;
+                break;
+
+            case PlayerSkill.SkillType.Ice_R:
+                costSkillPoint = iceR_SkillCost;
+                costCoins = iceR_CoinCost;
+                break;
+
+            case PlayerSkill.SkillType.Health_Up:
+                costSkillPoint = healthUp_SkillCost;
+                costCoins = healthUp_CoinCost;
+                break;
+
+            case PlayerSkill.SkillType.Stamina_Up:
+                costSkillPoint = staminaUp_SkillCost;
+                costCoins = staminaUp_CoinCost;
+                break;
+
+            case PlayerSkill.SkillType.Health_Up_2:
+                costSkillPoint = healthUp2_SkillCost;
+                costCoins = healthUp2_CoinCost;
+                break;
+        }
+
+        // ===========================
+        // 🔍 KIỂM TRA ĐIỀU KIỆN TRƯỚC
+        // ===========================
+
+        // 1️⃣ Không đủ skill point → thoát
+        if (gm.SkillPoints < costSkillPoint)
+        {
+            Debug.Log($"❌ Không đủ Skill Point! Cần {costSkillPoint}, đang có {gm.SkillPoints}");
+            return;
+        }
+
+        // 2️⃣ Không đủ coin → thoát
+        if (gm.Score < costCoins)
+        {
+            Debug.Log($"❌ Không đủ Coins! Cần {costCoins}, đang có {gm.Score}");
+            return;
+        }
+
+        // 3️⃣ Check prerequisite + skill đã mở trong PlayerSkill
+        bool unlocked = playerSkill.UnlockSkill(type);
+
+        if (!unlocked)
+        {
+            // ❗ Không mở được (chưa đủ prerequisite) → KHÔNG BỊ TRỪ COIN
+            Debug.Log("❌ Không thể unlock — có thể thiếu prerequisite!");
+            return;
+        }
+
+        // ===========================
+        // ✨ĐÃ MỞ THÀNH CÔNG → TRỪ TÀI NGUYÊN
+        // ===========================
+
+        gm.AddSkillPoint(-costSkillPoint);
+        gm.AddScore(-costCoins);
+
+        // ===========================
+        // REFRESH UI
+        // ===========================
         RefreshUI();
 
         if (skillBar != null)
         {
             skillBar.RefreshSkillBar();
-            PlayerAttack.Element current = FindFirstObjectByType<PlayerAttack>().CurrentElement;
+            PlayerAttack.Element current =
+                FindFirstObjectByType<PlayerAttack>().CurrentElement;
             skillBar.UpdateElementUI(current);
         }
-            
 
-        Debug.Log($"⭐ Unlocked: {type}");
+        Debug.Log($"⭐ Unlocked: {type} (SP -{costSkillPoint}, Coin -{costCoins})");
     }
+
+
 
     // 🔁 Refresh UI skill icons
     private void RefreshUI()
@@ -226,5 +465,9 @@ public class UI_SkillTree : MonoBehaviour
             iceE_UI.SetUnlocked(playerSkill.IsSkillUnlocked(PlayerSkill.SkillType.Ice_E));
         if (iceR_UI != null)
             iceR_UI.SetUnlocked(playerSkill.IsSkillUnlocked(PlayerSkill.SkillType.Ice_R));
+        healthUp_UI.SetUnlocked(playerSkill.IsSkillUnlocked(PlayerSkill.SkillType.Health_Up));
+        staminaUp_UI.SetUnlocked(playerSkill.IsSkillUnlocked(PlayerSkill.SkillType.Stamina_Up));
+        healthUp2_UI.SetUnlocked(playerSkill.IsSkillUnlocked(PlayerSkill.SkillType.Health_Up_2));
+
     }
 }

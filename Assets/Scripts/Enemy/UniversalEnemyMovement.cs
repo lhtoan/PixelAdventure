@@ -42,6 +42,21 @@ public class UniversalEnemyMovement : MonoBehaviour, IEnemyMovement
 
     private void Update()
     {
+        float distance = Vector2.Distance(transform.position, target.position);
+        float verticalDistance = Mathf.Abs(transform.position.y - target.position.y);
+
+        // ⭐ Ground enemy: không đuổi nếu khác tầng
+        if (!isFlying)
+        {
+            if (verticalDistance > 1.5f)
+            {
+                if (HasParameter("moving"))
+                    anim.SetBool("moving", false);
+                return;
+            }
+        }
+
+
         if (isFrozen)
         {
             if (HasParameter("moving"))
@@ -56,7 +71,7 @@ public class UniversalEnemyMovement : MonoBehaviour, IEnemyMovement
             return;
         }
 
-        float distance = Vector2.Distance(transform.position, target.position);
+        // float distance = Vector2.Distance(transform.position, target.position);
 
         if (distance > followRange)
         {

@@ -95,7 +95,7 @@ public class ExplosionTriggerWithDeath : MonoBehaviour
     [Tooltip("Nếu = 0 → nổ ngay khi chạm target")]
     public float delayBeforeExplode = 0f;
 
-    public float explosionDamage = 20f;
+    public float explosionDamage;
     public float explosionRadius = 1.5f;
     public LayerMask targetLayer;
 

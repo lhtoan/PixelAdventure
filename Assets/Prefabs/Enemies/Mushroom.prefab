@@ -50,6 +50,7 @@ GameObject:
   - component: {fileID: 6000391750826484099}
   - component: {fileID: 1312738389727443652}
   - component: {fileID: 4965069838667954128}
+  - component: {fileID: 4594266560758284299}
   m_Layer: 8
   m_Name: Mushroom
   m_TagString: Enemy
@@ -216,6 +217,7 @@ MonoBehaviour:
   posB: {fileID: 6760933856361757288}
   speed: 2
   idleDuration: 0.5
+  startMovingLeft: 1
   anim: {fileID: 4940199860642521387}
 --- !u!114 &6000391750826484099
 MonoBehaviour:
@@ -264,6 +266,20 @@ MonoBehaviour:
   freezeDuration: 5
   iceStateParent: {fileID: 8997673014451826195}
   stackResetDelay: 2
+--- !u!114 &4594266560758284299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1383219631615910915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99aa14064120e624b9669140c5a65a34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BurnEnemy
+  burnDuration: 3
+  burnDamagePerSecond: 5
 --- !u!1 &1639689668115111173
 GameObject:
   m_ObjectHideFlags: 0

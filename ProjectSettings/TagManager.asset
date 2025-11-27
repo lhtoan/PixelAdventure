@@ -20,6 +20,7 @@ TagManager:
   - Fire
   - HiddenArea
   - NPC
+  - SkillPoint
   layers:
   - Default
   - TransparentFX

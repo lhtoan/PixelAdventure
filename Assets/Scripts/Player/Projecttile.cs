@@ -77,6 +77,8 @@ public class Projecttile : MonoBehaviour
         // ⭐ Enemy → chỉ hit 1 lần
         if (collision.CompareTag("Enemy"))
         {
+            boxCollider.enabled = false;
+            anim?.SetTrigger("explode");
             if (!hitEnemies.Contains(collision))
             {
                 hitEnemies.Add(collision);

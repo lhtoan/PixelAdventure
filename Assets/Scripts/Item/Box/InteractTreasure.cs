@@ -21,6 +21,10 @@ public class InteractwithMiniggame : MonoBehaviour
     [Header("Rewards")]
     public int minCoin = 50;
     public int maxCoin = 150;
+
+    [Tooltip("Số skill point nhận được khi mở chest")]
+    public int skillPointReward = 1;
+
     [SerializeField] private GameManager gameManager;
 
 
@@ -88,12 +92,21 @@ public class InteractwithMiniggame : MonoBehaviour
             anim.SetTrigger("open");
 
         // 🎁 THƯỞNG COIN
-        int reward = Random.Range(minCoin, maxCoin + 1);
-        Debug.Log($"You earned {reward} coins!");
+        int rewardCoin = Random.Range(minCoin, maxCoin + 1);
+
+        // 🎁 THƯỞNG SKILL POINT (GIÁ TRỊ NHẬP TỪ INSPECTOR)
+        int rewardSkill = skillPointReward;
+
+        Debug.Log($"💰 You earned {rewardCoin} coins!");
+        Debug.Log($"🔵 You earned {rewardSkill} skill point(s)!");
 
         if (gameManager != null)
-            gameManager.AddScore(reward);
+        {
+            gameManager.AddScore(rewardCoin);
+            gameManager.AddSkillPoint(rewardSkill);
+        }
     }
+
 
     // 📌 Gọi khi minigame đóng nhưng *không thắng* → cho phép hiện F lại
     public void OnMinigameClosedWithoutSuccess()

@@ -3,20 +3,23 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    private int score = 0;
+    // COIN
+    private int score = 1000;
     [SerializeField] private TextMeshProUGUI scoreText;
+
+    // ⭐ SKILL POINT
+    private int skillPoints = 50;
+    [SerializeField] private TextMeshProUGUI skillPointText;
 
     void Start()
     {
         UpdateScore();
+        UpdateSkillPoints();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
+    // ==============================
+    //           SCORE
+    // ==============================
     public void AddScore(int points)
     {
         score += points;
@@ -25,6 +28,38 @@ public class GameManager : MonoBehaviour
 
     private void UpdateScore()
     {
-        scoreText.text = score.ToString();
+        if (scoreText != null)
+            scoreText.text = score.ToString();
     }
+
+    // ==============================
+    //        SKILL POINT
+    // ==============================
+    public void AddSkillPoint(int amount)
+    {
+        skillPoints += amount;
+
+        // ⭐ Luôn giữ skillPoints >= 0
+        if (skillPoints < 0)
+            skillPoints = 0;
+
+        UpdateSkillPoints();
+        Debug.Log("📘 Skill Point: " + skillPoints);
+    }
+
+
+    private void UpdateSkillPoints()
+    {
+        if (skillPointText != null)
+            skillPointText.text = skillPoints.ToString();
+    }
+
+    public int GetSkillPoints()
+    {
+        return skillPoints;
+    }
+
+    public int Score => score;
+    public int SkillPoints => skillPoints;
+
 }

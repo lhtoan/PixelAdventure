@@ -91,6 +91,7 @@ public class Health : MonoBehaviour
             StartCoroutine(DieCoroutine());
         }
     }
+    
 
     // Kiểm tra player có đang bật khiên hay không nếu có không trừ máu
     public void SetShieldProtection(bool state)
@@ -117,6 +118,18 @@ public class Health : MonoBehaviour
     {
         currentHealth = Mathf.Clamp(currentHealth + _value, 0, startingHealth);
     }
+
+    public void IncreaseMaxHealth(int amount)
+    {
+        startingHealth += amount;
+        currentHealth += amount;
+
+        // Không cho máu vượt max mới
+        currentHealth = Mathf.Clamp(currentHealth, 0, startingHealth);
+    }
+
+
+
     private IEnumerator Invunerability()
     {
         invulnerable = true;
