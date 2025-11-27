@@ -12129,12 +12129,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 672593386}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.95, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -9.8259735, y: 0.5404682, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1417681414}
+  m_Father: {fileID: 1515415144}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &678533041
 PrefabInstance:
@@ -14785,8 +14785,10 @@ GameObject:
   m_Component:
   - component: {fileID: 868684257}
   - component: {fileID: 868684256}
+  - component: {fileID: 868684259}
   - component: {fileID: 868684255}
   - component: {fileID: 868684254}
+  - component: {fileID: 868684260}
   - component: {fileID: 868684258}
   m_Layer: 8
   m_Name: Rino
@@ -14829,7 +14831,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.023599982, y: -0.05899903}
+  m_Offset: {x: 0.0015337467, y: -0.059485435}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -14839,7 +14841,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 2.3462012, y: 1.6945019}
+  m_Size: {x: 2.1334763, y: 1.6954746}
   m_EdgeRadius: 0
 --- !u!50 &868684255
 Rigidbody2D:
@@ -14935,11 +14937,11 @@ Transform:
   m_GameObject: {fileID: 868684253}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.24, y: 0.86, z: 0}
   m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1417681414}
+  m_Father: {fileID: 1515415144}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &868684258
 MonoBehaviour:
@@ -14955,18 +14957,57 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   posA: {fileID: 672593387}
   posB: {fileID: 1743554249}
-  patrolSpeed: 2
+  speed: 2
   idleDuration: 0.5
-  detectWidth: 9
-  detectHeight: 1
-  detectOffset: -4
+  detectRange: 7
+  detectHeight: 1.2
+  detectOffset: 4.5
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
-  chargeSpeed: 12
-  chargeDuration: 0.5
+  chargeSpeed: 10
+  maxChargeDistance: 10
   cooldown: 2
   stunDuration: 2
+--- !u!95 &868684259
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 868684253}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d548fe2b4bbc1484da76d64510dc574d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &868684260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 868684253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21bf2636ed915474ab642eefcbff8c85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  startingHealth: 5
+  iFramesDuration: 0
+  numberOfFlashes: 0
+  components:
+  - {fileID: 868684258}
 --- !u!1 &871180150
 GameObject:
   m_ObjectHideFlags: 0
@@ -25230,40 +25271,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1414375275}
   m_CullTransparentMesh: 1
---- !u!1 &1417681413
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1417681414}
-  m_Layer: 0
-  m_Name: Rino
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1417681414
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1417681413}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 75.8, y: -32.22, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 868684257}
-  - {fileID: 672593387}
-  - {fileID: 1743554249}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1418642247
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27266,6 +27273,40 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4d50c4c3e3f4e4f418f665fa00454c32, type: 3}
+--- !u!1 &1515415143
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1515415144}
+  m_Layer: 0
+  m_Name: Rino
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1515415144
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1515415143}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 74.69, y: -32.82, z: 0}
+  m_LocalScale: {x: 0.8, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 868684257}
+  - {fileID: 1743554249}
+  - {fileID: 672593387}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1517009555
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31095,12 +31136,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1743554248}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.65, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 9.26403, y: 0.5404682, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1417681414}
+  m_Father: {fileID: 1515415144}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1746306436
 GameObject:
@@ -37635,7 +37676,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.0380404, y: -0.6060896}
+  m_Offset: {x: 0.053279877, y: -0.6060896}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -37645,7 +37686,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.572701, y: 1.220541}
+  m_Size: {x: 0.62535095, y: 1.220541}
   m_EdgeRadius: 0
 --- !u!114 &1603506716385510671
 MonoBehaviour:
@@ -83923,6 +83964,7 @@ GameObject:
   - component: {fileID: 9111930455673831236}
   - component: {fileID: 9111930455673831237}
   - component: {fileID: 9111930455673831238}
+  - component: {fileID: 9111930455673831239}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -85016,6 +85058,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BurnEnemy
   burnDuration: 2
   burnDamagePerSecond: 0.25
+--- !u!114 &9111930455673831239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4857864109396166915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a0e3254704616f4392269a9773ab040, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  isStunned: 0
+  stunReductionPercent: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -85043,4 +85099,4 @@ SceneRoots:
   - {fileID: 1746526015}
   - {fileID: 9072167046385555005}
   - {fileID: 342834621}
-  - {fileID: 1417681414}
+  - {fileID: 1515415144}

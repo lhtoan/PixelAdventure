@@ -1,256 +1,155 @@
-// using UnityEngine;
-
-// public class RinoChargeAI : MonoBehaviour
-// {
-//     [Header("Detect Area")]
-//     public float detectWidth = 3f;
-//     public float detectHeight = 1.5f;
-//     public float detectOffset = 1f;
-//     public LayerMask playerLayer;
-
-//     [Header("Charge Settings")]
-//     public float chargeSpeed = 10f;
-//     public float cooldown = 2f;
-//     public float stunDuration = 2f;
-
-//     private bool isCharging = false;
-//     private bool isCooldown = false;
-
-//     private Rigidbody2D rb;
-//     private Transform player;
-
-//     private void Awake()
-//     {
-//         rb = GetComponent<Rigidbody2D>();
-//     }
-
-//     private void Update()
-//     {
-//         if (isCharging || isCooldown)
-//             return;
-
-//         if (PlayerInArea())
-//             StartCharge();
-//     }
-
-//     private bool PlayerInArea()
-//     {
-//         Vector2 direction = new Vector2(transform.localScale.x, 0f).normalized;
-//         Vector2 boxCenter = (Vector2)transform.position + direction * detectOffset;
-
-//         RaycastHit2D hit = Physics2D.BoxCast(
-//             boxCenter,
-//             new Vector2(detectWidth, detectHeight),
-//             0f,
-//             Vector2.zero,
-//             0f,
-//             playerLayer
-//         );
-
-//         if (hit.collider != null)
-//         {
-//             player = hit.collider.transform;
-//             return true;
-//         }
-
-//         return false;
-//     }
-
-//     private void StartCharge()
-//     {
-//         isCharging = true;
-
-//         Vector2 dir = (player.position - transform.position).normalized;
-
-//         rb.linearVelocity = dir * chargeSpeed;
-
-//         Invoke(nameof(StopCharge), 0.5f);
-//     }
-
-//     private void StopCharge()
-//     {
-//         isCharging = false;
-//         rb.linearVelocity = Vector2.zero;
-
-//         isCooldown = true;
-//         Invoke(nameof(ResetCooldown), cooldown);
-//     }
-
-//     private void ResetCooldown()
-//     {
-//         isCooldown = false;
-//     }
-
-//     private void OnCollisionEnter2D(Collision2D collision)
-//     {
-//         if (!isCharging) return;
-
-//         if (collision.gameObject.CompareTag("Player"))
-//         {
-//             StunPlayer(collision.gameObject);
-//         }
-
-//         StopCharge();
-//     }
-
-//     private void StunPlayer(GameObject playerObj)
-//     {
-//         Animator anim = playerObj.GetComponent<Animator>();
-//         Rigidbody2D prb = playerObj.GetComponent<Rigidbody2D>();
-
-//         if (anim != null)
-//         {
-//             anim.SetBool("isStun", true);
-//             StartCoroutine(UnstunAfterDelay(anim));
-//         }
-
-//         if (prb != null)
-//         {
-//             prb.linearVelocity = Vector2.zero;
-//         }
-//     }
-
-//     private System.Collections.IEnumerator UnstunAfterDelay(Animator anim)
-//     {
-//         yield return new WaitForSeconds(stunDuration);
-//         anim.SetBool("isStun", false);
-//     }
-
-//     private void OnDrawGizmos()
-//     {
-//         Gizmos.color = Color.red;
-
-//         Vector2 direction =
-//             Application.isPlaying
-//             ? new Vector2(transform.localScale.x, 0f).normalized
-//             : (transform.localScale.x >= 0 ? Vector2.right : Vector2.left);
-
-//         Vector2 boxCenter = (Vector2)transform.position + direction * detectOffset;
-
-//         Gizmos.DrawWireCube(
-//             boxCenter,
-//             new Vector3(detectWidth, detectHeight, 1f)
-//         );
-//     }
-// }
 using UnityEngine;
 using System.Collections;
 
-public class RinoPatrolCharge : MonoBehaviour
+public class RinoPatrol : MonoBehaviour
 {
     [Header("Patrol Points")]
     public Transform posA;
     public Transform posB;
 
     [Header("Patrol Settings")]
-    public float patrolSpeed = 2f;
+    public float speed = 2f;
     public float idleDuration = 0.5f;
 
-    [Header("Detect Area")]
-    public float detectWidth = 3f;
-    public float detectHeight = 1.5f;
+    [Header("Detect Settings")]
+    public float detectRange = 3f;
+    public float detectHeight = 1.2f;
     public float detectOffset = 1f;
     public LayerMask playerLayer;
 
     [Header("Charge Settings")]
-    public float chargeSpeed = 10f;
+    public float chargeSpeed = 14f;
     public float maxChargeDistance = 10f;
     public float cooldown = 2f;
     public float stunDuration = 2f;
 
-    private Rigidbody2D rb;
-    private Animator anim;
-
-    private bool movingLeft;
+    private bool movingLeft = true;
     private bool isCharging = false;
     private bool isCooldown = false;
-    private bool isPreparingCharge = false;   // ⭐ FIX QUAN TRỌNG – ngăn patrol lật hướng khi charge
 
-    private Vector3 initScale;
-    private Transform player;
-    private Vector3 chargeStartPos;
+    private int logicFacing = -1;          // sprite gốc nhìn TRÁI
     private float idleTimer = 0f;
+    private Vector2 chargeStartPos;
+
+    private Rigidbody2D rb;
+    private Animator anim;
+    private SpriteRenderer sprite;
+    private Transform player;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        initScale = transform.localScale;
+        sprite = GetComponent<SpriteRenderer>();
 
-        movingLeft = posA.position.x < transform.position.x;
+        // Hướng patrol ban đầu
+        if (posA != null && posB != null)
+        {
+            float mid = (posA.position.x + posB.position.x) * 0.5f;
+            movingLeft = transform.position.x > mid;
+            logicFacing = movingLeft ? -1 : 1;
+        }
+        else
+        {
+            movingLeft = true;
+            logicFacing = -1;
+        }
+
+        UpdateVisualFlip();
     }
 
     private void Update()
     {
-        // ⭐ Ngăn patrol chạy lung tung khi chuẩn bị charge hoặc đang charge
-        if (isPreparingCharge || isCharging || isCooldown)
+        if (isCharging)
         {
+            // Đẩy liên tục cho chắc
+            rb.linearVelocity = new Vector2(logicFacing * chargeSpeed, rb.linearVelocity.y);
+
+            float dist = Vector2.Distance(transform.position, chargeStartPos);
+            //Debug.Log($"[RINO] CHARGING | posX = {transform.position.x:F2}, startX = {chargeStartPos.x:F2}, dist = {dist:F2}, max = {maxChargeDistance}");
+
+            // Check hit player trong lúc charge
+            if (CheckHitPlayerWhileCharging())
+            {
+                StopCharge();
+                return;
+            }
+
+            if (dist > maxChargeDistance)
+            {
+                StopCharge();
+            }
+
             return;
         }
 
-        if (PlayerInArea())
-        {
+        if (isCooldown)
+            return;
+
+        if (DetectPlayer())
             StartCharge();
-        }
         else
-        {
             Patrol();
-        }
     }
 
-    // ---------------------- PATROL ----------------------
+    // =============== PATROL =================
     private void Patrol()
     {
+        if (posA == null || posB == null) return;
+
         float left = Mathf.Min(posA.position.x, posB.position.x);
         float right = Mathf.Max(posA.position.x, posB.position.x);
 
         if (movingLeft)
         {
-            if (transform.position.x > left) Move(-1);
-            else ChangeDirection();
+            if (transform.position.x > left)
+                Move(-1);
+            else
+                WaitAndTurn();
         }
         else
         {
-            if (transform.position.x < right) Move(1);
-            else ChangeDirection();
+            if (transform.position.x < right)
+                Move(1);
+            else
+                WaitAndTurn();
         }
     }
 
     private void Move(int dir)
     {
-        idleTimer = 0;
+        idleTimer = 0f;
+        logicFacing = dir;
+        UpdateVisualFlip();
 
-        // ⭐ Flip đúng hướng patrol
-        transform.localScale = new Vector3(
-            Mathf.Abs(initScale.x) * -dir,
-            initScale.y,
-            initScale.z
-        );
-
-        rb.linearVelocity = new Vector2(dir * patrolSpeed, rb.linearVelocity.y);
+        anim.SetBool("run", true);
+        transform.position += new Vector3(dir * speed * Time.deltaTime, 0, 0);
     }
 
-    private void ChangeDirection()
+    private void WaitAndTurn()
     {
+        anim.SetBool("run", false);
+
         idleTimer += Time.deltaTime;
         if (idleTimer >= idleDuration)
         {
             movingLeft = !movingLeft;
             idleTimer = 0;
-
-            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+            logicFacing = movingLeft ? -1 : 1;
+            UpdateVisualFlip();
         }
     }
 
-    // ---------------------- DETECT ----------------------
-    private bool PlayerInArea()
+    // =============== DETECT (GIỐNG MELEE) =================
+    private bool DetectPlayer()
     {
-        Vector2 direction = new Vector2(transform.localScale.x, 0).normalized;
-        Vector2 boxCenter = (Vector2)transform.position + direction * detectOffset;
+        Vector2 dir = new Vector2(logicFacing, 0);
+        Vector2 boxCenter =
+            (Vector2)transform.position + dir * Mathf.Abs(detectOffset);
 
         RaycastHit2D hit = Physics2D.BoxCast(
             boxCenter,
-            new Vector2(detectWidth, detectHeight),
+            new Vector2(detectRange, detectHeight),
             0f,
             Vector2.zero,
             0f,
@@ -266,44 +165,27 @@ public class RinoPatrolCharge : MonoBehaviour
         return false;
     }
 
-    // ---------------------- CHARGE ----------------------
+    // =============== CHARGE =================
     private void StartCharge()
     {
-        // ⭐ Ngăn patrol RINO flip ngược lại 1 frame tiếp theo
-        isPreparingCharge = true;
-
-        StartCoroutine(DelayCharge());
-    }
-
-    // ⭐ Delay 1 frame để tránh Patrol làm lật hướng
-    private IEnumerator DelayCharge()
-    {
-        yield return null;
-
-        isPreparingCharge = false;
         isCharging = true;
 
-        // ⭐ Set hướng nhìn theo Player
-        float dirX = player.position.x - transform.position.x;
-        int look = dirX > 0 ? 1 : -1;
-
-        transform.localScale = new Vector3(
-            Mathf.Abs(initScale.x) * look,
-            initScale.y,
-            initScale.z
-        );
-
-        // ⭐ Bắt đầu charge
-        Vector2 dir = (player.position - transform.position).normalized;
-        rb.linearVelocity = dir * chargeSpeed;
+        float dx = player.position.x - transform.position.x;
+        logicFacing = dx > 0 ? 1 : -1;
+        UpdateVisualFlip();
 
         chargeStartPos = transform.position;
+
+        anim.SetBool("run", true);
+        rb.linearVelocity = new Vector2(logicFacing * chargeSpeed, rb.linearVelocity.y);
     }
 
     private void StopCharge()
     {
         isCharging = false;
         rb.linearVelocity = Vector2.zero;
+
+        anim.SetBool("run", false);
 
         isCooldown = true;
         Invoke(nameof(ResetCooldown), cooldown);
@@ -314,64 +196,88 @@ public class RinoPatrolCharge : MonoBehaviour
         isCooldown = false;
     }
 
-    // ---------------------- COLLISION ----------------------
-    private void OnCollisionEnter2D(Collision2D collision)
+    // =============== CHECK HIT PLAYER WHILE CHARGING =================
+    // private bool CheckHitPlayerWhileCharging()
+    // {
+    //     Vector2 dir = new Vector2(logicFacing, 0);
+    //     // Box nhỏ hơn, ở ngay trước mỏ
+    //     Vector2 center =
+    //         (Vector2)transform.position + dir * 0.5f;
+
+    //     RaycastHit2D hit = Physics2D.BoxCast(
+    //         center,
+    //         new Vector2(0.8f, detectHeight),
+    //         0f,
+    //         Vector2.zero,
+    //         0f,
+    //         playerLayer
+    //     );
+
+    //     if (hit.collider != null)
+    //     {
+    //         // Stun player
+    //         Animator pa = hit.collider.GetComponent<Animator>();
+    //         if (pa != null)
+    //         {
+    //             pa.SetBool("isStun", true);
+    //             StartCoroutine(Unstun(pa));
+    //         }
+    //         return true;
+    //     }
+
+    //     return false;
+    // }
+
+    private bool CheckHitPlayerWhileCharging()
     {
-        if (!isCharging) return;
+        Vector2 dir = new Vector2(logicFacing, 0);
+        Vector2 center = (Vector2)transform.position + dir * 1.0f;
 
-        // Chạm Player → stun → dừng charge
-        if (collision.gameObject.CompareTag("Player"))
+        RaycastHit2D hit = Physics2D.BoxCast(
+            center,
+            new Vector2(1.2f, detectHeight),
+            0f,
+            Vector2.zero,
+            0f,
+            playerLayer
+        );
+
+        if (hit.collider != null)
         {
-            StunPlayer(collision.gameObject);
-            StopCharge();
-            return;
+            // ⭐ chỉ stun 1 lần
+            PlayerStatus status = hit.collider.GetComponentInParent<PlayerStatus>();
+            if (status != null && !status.isStunned)
+            {
+                status.ApplyStun(stunDuration);
+            }
+
+            return true; // StopCharge() sẽ xử lý
         }
 
-        // ⭐ Ground → Rino luôn đứng trên ground → KHÔNG STOP CHARGE
-        if (collision.gameObject.CompareTag("Ground"))
-            return;
-
-        // Vật cản / tường
-        if (collision.gameObject.CompareTag("Wall"))
-        {
-            StopCharge();
-        }
+        return false;
     }
 
-    private void StunPlayer(GameObject obj)
+
+
+    // private IEnumerator Unstun(Animator pa)
+    // {
+    //     yield return new WaitForSeconds(stunDuration);
+    //     pa.SetBool("isStun", false);
+    // }
+
+    // =============== VISUAL =================
+    private void UpdateVisualFlip()
     {
-        Animator a = obj.GetComponent<Animator>();
-        Rigidbody2D prb = obj.GetComponent<Rigidbody2D>();
-
-        if (a != null)
-        {
-            a.SetBool("isStun", true);
-            StartCoroutine(Unstun(a));
-        }
-
-        if (prb != null)
-        {
-            prb.linearVelocity = Vector2.zero;
-        }
+        if (sprite != null)
+            sprite.flipX = (logicFacing == 1);
     }
 
-    private IEnumerator Unstun(Animator a)
-    {
-        yield return new WaitForSeconds(stunDuration);
-        a.SetBool("isStun", false);
-    }
-
-    // ---------------------- GIZMO ----------------------
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
 
-        Vector2 dir = Application.isPlaying ?
-            new Vector2(transform.localScale.x, 0).normalized :
-            Vector2.right;
-
-        Vector2 boxCenter = (Vector2)transform.position + dir * detectOffset;
-
-        Gizmos.DrawWireCube(boxCenter, new Vector3(detectWidth, detectHeight, 1));
+        int dir = Application.isPlaying ? logicFacing : -1;
+        Vector2 center = (Vector2)transform.position + new Vector2(dir * Mathf.Abs(detectOffset), 0);
+        Gizmos.DrawWireCube(center, new Vector3(detectRange, detectHeight, 1));
     }
 }
