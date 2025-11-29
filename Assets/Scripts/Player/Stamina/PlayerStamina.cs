@@ -19,6 +19,8 @@ public class PlayerStamina : MonoBehaviour
     private void Update()
     {
         RegenerateStamina();
+        // Debug.Log($"Stamina: {maxStamina} | Regen: {regenRate}");
+
     }
 
     // --- Hồi dần ---
@@ -57,5 +59,13 @@ public class PlayerStamina : MonoBehaviour
         currentStamina += amount;
         currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
     }
+
+    public void IncreaseRegenRate(float amount)
+    {
+        regenRate += amount;
+        if (regenRate < 0)
+            regenRate = 0; // tránh bị âm
+    }
+
 
 }

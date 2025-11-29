@@ -117,4 +117,11 @@ public class Skill_E_Fire : MonoBehaviour
                 script.Launch(dir, shootSpeed, damage);
         }
     }
+
+    public void ApplyCooldownUpgrade(float percent)
+    {
+        cooldown *= (1f - percent);
+        Debug.Log($"🔥 Fire E cooldown giảm còn: {cooldown}");
+    }
+
 }

@@ -119,4 +119,11 @@ public class Skill_R_Fire : MonoBehaviour
         yield return new WaitForSeconds(cooldown);
         isOnCooldown = false;
     }
+
+    public void ApplyCooldownUpgrade(float percent)
+    {
+        cooldown *= (1f - percent);
+        Debug.Log($"🔥 Fire R cooldown giảm còn: {cooldown}");
+    }
+
 }

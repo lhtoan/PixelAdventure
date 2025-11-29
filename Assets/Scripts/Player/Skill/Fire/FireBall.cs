@@ -6,7 +6,7 @@ public class Fireball : MonoBehaviour
 {
     [Header("Fireball Settings")]
     [SerializeField] private float speed = 5f;
-    [SerializeField] private float damage = 10f;
+    private float damage;
     [SerializeField] private float lifeTime = 3f;
 
     private Vector2 moveDir;
@@ -58,16 +58,19 @@ public class Fireball : MonoBehaviour
                 health.TakeDamage(damage);
             }
 
+            // 🔥 Trigger Burn WITH DOT BONUS (player)
             var burn = collision.GetComponent<BurnEnemy>();
             if (burn != null)
             {
-                burn.TriggerBurn();
+                // ⭐ Lấy PlayerAttack từ cha (player)
+                PlayerAttack attacker = GetComponentInParent<PlayerAttack>();
+                burn.TriggerBurn(attacker);   // truyền attacker để áp DOT buff
             }
 
-            // ❗ KHÔNG gọi Deactivate() ở đây → xuyên qua được nhiều enemy
+            // ❗ KHÔNG tắt đạn → xuyên qua nhiều enemy
         }
 
-        // 🧱 Nếu trúng tường, vật thể cứng → tắt đạn
+        // 🧱 Nếu trúng vật cứng thì mới tắt
         // else if (collision.CompareTag("Ground"))
         // {
         //     Deactivate();

@@ -4,7 +4,7 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     // COIN
-    private int score = 1000;
+    private int score = 9999;
     [SerializeField] private TextMeshProUGUI scoreText;
 
     // ⭐ SKILL POINT
