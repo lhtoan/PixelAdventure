@@ -18,6 +18,8 @@ public class UI_SkillTree : MonoBehaviour
     [SerializeField] private UI_SkillButton healthUp2_UI;
     [SerializeField] private UI_SkillButton staminaUp2_UI;
     [SerializeField] private UI_SkillButton fireCooldown_UI;
+    [SerializeField] private UI_SkillButton iceStack_UI;
+    [SerializeField] private UI_SkillButton treasure_UI;
 
     [Header("Skill Costs")]
     public int fireE_SkillCost = 1;
@@ -40,6 +42,10 @@ public class UI_SkillTree : MonoBehaviour
     public int fireCooldown_CoinCost = 180;
     public int staminaUp2_SkillCost = 0;
     public int staminaUp2_CoinCost = 180;
+    public int iceStack_SkillCost = 0;
+    public int iceStack_CoinCost = 180;
+    public int treasure_SkillCost = 0;
+    public int treasure_CoinCost = 180;
 
     [Header("UI Components")]
     [SerializeField] private CanvasGroup canvasGroup;
@@ -95,26 +101,36 @@ public class UI_SkillTree : MonoBehaviour
 
         buttonLookup[PlayerSkill.SkillType.Fire_E] = fireE_UI;
         buttonLookup[PlayerSkill.SkillType.Fire_R] = fireR_UI;
-        buttonLookup[PlayerSkill.SkillType.Ice_E] = iceE_UI;
-        buttonLookup[PlayerSkill.SkillType.Ice_R] = iceR_UI;
         buttonLookup[PlayerSkill.SkillType.Health_Up] = healthUp_UI;
         buttonLookup[PlayerSkill.SkillType.Stamina_Up] = staminaUp_UI;
         buttonLookup[PlayerSkill.SkillType.Health_Up_2] = healthUp2_UI;
         buttonLookup[PlayerSkill.SkillType.Stamina_Up_2] = staminaUp2_UI;
         buttonLookup[PlayerSkill.SkillType.Fire_Cooldown] = fireCooldown_UI;
+
+
+        buttonLookup[PlayerSkill.SkillType.Ice_E] = iceE_UI;
+        buttonLookup[PlayerSkill.SkillType.Ice_R] = iceR_UI;
+        buttonLookup[PlayerSkill.SkillType.IceStack] = iceStack_UI;
+        buttonLookup[PlayerSkill.SkillType.Treasure] = treasure_UI;
+
     }
 
     private void AssignSkillTypes()
     {
         fireE_UI.skillType = PlayerSkill.SkillType.Fire_E;
         fireR_UI.skillType = PlayerSkill.SkillType.Fire_R;
-        iceE_UI.skillType = PlayerSkill.SkillType.Ice_E;
-        iceR_UI.skillType = PlayerSkill.SkillType.Ice_R;
         healthUp_UI.skillType = PlayerSkill.SkillType.Health_Up;
         staminaUp_UI.skillType = PlayerSkill.SkillType.Stamina_Up;
         healthUp2_UI.skillType = PlayerSkill.SkillType.Health_Up_2;
         staminaUp2_UI.skillType = PlayerSkill.SkillType.Stamina_Up_2;
         fireCooldown_UI.skillType = PlayerSkill.SkillType.Fire_Cooldown;
+
+
+        iceE_UI.skillType = PlayerSkill.SkillType.Ice_E;
+        iceR_UI.skillType = PlayerSkill.SkillType.Ice_R;
+        iceStack_UI.skillType = PlayerSkill.SkillType.IceStack;
+        treasure_UI.skillType = PlayerSkill.SkillType.Treasure;
+
     }
 
     private void FindPlayerReferences()
@@ -135,13 +151,17 @@ public class UI_SkillTree : MonoBehaviour
     {
         fireE_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Fire_E));
         fireR_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Fire_R));
-        iceE_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Ice_E));
-        iceR_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Ice_R));
         healthUp_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Health_Up));
         staminaUp_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Stamina_Up));
         healthUp2_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Health_Up_2));
         fireCooldown_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Fire_Cooldown));
         staminaUp2_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Stamina_Up_2));
+
+        iceE_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Ice_E));
+        iceR_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Ice_R));
+        iceStack_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.IceStack));
+        treasure_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Treasure));
+
     }
 
 
@@ -306,13 +326,17 @@ public class UI_SkillTree : MonoBehaviour
         {
             case PlayerSkill.SkillType.Fire_E: sp = fireE_SkillCost; coin = fireE_CoinCost; break;
             case PlayerSkill.SkillType.Fire_R: sp = fireR_SkillCost; coin = fireR_CoinCost; break;
-            case PlayerSkill.SkillType.Ice_E: sp = iceE_SkillCost; coin = iceE_CoinCost; break;
-            case PlayerSkill.SkillType.Ice_R: sp = iceR_SkillCost; coin = iceR_CoinCost; break;
             case PlayerSkill.SkillType.Health_Up: sp = healthUp_SkillCost; coin = healthUp_CoinCost; break;
             case PlayerSkill.SkillType.Stamina_Up: sp = staminaUp_SkillCost; coin = staminaUp_CoinCost; break;
             case PlayerSkill.SkillType.Health_Up_2: sp = healthUp2_SkillCost; coin = healthUp2_CoinCost; break;
             case PlayerSkill.SkillType.Fire_Cooldown: sp = fireCooldown_SkillCost; coin = fireCooldown_CoinCost; break;
             case PlayerSkill.SkillType.Stamina_Up_2: sp = staminaUp2_SkillCost; coin = staminaUp2_CoinCost; break;
+
+            case PlayerSkill.SkillType.Ice_E: sp = iceE_SkillCost; coin = iceE_CoinCost; break;
+            case PlayerSkill.SkillType.Ice_R: sp = iceR_SkillCost; coin = iceR_CoinCost; break;
+            case PlayerSkill.SkillType.IceStack: sp = iceStack_SkillCost; coin = iceStack_CoinCost; break;
+            case PlayerSkill.SkillType.Treasure:sp = treasure_SkillCost; coin = treasure_CoinCost; break;
+
         }
     }
 
@@ -320,12 +344,17 @@ public class UI_SkillTree : MonoBehaviour
     {
         fireE_UI.SetUnlocked(playerSkill.IsSkillUnlocked(PlayerSkill.SkillType.Fire_E));
         fireR_UI.SetUnlocked(playerSkill.IsSkillUnlocked(PlayerSkill.SkillType.Fire_R));
-        iceE_UI.SetUnlocked(playerSkill.IsSkillUnlocked(PlayerSkill.SkillType.Ice_E));
-        iceR_UI.SetUnlocked(playerSkill.IsSkillUnlocked(PlayerSkill.SkillType.Ice_R));
         healthUp_UI.SetUnlocked(playerSkill.IsSkillUnlocked(PlayerSkill.SkillType.Health_Up));
         staminaUp_UI.SetUnlocked(playerSkill.IsSkillUnlocked(PlayerSkill.SkillType.Stamina_Up));
         healthUp2_UI.SetUnlocked(playerSkill.IsSkillUnlocked(PlayerSkill.SkillType.Health_Up_2));
         fireCooldown_UI.SetUnlocked(playerSkill.IsSkillUnlocked(PlayerSkill.SkillType.Fire_Cooldown));
         staminaUp2_UI.SetUnlocked(playerSkill.IsSkillUnlocked(PlayerSkill.SkillType.Stamina_Up_2));
+
+
+        iceE_UI.SetUnlocked(playerSkill.IsSkillUnlocked(PlayerSkill.SkillType.Ice_E));
+        iceR_UI.SetUnlocked(playerSkill.IsSkillUnlocked(PlayerSkill.SkillType.Ice_R));
+        iceStack_UI.SetUnlocked(playerSkill.IsSkillUnlocked(PlayerSkill.SkillType.IceStack));
+        treasure_UI.SetUnlocked(playerSkill.IsSkillUnlocked(PlayerSkill.SkillType.Treasure));
+
     }
 }

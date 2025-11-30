@@ -5,16 +5,22 @@ public class PlayerSkill : MonoBehaviour
 {
     public enum SkillType
     {
+        //Fire
         Fire_E,
         Fire_R,
-        Ice_E,
-        Ice_R,
         Health_Up,
         Health_Up_2,
         Stamina_Up,
         Stamina_Up_2,
-        Fire_Cooldown
-        
+        Fire_Cooldown,
+
+        //Ice
+        Ice_E,
+        Ice_R,
+        Treasure,
+        IceStack
+
+
     }
 
     [Header("Debug Options")]
@@ -26,11 +32,18 @@ public class PlayerSkill : MonoBehaviour
     {
         { SkillType.Fire_E, new List<SkillType>{ } },
         { SkillType.Health_Up, new List<SkillType>{ SkillType.Fire_E } },
-        { SkillType.Stamina_Up, new List<SkillType>() },
-        { SkillType.Health_Up_2, new List<SkillType>()},
-        { SkillType.Fire_Cooldown, new List<SkillType>{ SkillType.Stamina_Up, SkillType.Fire_E } },
-        { SkillType.Stamina_Up_2, new List<SkillType>{ SkillType.Health_Up_2 } },
-        { SkillType.Fire_R, new List<SkillType>{ SkillType.Fire_Cooldown, SkillType.Stamina_Up_2 } }
+        { SkillType.Stamina_Up, new List<SkillType>{ SkillType.Fire_E } },
+        { SkillType.Fire_Cooldown, new List<SkillType>{ SkillType.Health_Up, SkillType.Fire_E } },
+        { SkillType.Health_Up_2, new List<SkillType>{ SkillType.Stamina_Up } },
+        { SkillType.Stamina_Up_2, new List<SkillType>{ SkillType.Fire_Cooldown } },
+        { SkillType.Fire_R, new List<SkillType>{ SkillType.Fire_Cooldown, SkillType.Stamina_Up_2, SkillType.Health_Up_2 } },
+
+
+        { SkillType.Ice_E, new List<SkillType>{ } },
+        { SkillType.Treasure, new List<SkillType>{ } },
+        { SkillType.IceStack, new List<SkillType>{ SkillType.Treasure, SkillType.Ice_E } },
+        { SkillType.Ice_R, new List<SkillType>{ SkillType.IceStack} },
+
 
     };
 
