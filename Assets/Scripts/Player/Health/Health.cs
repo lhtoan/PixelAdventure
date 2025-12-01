@@ -4,6 +4,7 @@ using System.Collections;
 public class Health : MonoBehaviour
 {
     [Header("Health")]
+    [SerializeField] private bool useInvulnerability = true;
     [SerializeField] private float startingHealth;
     public float currentHealth { get; private set; }
     private Animator anim;
@@ -32,10 +33,48 @@ public class Health : MonoBehaviour
         spriteRend = GetComponent<SpriteRenderer>();
         respawnManager = GetComponent<PlayerRespawn>();
     }
+    // public void TakeDamage(float _damage)
+    // {
+
+    //     if (shieldActive) return;
+    //     if (invulnerable) return;
+    //     currentHealth = Mathf.Clamp(currentHealth - _damage, 0, startingHealth);
+
+    //     if (currentHealth > 0)
+    //     {
+    //         if (HasParameter(anim, "hurt"))
+    //             anim.SetTrigger("hurt");
+
+    //         Debug.Log(currentHealth);
+
+    //         StartCoroutine(Invunerability());
+    //     }
+    //     else
+    //     {
+    //         if (!dead)
+    //         {
+    //             // Deactivate all attached component classes
+    //             foreach (Behaviour component in components)
+    //                 component.enabled = false;
+
+    //             if (HasParameter(anim, "die"))
+    //                 anim.SetTrigger("die");
+
+
+    //             dead = true;
+
+    //             StartCoroutine(DieCoroutine());
+    //         }
+    //     }
+    // }
+
     public void TakeDamage(float _damage)
     {
-        if(shieldActive) return;
-        if (invulnerable) return;
+        if (shieldActive) return;
+
+        // chỉ player mới dùng invulnerability
+        if (useInvulnerability && invulnerable) return;
+
         currentHealth = Mathf.Clamp(currentHealth - _damage, 0, startingHealth);
 
         if (currentHealth > 0)
@@ -43,19 +82,20 @@ public class Health : MonoBehaviour
             if (HasParameter(anim, "hurt"))
                 anim.SetTrigger("hurt");
 
-            StartCoroutine(Invunerability());
+            Debug.Log(currentHealth);
+
+            if (useInvulnerability)
+                StartCoroutine(Invunerability());
         }
         else
         {
             if (!dead)
             {
-                // Deactivate all attached component classes
                 foreach (Behaviour component in components)
                     component.enabled = false;
 
                 if (HasParameter(anim, "die"))
                     anim.SetTrigger("die");
-
 
                 dead = true;
 
@@ -64,10 +104,43 @@ public class Health : MonoBehaviour
         }
     }
 
+    // public void TakeDamage(float _damage, bool triggerAnimation = true)
+    // {
+
+    //     if (shieldActive) return;
+    //     if (invulnerable && triggerAnimation) return;
+
+    //     currentHealth = Mathf.Clamp(currentHealth - _damage, 0, startingHealth);
+
+    //     if (currentHealth > 0)
+    //     {
+    //         if (triggerAnimation && HasParameter(anim, "hurt"))
+    //             anim.SetTrigger("hurt");
+
+    //         if (triggerAnimation)
+    //             StartCoroutine(Invunerability());
+
+    //         Debug.Log(currentHealth);
+    //     }
+    //     else if (!dead)
+    //     {
+    //         foreach (Behaviour component in components)
+    //             component.enabled = false;
+
+    //         if (HasParameter(anim, "die"))
+    //             anim.SetTrigger("die");
+
+    //         dead = true;
+    //         StartCoroutine(DieCoroutine());
+    //     }
+    // }
     public void TakeDamage(float _damage, bool triggerAnimation = true)
     {
         if (shieldActive) return;
-        if (invulnerable && triggerAnimation) return;
+
+        // chỉ player mới dùng invulnerability
+        if (useInvulnerability && invulnerable && triggerAnimation)
+            return;
 
         currentHealth = Mathf.Clamp(currentHealth - _damage, 0, startingHealth);
 
@@ -76,8 +149,10 @@ public class Health : MonoBehaviour
             if (triggerAnimation && HasParameter(anim, "hurt"))
                 anim.SetTrigger("hurt");
 
-            if (triggerAnimation)
+            if (triggerAnimation && useInvulnerability)
                 StartCoroutine(Invunerability());
+
+            Debug.Log(currentHealth);
         }
         else if (!dead)
         {
@@ -91,7 +166,7 @@ public class Health : MonoBehaviour
             StartCoroutine(DieCoroutine());
         }
     }
-    
+
 
     // Kiểm tra player có đang bật khiên hay không nếu có không trừ máu
     public void SetShieldProtection(bool state)
@@ -119,13 +194,24 @@ public class Health : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth + _value, 0, startingHealth);
     }
 
+    // public void IncreaseMaxHealth(int amount)
+    // {
+    //     startingHealth += amount;
+    //     currentHealth += amount;
+
+    //     // Không cho máu vượt max mới
+    //     currentHealth = Mathf.Clamp(currentHealth, 0, startingHealth);
+    // }
     public void IncreaseMaxHealth(int amount)
     {
         startingHealth += amount;
         currentHealth += amount;
 
-        // Không cho máu vượt max mới
         currentHealth = Mathf.Clamp(currentHealth, 0, startingHealth);
+
+        var hb = FindFirstObjectByType<HealthBar>();
+        if (hb != null)
+            hb.UpdateTotalBar();
     }
 
 

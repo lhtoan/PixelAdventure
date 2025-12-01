@@ -335,7 +335,7 @@ public class UI_SkillTree : MonoBehaviour
             case PlayerSkill.SkillType.Ice_E: sp = iceE_SkillCost; coin = iceE_CoinCost; break;
             case PlayerSkill.SkillType.Ice_R: sp = iceR_SkillCost; coin = iceR_CoinCost; break;
             case PlayerSkill.SkillType.IceStack: sp = iceStack_SkillCost; coin = iceStack_CoinCost; break;
-            case PlayerSkill.SkillType.Treasure:sp = treasure_SkillCost; coin = treasure_CoinCost; break;
+            case PlayerSkill.SkillType.Treasure: sp = treasure_SkillCost; coin = treasure_CoinCost; break;
 
         }
     }

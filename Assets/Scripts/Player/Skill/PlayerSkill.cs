@@ -153,4 +153,43 @@ public class PlayerSkill : MonoBehaviour
         return prerequisite;
     }
 
+    // ===============================================================
+    //         TREASURE BONUS — 50% cơ hội nhân đôi phần thưởng
+    // ===============================================================
+
+    public bool HasTreasureBonus()
+    {
+        return unlockedSkillTypeList.Contains(SkillType.Treasure);
+    }
+
+    public int ApplyTreasureBonus(int baseValue)
+    {
+        if (!HasTreasureBonus())
+            return baseValue;
+
+        // 50% tỉ lệ x2
+        if (Random.value <= 0.5f)
+        {
+            Debug.Log("🎁 TREASURE BONUS x2!");
+            return baseValue * 2;
+        }
+
+        return baseValue;
+    }
+
+    public float ApplyTreasureBonus(float baseValue)
+    {
+        if (!HasTreasureBonus())
+            return baseValue;
+
+        if (Random.value <= 0.5f)
+        {
+            Debug.Log("🎁 TREASURE BONUS x2!");
+            return baseValue * 2f;
+        }
+
+        return baseValue;
+    }
+
+
 }

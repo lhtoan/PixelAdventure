@@ -513,7 +513,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1094849337
-  m_SortingLayer: 5
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: 7300178513047545148, guid: d91ace556d662ed4f99f0db029d91764, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -556,7 +556,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -580,7 +580,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5716135318585090734}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -642,4 +642,6 @@ MonoBehaviour:
   rightOffset: {x: 1, y: 0, z: 0}
   minCoin: 50
   maxCoin: 150
+  receiveSkillPoint: 1
+  skillPointReward: 1
   gameManager: {fileID: 0}

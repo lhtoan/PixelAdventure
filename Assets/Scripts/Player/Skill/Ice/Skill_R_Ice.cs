@@ -5,14 +5,14 @@ using System.Collections.Generic;
 public class Skill_R_Ice : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private Transform icePoint;                // điểm spawn cột băng
-    [SerializeField] private List<GameObject> iceSpikePool;     // pool các cột băng
+    [SerializeField] private Transform icePoint;
+    [SerializeField] private List<GameObject> iceSpikePool;
 
     [Header("Skill Settings")]
     [SerializeField] private float cooldown = 6f;
     [SerializeField] private float staminaCost = 5f;
-    [SerializeField] private float spikeDistance = 1.8f;        // khoảng cách giữa các cột
-    [SerializeField] private float spikeLifetime = 1.3f;        // tồn tại bao lâu
+    [SerializeField] private float spikeDistance = 1.8f;
+    [SerializeField] private float spikeLifetime = 1.3f;
 
     private bool isOnCooldown = false;
 
@@ -26,16 +26,9 @@ public class Skill_R_Ice : MonoBehaviour
         playerAttack = GetComponentInParent<PlayerAttack>();
         playerStamina = GetComponentInParent<PlayerStamina>();
         playerSkill = GetComponentInParent<PlayerSkill>();
-        if (skillBarIcon == null)
-            Debug.LogWarning("⚠ Ice_E missing skillBarIcon reference in Inspector!");
 
-
-        // đảm bảo tất cả spike trong pool đều tắt lúc start
-        for (int i = 0; i < iceSpikePool.Count; i++)
-        {
-            if (iceSpikePool[i] != null)
-                iceSpikePool[i].SetActive(false);
-        }
+        foreach (var spike in iceSpikePool)
+            if (spike != null) spike.SetActive(false);
     }
 
     private void Update()
@@ -50,21 +43,12 @@ public class Skill_R_Ice : MonoBehaviour
 
     private void TryCast()
     {
-        // CHECK SKILL UNLOCK
         if (!playerSkill.IsSkillUnlocked(PlayerSkill.SkillType.Ice_R))
-        {
-            Debug.Log("❌ Skill Ice R chưa mở khóa!");
             return;
-        }
 
-        // CHECK stamina
         if (!playerStamina.CanUse(staminaCost))
-        {
-            Debug.Log("❌ Không đủ stamina để dùng Ice R!");
             return;
-        }
 
-        // Trừ stamina
         playerStamina.Use(staminaCost);
 
         StartCoroutine(CastIceSpikes());
@@ -77,39 +61,36 @@ public class Skill_R_Ice : MonoBehaviour
         if (skillBarIcon != null)
             skillBarIcon.StartCooldown(cooldown);
 
-
-        // 🔹 Ghi lại hướng và vị trí player ngay lúc cast
         float direction = Mathf.Sign(playerAttack.transform.localScale.x);
-        Vector3 castOrigin = icePoint.position; // snapshot vị trí cast
+        Vector3 castOrigin = icePoint.position;
 
-        // 🔹 Spawn spike cố định theo hướng đó
         for (int i = 0; i < iceSpikePool.Count; i++)
         {
             GameObject spike = iceSpikePool[i];
-            if (spike == null)
-                continue;
+            if (spike == null) continue;
 
-            // vị trí spawn dựa trên snapshot
             Vector3 spawnPos = castOrigin + new Vector3(i * spikeDistance * direction, 0f, 0f);
-
             spike.transform.position = spawnPos;
 
-            // hướng cố định theo lúc cast
             Vector3 scale = spike.transform.localScale;
             scale.x = Mathf.Abs(scale.x) * direction;
             spike.transform.localScale = scale;
+
+            // ⭐ TRUYỀN ATTACKER VÀO ICESPIKE
+            IceSpike spikeComp = spike.GetComponent<IceSpike>();
+            if (spikeComp != null)
+                spikeComp.SetAttacker(playerAttack);
 
             spike.SetActive(true);
 
             StartCoroutine(DeactivateSpike(spike, spikeLifetime));
 
-            yield return new WaitForSeconds(0.3f); // delay giữa các spike
+            yield return new WaitForSeconds(0.3f);
         }
 
         yield return new WaitForSeconds(cooldown);
         isOnCooldown = false;
     }
-
 
     private IEnumerator DeactivateSpike(GameObject spike, float delay)
     {

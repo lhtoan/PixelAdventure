@@ -113,10 +113,29 @@ public class IceShieldSkill : MonoBehaviour
         isOnCooldown = false;
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
+    // private void OnCollisionStay2D(Collision2D collision)
+    // {
+    //     if (!isActive || shieldObject == null || !shieldObject.activeSelf) return;
+    //     if (!collision.gameObject.CompareTag("Enemy")) return;
+
+    //     GameObject enemy = collision.gameObject;
+
+    //     if (!enemyTickTimers.ContainsKey(enemy))
+    //         enemyTickTimers[enemy] = 0f;
+
+    //     enemyTickTimers[enemy] -= Time.deltaTime;
+
+    //     if (enemyTickTimers[enemy] <= 0f)
+    //     {
+    //         ApplyIceEffect(enemy);
+    //         enemyTickTimers[enemy] = tickInterval;
+    //     }
+    // }
+
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if (!isActive || shieldObject == null || !shieldObject.activeSelf) return;
-        if (!collision.gameObject.CompareTag("Enemy")) return;
+        if (!collision.CompareTag("Enemy")) return;
 
         GameObject enemy = collision.gameObject;
 
@@ -132,11 +151,17 @@ public class IceShieldSkill : MonoBehaviour
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    private void OnTriggerExit2D(Collider2D collision)
     {
         if (enemyTickTimers.ContainsKey(collision.gameObject))
             enemyTickTimers.Remove(collision.gameObject);
     }
+
+    // private void OnCollisionExit2D(Collision2D collision)
+    // {
+    //     if (enemyTickTimers.ContainsKey(collision.gameObject))
+    //         enemyTickTimers.Remove(collision.gameObject);
+    // }
 
     private void ApplyIceEffect(GameObject enemy)
     {

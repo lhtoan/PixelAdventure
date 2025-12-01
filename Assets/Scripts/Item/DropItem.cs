@@ -50,11 +50,15 @@ public class DropItem : MonoBehaviour
 
     private void DoDrop()
     {
+        PlayerSkill ps = FindAnyObjectByType<PlayerSkill>();
         foreach (var drop in drops)
         {
             if (Random.value <= drop.dropChance)
             {
                 int amount = Random.Range(drop.minAmount, drop.maxAmount + 1);
+
+                if (ps != null)
+                    amount = ps.ApplyTreasureBonus(amount);
 
                 for (int i = 0; i < amount; i++)
                     Instantiate(drop.itemPrefab, transform.position, Quaternion.identity);

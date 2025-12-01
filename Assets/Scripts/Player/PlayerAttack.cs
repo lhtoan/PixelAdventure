@@ -234,6 +234,19 @@ public class PlayerAttack : MonoBehaviour
 
     }
 
+    // private void IceAttack()
+    // {
+    //     anim.SetTrigger("attack");
+    //     cooldownTimer = 0;
+
+    //     float dir = Mathf.Sign(transform.localScale.x);
+    //     int index = FindInactive(iceballs);
+
+    //     GameObject iceball = iceballs[index];
+    //     iceball.transform.position = firePoint.position;
+    //     iceball.GetComponent<Projecttile>().SetDirection(dir);
+    //     iceball.tag = "Ice";
+    // }
     private void IceAttack()
     {
         anim.SetTrigger("attack");
@@ -244,9 +257,14 @@ public class PlayerAttack : MonoBehaviour
 
         GameObject iceball = iceballs[index];
         iceball.transform.position = firePoint.position;
-        iceball.GetComponent<Projecttile>().SetDirection(dir);
+
+        Projecttile proj = iceball.GetComponent<Projecttile>();
+        proj.SetAttacker(this);          // ⭐ BẮT BUỘC – để IceStack biết attacker
+        proj.SetDirection(dir);
+
         iceball.tag = "Ice";
     }
+
 
     private int FindInactive(GameObject[] pool)
     {
