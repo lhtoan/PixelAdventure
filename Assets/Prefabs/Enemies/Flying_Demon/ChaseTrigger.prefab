@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5344451119158918167}
   - component: {fileID: 4076935856366528758}
   - component: {fileID: 149572928397582552}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ChaseTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}

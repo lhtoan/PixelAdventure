@@ -136,18 +136,10 @@ public class MeleeEnemy : MonoBehaviour
 
     private bool PlayerInSight()
     {
-        Vector3 castDir = Vector3.right * transform.localScale.x;
-
-        RaycastHit2D hit = Physics2D.BoxCast(
-            boxCollider.bounds.center + castDir * range * colliderDistance,   // Vector3 + Vector3
-            new Vector3(boxCollider.bounds.size.x * range,
-                        boxCollider.bounds.size.y,
-                        boxCollider.bounds.size.z),
-            0,
-            castDir,  // direction must be Vector2/Vector3? → It accepts Vector2 cast automatically
-            0,
-            targetLayer
-        );
+        RaycastHit2D hit =
+            Physics2D.BoxCast(boxCollider.bounds.center + transform.right * range * transform.localScale.x * colliderDistance,
+            new Vector3(boxCollider.bounds.size.x * range, boxCollider.bounds.size.y, boxCollider.bounds.size.z),
+            0, Vector2.left, 0, targetLayer);
 
         if (hit.collider != null)
             playerHealth = hit.transform.GetComponent<Health>();

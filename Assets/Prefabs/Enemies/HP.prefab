@@ -38,7 +38,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.061, y: 0.351}
+  m_AnchoredPosition: {x: 0.06097412, y: 0.35101318}
   m_SizeDelta: {x: 49.7564, y: 6.8192}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &5535844721837625370
@@ -86,7 +86,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &6724621204228568683
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,7 +117,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyHealth: {fileID: 0}
-  totalHealthBar: {fileID: 6919116165371636640}
   currentHealthBar: {fileID: 3733208019354771889}
   enemy: {fileID: 0}
 --- !u!1 &5057412999306413523
@@ -185,7 +184,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8aeddd9160f7ef34abf036b89752d517, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ce0eed64377ffde43aa9d70c3f6201e7, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -260,7 +259,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8aeddd9160f7ef34abf036b89752d517, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ce0eed64377ffde43aa9d70c3f6201e7, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1

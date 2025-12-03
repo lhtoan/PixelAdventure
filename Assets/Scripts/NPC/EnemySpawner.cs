@@ -113,31 +113,6 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    // void SpawnEnemy()
-    // {
-    //     int prefabIndex = GetRandomEnemyIndex();
-
-    //     while (spawnCounts[prefabIndex] <= 0)
-    //         prefabIndex = GetRandomEnemyIndex();
-
-    //     spawnCounts[prefabIndex]--;
-
-    //     EnemyInfo info = enemyPrefabs[prefabIndex].GetComponent<EnemyInfo>();
-    //     EnemyType type = info.enemyType;
-
-    //     Transform spawnPoint = GetSpawnPoint(type);
-
-    //     GameObject enemy = Instantiate(enemyPrefabs[prefabIndex], spawnPoint.position, Quaternion.identity);
-    //     enemy.SetActive(true);
-
-    //     var movement = enemy.GetComponent<UniversalEnemyMovement>();
-    //     if (movement != null)
-    //         movement.target = npc;
-
-    //     if (enemyParent != null)
-    //         enemy.transform.SetParent(enemyParent);
-    // }
-
     void SpawnEnemy()
     {
         int prefabIndex = GetRandomEnemyIndex();

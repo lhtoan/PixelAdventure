@@ -94,14 +94,14 @@ TagManager:
   - name: ButtonUI
     uniqueID: 16249629
     locked: 0
+  - name: HPBar
+    uniqueID: 415830739
+    locked: 0
   - name: UI
     uniqueID: 4252170031
     locked: 0
   - name: Fireball
     uniqueID: 4032888705
-    locked: 0
-  - name: HPBar
-    uniqueID: 415830739
     locked: 0
   m_RenderingLayers:
   - Default

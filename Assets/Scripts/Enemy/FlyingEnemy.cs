@@ -104,12 +104,17 @@ public class FlyingEnemy : MonoBehaviour
 
     private void FlipEnemy()
     {
-        // Chỉ xoay khi CHASE để tránh nhìn bị sai khi quay về vị trí gốc
         if (!chase) return;
 
+        Vector3 scale = transform.localScale;
+
+        // Nếu enemy mặc định nhìn TRÁI
         if (transform.position.x > player.transform.position.x)
-            transform.rotation = Quaternion.Euler(0, 0, 0);
+            scale.x = Mathf.Abs(scale.x);   // nhìn trái
         else
-            transform.rotation = Quaternion.Euler(0, 180, 0);
+            scale.x = -Mathf.Abs(scale.x);  // nhìn phải
+
+        transform.localScale = scale;
     }
+
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8988931953632762297}
   - component: {fileID: 1616422840167103999}
   - component: {fileID: 5622882285795756108}
-  m_Layer: 5
+  m_Layer: 14
   m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,7 +113,7 @@ GameObject:
   - component: {fileID: 714572631744538204}
   - component: {fileID: 58934993973683291}
   - component: {fileID: 5256325624005123210}
-  m_Layer: 5
+  m_Layer: 14
   m_Name: Button_F
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -188,7 +188,7 @@ GameObject:
   - component: {fileID: 5736429227839038114}
   - component: {fileID: 4194927219849723634}
   - component: {fileID: 4456000378579306262}
-  m_Layer: 5
+  m_Layer: 14
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -264,7 +264,7 @@ GameObject:
   - component: {fileID: 3987538560318286802}
   - component: {fileID: 2673276165856474477}
   - component: {fileID: 6888357666761851863}
-  m_Layer: 5
+  m_Layer: 14
   m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -366,7 +366,7 @@ GameObject:
   - component: {fileID: 8213724804305812334}
   - component: {fileID: 5154292073733575030}
   - component: {fileID: 215387412079608719}
-  m_Layer: 5
+  m_Layer: 14
   m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -444,7 +444,7 @@ GameObject:
   - component: {fileID: 8558577621154483177}
   - component: {fileID: 39445314377581255}
   - component: {fileID: 2913296910336250109}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Treasure
   m_TagString: NPC
   m_Icon: {fileID: 0}

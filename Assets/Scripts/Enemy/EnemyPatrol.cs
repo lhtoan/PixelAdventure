@@ -110,7 +110,7 @@
 // }
 using UnityEngine;
 
-public class EnemyPatrol : MonoBehaviour
+public class EnemyPatrol : MonoBehaviour, IEnemyMovement
 {
     [Header("Patrol Points")]
     [SerializeField] public Transform leftEdge;
@@ -119,24 +119,33 @@ public class EnemyPatrol : MonoBehaviour
     [Header("Enemy")]
     [SerializeField] private Transform enemy;
 
-    [Header("Movement Settings")]
-    [SerializeField] private float speed = 2f;
-    [SerializeField] private float idleDuration = 0.5f;
-    [SerializeField] private bool startMovingLeft = true;   // ⭐ thêm lựa chọn hướng khởi động
+    [Header("Movement parameters")]
+    [SerializeField] private float speed;
+    private Vector3 initScale;
+
+    [Header("Start Direction")]
+    [SerializeField] private bool startMovingLeft = true;   // ⭐ NEW
+    private bool movingLeft;
+
+    [Header("Idle Behaviour")]
+    [SerializeField] private float idleDuration;
+    private float idleTimer;
 
     [Header("Enemy Animator")]
     [SerializeField] private Animator anim;
 
-    private bool movingLeft;
-    private float idleTimer;
-    private Vector3 initScale;
+    [HideInInspector] public bool isFrozen = false;
 
-    public bool isFrozen = false;
+    public void EnableMovement(bool enable)
+    {
+        this.enabled = enable;
+    }
 
     private void Awake()
     {
         initScale = enemy.localScale;
-        movingLeft = startMovingLeft;   // ⭐ gán hướng ban đầu từ inspector
+
+        movingLeft = startMovingLeft;   // ⭐ NEW → chọn hướng bắt đầu
     }
 
     private void OnDisable()
@@ -152,40 +161,29 @@ public class EnemyPatrol : MonoBehaviour
             return;
         }
 
-        Patrol();
-    }
-
-    private void Patrol()
-    {
-        float left = leftEdge.position.x;
-        float right = rightEdge.position.x;
-
         if (movingLeft)
         {
-            if (enemy.position.x > left)
+            if (enemy.position.x >= leftEdge.position.x)
                 MoveInDirection(-1);
             else
-                ChangeDirection();
+                DirectionChange();
         }
         else
         {
-            if (enemy.position.x < right)
+            if (enemy.position.x <= rightEdge.position.x)
                 MoveInDirection(1);
             else
-                ChangeDirection();
+                DirectionChange();
         }
     }
 
-    private void ChangeDirection()
+    private void DirectionChange()
     {
         anim.SetBool("moving", false);
         idleTimer += Time.deltaTime;
 
-        if (idleTimer >= idleDuration)
-        {
+        if (idleTimer > idleDuration)
             movingLeft = !movingLeft;
-            idleTimer = 0f;
-        }
     }
 
     private void MoveInDirection(int dir)
@@ -193,14 +191,19 @@ public class EnemyPatrol : MonoBehaviour
         idleTimer = 0;
         anim.SetBool("moving", true);
 
-        // ⭐ xoay enemy theo hướng đi
+        // Face correct direction
         enemy.localScale = new Vector3(
             Mathf.Abs(initScale.x) * dir,
             initScale.y,
             initScale.z
         );
 
-        enemy.position += new Vector3(dir * speed * Time.deltaTime, 0f, 0f);
+        // Move
+        enemy.position = new Vector3(
+            enemy.position.x + Time.deltaTime * dir * speed,
+            enemy.position.y,
+            enemy.position.z
+        );
     }
 
     public void SetFrozen(bool frozen)

@@ -82,7 +82,7 @@ public class Health : MonoBehaviour
             if (HasParameter(anim, "hurt"))
                 anim.SetTrigger("hurt");
 
-            Debug.Log(currentHealth);
+            // Debug.Log(currentHealth);
 
             if (useInvulnerability)
                 StartCoroutine(Invunerability());
@@ -152,7 +152,7 @@ public class Health : MonoBehaviour
             if (triggerAnimation && useInvulnerability)
                 StartCoroutine(Invunerability());
 
-            Debug.Log(currentHealth);
+            // Debug.Log(currentHealth);
         }
         else if (!dead)
         {

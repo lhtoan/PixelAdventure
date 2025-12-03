@@ -67,6 +67,10 @@ public class UI_SkillTree : MonoBehaviour
     private Coroutine fadeDimRoutine;
     private bool isOpen = false;
 
+    [Header("Root UI")]
+    [SerializeField] private GameObject skillTreeRoot;
+
+
     public Dictionary<PlayerSkill.SkillType, List<PlayerSkill.SkillType>> prerequisite;
     public Dictionary<PlayerSkill.SkillType, UI_SkillButton> buttonLookup =
         new Dictionary<PlayerSkill.SkillType, UI_SkillButton>();
@@ -182,9 +186,25 @@ public class UI_SkillTree : MonoBehaviour
     // ==============================
     //          OPEN / CLOSE UI
     // ==============================
+    // private void ToggleSkillTree()
+    // {
+    //     isOpen = !isOpen;
+    //     SetCanvasVisible(isOpen);
+    //     SetDimVisible(isOpen);
+    //     LockPlayerControls(isOpen);
+
+    //     if (pauseGameWhenOpen)
+    //         Time.timeScale = isOpen ? 0 : 1;
+
+    //     if (isOpen)
+    //         RefreshUI();
+    // }
     private void ToggleSkillTree()
     {
         isOpen = !isOpen;
+
+        skillTreeRoot.SetActive(isOpen);  // ⭐ bật UI skill tree
+
         SetCanvasVisible(isOpen);
         SetDimVisible(isOpen);
         LockPlayerControls(isOpen);
@@ -195,6 +215,7 @@ public class UI_SkillTree : MonoBehaviour
         if (isOpen)
             RefreshUI();
     }
+
 
     private void CloseSkillTree()
     {
