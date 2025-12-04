@@ -47,4 +47,11 @@ public class EnemyProjectile : EnemyDamage
     {
         gameObject.SetActive(false);
     }
+
+    public void SetSpeed(float newSpeed)
+    {
+        speed = newSpeed;
+    }
+
+
 }
