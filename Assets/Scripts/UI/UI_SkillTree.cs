@@ -179,8 +179,8 @@ public class UI_SkillTree : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.B))
             ToggleSkillTree();
 
-        if (Input.GetKeyDown(KeyCode.Escape) && isOpen)
-            CloseSkillTree();
+        // if (Input.GetKeyDown(KeyCode.Escape) && isOpen)
+        //     CloseSkillTree();
     }
 
     // ==============================
@@ -203,7 +203,12 @@ public class UI_SkillTree : MonoBehaviour
     {
         isOpen = !isOpen;
 
-        skillTreeRoot.SetActive(isOpen);  // ⭐ bật UI skill tree
+        skillTreeRoot.SetActive(isOpen);  // ⭐ bật/tắt root của UI
+
+        // ⭐ FIX CLICK KHÔNG ĐƯỢC (CanvasGroup bị sai trạng thái)
+        canvasGroup.alpha = isOpen ? 1 : 0;
+        canvasGroup.blocksRaycasts = isOpen;
+        canvasGroup.interactable = isOpen;
 
         SetCanvasVisible(isOpen);
         SetDimVisible(isOpen);
@@ -215,6 +220,7 @@ public class UI_SkillTree : MonoBehaviour
         if (isOpen)
             RefreshUI();
     }
+
 
 
     private void CloseSkillTree()

@@ -113,8 +113,8 @@ public class BossSkillController : MonoBehaviour
     public Transform target;
 
     [Header("Cooldown Settings")]
-    public float skillCooldown = 1.5f;     // cooldown giữa các skill
-    [SerializeField] private float postSkillDelay = 2f; // ⭐ delay sau khi tung skill xong
+    public float skillCooldown = 1.5f;
+    [SerializeField] private float postSkillDelay = 2f;
 
     [Header("Attack Settings")]
     [SerializeField] private float attackAnimDuration = 0.8f;
@@ -131,6 +131,7 @@ public class BossSkillController : MonoBehaviour
     [SerializeField] private BossSkill1 skill1;
     [SerializeField] private BossSkill2 skill2;
 
+    private FrostBossFollow bossFollow;   // ⭐ Thêm follow check
     private bool isUsingSkill = false;
     private int lastSkill = -1;
 
@@ -138,6 +139,7 @@ public class BossSkillController : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         bossAttack = GetComponent<BossAttack>();
+        bossFollow = GetComponent<FrostBossFollow>(); // ⭐ Lấy script follow
     }
 
     private void Start()
@@ -149,18 +151,34 @@ public class BossSkillController : MonoBehaviour
     {
         while (true)
         {
+            // Boss đang tung skill
             if (isUsingSkill)
             {
                 yield return null;
                 continue;
             }
 
+            // Chưa có target
             if (target == null)
             {
                 yield return null;
                 continue;
             }
 
+            // ⭐ Chỉ dùng skill khi player nằm trong detectRange
+            if (bossFollow != null)
+            {
+                float dist = Vector2.Distance(transform.position, target.position);
+
+                if (dist > bossFollow.detectRange)
+                {
+                    // Player còn quá xa → boss không dùng skill
+                    yield return null;
+                    continue;
+                }
+            }
+
+            // Chọn skill ngẫu nhiên
             int skill = GetWeightedRandomSkill();
             lastSkill = skill;
 
@@ -169,34 +187,29 @@ public class BossSkillController : MonoBehaviour
             switch (skill)
             {
                 case 0:
-                    Debug.Log("[BossSkill] Use Attack");
-
                     if (!bossAttack.TryPerformAttack())
                     {
                         isUsingSkill = false;
                         continue;
                     }
-
                     yield return new WaitForSeconds(attackAnimDuration);
                     break;
 
                 case 1:
-                    Debug.Log("[BossSkill] Use Skill 1");
                     if (skill1 != null)
                         yield return StartCoroutine(skill1.CastSkill1());
                     break;
 
                 case 2:
-                    Debug.Log("[BossSkill] Use Skill 2");
                     if (skill2 != null)
                         yield return StartCoroutine(skill2.CastSkill2());
                     break;
             }
 
-            // ⭐ Cooldown bình thường
+            // Cooldown giữa các skill
             yield return new WaitForSeconds(skillCooldown);
 
-            // ⭐ Thêm delay sau khi tung skill
+            // Thêm delay sau skill
             yield return new WaitForSeconds(postSkillDelay);
 
             isUsingSkill = false;

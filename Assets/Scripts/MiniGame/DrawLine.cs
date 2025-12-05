@@ -89,6 +89,16 @@ public class DrawLine : MonoBehaviour
     List<Vector3> points = new List<Vector3>();
     bool isDrawing = false;
 
+    void Awake()
+    {
+        // ⭐ Đảm bảo nét vẽ luôn nằm TRÊN UI
+        if (lineRenderer != null)
+        {
+            lineRenderer.sortingLayerName = "MiniGame";
+            lineRenderer.sortingOrder = 50;
+        }
+    }
+
     void Update()
     {
         bool inside = RectTransformUtility.RectangleContainsScreenPoint(

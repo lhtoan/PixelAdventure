@@ -17,4 +17,9 @@ public class IceSpikeDamage : MonoBehaviour
     {
         damage = d;
     }
+
+    private void Deactivate()
+    {
+        gameObject.SetActive(false);
+    }
 }

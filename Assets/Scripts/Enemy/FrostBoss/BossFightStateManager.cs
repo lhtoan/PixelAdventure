@@ -28,11 +28,11 @@ public class BossFightStateManager : MonoBehaviour
         }
 
         // ⭐ Player chết trước boss → LOSE
-        if (playerHealth.currentHealth <= 0)
-        {
-            ended = true;
-            endUI.ShowLose();
-            return;
-        }
+        // if (playerHealth.currentHealth <= 0)
+        // {
+        //     ended = true;
+        //     endUI.ShowLose();
+        //     return;
+        // }
     }
 }

@@ -191,5 +191,72 @@ public class PlayerSkill : MonoBehaviour
         return baseValue;
     }
 
+    public List<string> GetUnlockedSkillsList()
+    {
+        List<string> list = new List<string>();
+        foreach (SkillType s in unlockedSkillTypeList)
+            list.Add(s.ToString());
+        return list;
+    }
+
+    public void LoadUnlockedSkills(List<string> skills)
+    {
+        unlockedSkillTypeList.Clear();
+
+        foreach (string s in skills)
+        {
+            if (System.Enum.TryParse(s, out SkillType skill))
+            {
+                unlockedSkillTypeList.Add(skill);
+
+                // áp dụng hiệu ứng ngay lập tức
+                ApplySkillEffects(skill);
+            }
+        }
+    }
+
+
+    private void ApplySkillEffects(SkillType skillType)
+    {
+        var hp = GetComponent<Health>();
+        var st = GetComponent<PlayerStamina>();
+
+        switch (skillType)
+        {
+            case SkillType.Health_Up:
+                hp?.IncreaseMaxHealth(1);
+                break;
+
+            case SkillType.Stamina_Up:
+                st?.IncreaseMaxStamina(10);
+                break;
+
+            case SkillType.Health_Up_2:
+                hp?.IncreaseMaxHealth(1);
+                break;
+
+            case SkillType.Stamina_Up_2:
+                st?.IncreaseMaxStamina(50);
+                st?.IncreaseRegenRate(7);
+                break;
+
+            case SkillType.Fire_Cooldown:
+                float reducePercent = 0.10f;
+
+                Skill_E_Fire fireE = GetComponentInChildren<Skill_E_Fire>();
+                Skill_R_Fire fireR = GetComponentInChildren<Skill_R_Fire>();
+
+                fireE?.ApplyCooldownUpgrade(reducePercent);
+                fireR?.ApplyCooldownUpgrade(reducePercent);
+
+                PlayerAttack atk = GetComponent<PlayerAttack>();
+                if (atk != null)
+                    atk.burnDamageBonus += 0.30f;
+                break;
+        }
+    }
+
+
+
 
 }

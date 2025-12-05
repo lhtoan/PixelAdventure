@@ -110,7 +110,7 @@ public class BossSkill2 : MonoBehaviour
         if (IsCasting) yield break;
         IsCasting = true;
 
-        Debug.Log("Skill2 START");
+        // Debug.Log("Skill2 START");
 
         // ⭐ 1) Boss nhảy lên
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
@@ -128,7 +128,7 @@ public class BossSkill2 : MonoBehaviour
 
         ClearSpikes();
 
-        Debug.Log("Skill2 END");
+        // Debug.Log("Skill2 END");
 
         IsCasting = false;
     }

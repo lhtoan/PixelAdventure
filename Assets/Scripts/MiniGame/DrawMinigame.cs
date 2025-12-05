@@ -84,6 +84,7 @@ public class DrawMinigame : MonoBehaviour
 
     private void Update()
     {
+
         if (Input.GetKeyDown(KeyCode.L))
             ToggleMinigame();
 
@@ -444,6 +445,4 @@ public class DrawMinigame : MonoBehaviour
             CloseUI();
         }
     }
-
-
 }

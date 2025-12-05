@@ -154,10 +154,10 @@ public class BurnEnemy : MonoBehaviour
             realDamage *= (1f + attacker.burnDamageBonus);
         }
 
-        Debug.Log(
-            $"🔥 START BURN on {gameObject.name} | " +
-            $"DamagePerSec = {realDamage:F2}, Duration = {realDuration:F2}, Attacker = {(attacker ? "Player" : "Enemy")}"
-        );
+        // Debug.Log(
+        //     $"🔥 START BURN on {gameObject.name} | " +
+        //     $"DamagePerSec = {realDamage:F2}, Duration = {realDuration:F2}, Attacker = {(attacker ? "Player" : "Enemy")}"
+        // );
 
         if (sr != null)
             sr.color = new Color(1f, 0.5f, 0.2f);
@@ -174,17 +174,17 @@ public class BurnEnemy : MonoBehaviour
 
             health.TakeDamage(damageThisFrame, false);
 
-            Debug.Log(
-                $"🔥 DOT HIT {gameObject.name}: +{damageThisFrame:F3} dmg | " +
-                $"TotalSoFar={accumulatedDamage:F2} at t={timer:F2}s"
-            );
+            // Debug.Log(
+            //     $"🔥 DOT HIT {gameObject.name}: +{damageThisFrame:F3} dmg | " +
+            //     $"TotalSoFar={accumulatedDamage:F2} at t={timer:F2}s"
+            // );
 
             // Debug mỗi giây
             if (Mathf.Floor(timer) != Mathf.Floor(timer + Time.deltaTime))
             {
-                Debug.Log(
-                    $"🔥 1-SECOND DOT SUMMARY on {gameObject.name}: {accumulatedDamage:F2} damage"
-                );
+                // Debug.Log(
+                //     $"🔥 1-SECOND DOT SUMMARY on {gameObject.name}: {accumulatedDamage:F2} damage"
+                // );
                 accumulatedDamage = 0f;
             }
 
@@ -195,7 +195,7 @@ public class BurnEnemy : MonoBehaviour
         if (sr != null)
             sr.color = Color.white;
 
-        Debug.Log($"🔥 END BURN on {gameObject.name}");
+        // Debug.Log($"🔥 END BURN on {gameObject.name}");
 
         isBurning = false;
     }

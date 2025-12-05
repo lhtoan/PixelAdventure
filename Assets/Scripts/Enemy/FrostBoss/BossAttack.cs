@@ -112,31 +112,26 @@ public class BossAttack : MonoBehaviour
 
     public bool TryPerformAttack()
     {
-        Debug.Log("[Attack] TryPerformAttack() gọi!");
 
         // nếu không trong vùng attack → không đánh
         if (!PlayerInRange())
         {
-            Debug.Log("[Attack] FAIL: Player không trong hitbox");
             return false;
         }
 
         // nếu đã đánh trong lần vào vùng này → không đánh nữa
         if (hasAttackedInThisEntry)
         {
-            Debug.Log("[Attack] FAIL: hasAttackedInThisEntry = TRUE");
             return false;
         }
 
         // kiểm cooldown
         if (cooldownTimer < attackCooldown)
         {
-            Debug.Log("[Attack] FAIL: cooldownTimer = " + cooldownTimer + " < " + attackCooldown);
             return false;
         }
 
         // OK → đánh
-        Debug.Log("[Attack] SUCCESS → THỰC HIỆN ATTACK!");
 
         hasAttackedInThisEntry = true;
         cooldownTimer = 0f;

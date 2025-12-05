@@ -103,5 +103,11 @@ TagManager:
   - name: Fireball
     uniqueID: 4032888705
     locked: 0
+  - name: UIAll
+    uniqueID: 943294515
+    locked: 0
+  - name: MiniGame
+    uniqueID: 2804807201
+    locked: 0
   m_RenderingLayers:
   - Default
