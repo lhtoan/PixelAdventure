@@ -214,8 +214,29 @@ public class MainMenuUI : MonoBehaviour
 
         SaveManager.Save(data);
 
-        Debug.Log($"💾 MANUAL SAVE at position ({data.posX}, {data.posY})");
     }
+
+    public void OnContinueClicked()
+    {
+        Debug.Log("CONTINUE GAME");
+
+        // ❌ Không có file save → chơi game mới luôn
+        if (!SaveManager.HasSave())
+        {
+            Debug.Log("⚠ No save found → Starting NEW GAME");
+            StartGame();      // chạy như nút Play
+            return;
+        }
+
+        // ✔ Có file save → Continue
+        PlayerPrefs.SetInt("ShouldLoadSave", 1);
+        PlayerPrefs.SetInt("IsReloadEvent", 1);
+
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+
 
 
 

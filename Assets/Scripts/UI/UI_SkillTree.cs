@@ -47,6 +47,14 @@ public class UI_SkillTree : MonoBehaviour
     public int treasure_SkillCost = 0;
     public int treasure_CoinCost = 180;
 
+    [Header("Skill Info UI")]
+    public GameObject descriptionPanel;
+
+    public TMPro.TMP_Text txt_des;
+    public TMPro.TMP_Text txt_coin;
+    public TMPro.TMP_Text txt_sp;
+
+
     [Header("UI Components")]
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private Image dimBackground;
@@ -89,7 +97,7 @@ public class UI_SkillTree : MonoBehaviour
 
         prerequisite = playerSkill.GetPrerequisite();
 
-        AssignButtonClickHandlers();
+        // AssignButtonClickHandlers();
 
         SetCanvasVisible(false, true);
         SetDimVisible(false, true);
@@ -151,22 +159,22 @@ public class UI_SkillTree : MonoBehaviour
         skillBar = FindFirstObjectByType<UI_SkillBar>();
     }
 
-    private void AssignButtonClickHandlers()
-    {
-        fireE_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Fire_E));
-        fireR_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Fire_R));
-        healthUp_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Health_Up));
-        staminaUp_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Stamina_Up));
-        healthUp2_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Health_Up_2));
-        fireCooldown_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Fire_Cooldown));
-        staminaUp2_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Stamina_Up_2));
+    // private void AssignButtonClickHandlers()
+    // {
+    //     fireE_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Fire_E));
+    //     fireR_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Fire_R));
+    //     healthUp_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Health_Up));
+    //     staminaUp_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Stamina_Up));
+    //     healthUp2_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Health_Up_2));
+    //     fireCooldown_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Fire_Cooldown));
+    //     staminaUp2_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Stamina_Up_2));
 
-        iceE_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Ice_E));
-        iceR_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Ice_R));
-        iceStack_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.IceStack));
-        treasure_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Treasure));
+    //     iceE_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Ice_E));
+    //     iceR_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Ice_R));
+    //     iceStack_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.IceStack));
+    //     treasure_UI?.GetComponent<Button>().onClick.AddListener(() => Unlock(PlayerSkill.SkillType.Treasure));
 
-    }
+    // }
 
 
     // ==============================
@@ -218,7 +226,13 @@ public class UI_SkillTree : MonoBehaviour
             Time.timeScale = isOpen ? 0 : 1;
 
         if (isOpen)
+        {
             RefreshUI();
+
+            // ⭐ TẮT DESCRIPTION KHI MỞ SKILL TREE
+            if (descriptionPanel != null)
+                descriptionPanel.SetActive(false);
+        }
     }
 
 
@@ -232,6 +246,9 @@ public class UI_SkillTree : MonoBehaviour
 
         if (pauseGameWhenOpen)
             Time.timeScale = 1;
+
+        if (descriptionPanel != null)
+            descriptionPanel.SetActive(false);
     }
 
     // ==============================
@@ -322,7 +339,7 @@ public class UI_SkillTree : MonoBehaviour
     // ==============================
     //      UNLOCK + REFRESH UI
     // ==============================
-    private void Unlock(PlayerSkill.SkillType type)
+    public void Unlock(PlayerSkill.SkillType type)
     {
         GameManager gm = FindFirstObjectByType<GameManager>();
         if (!gm || !playerSkill)
@@ -347,7 +364,7 @@ public class UI_SkillTree : MonoBehaviour
         skillBar?.UpdateElementUI(FindFirstObjectByType<PlayerAttack>().CurrentElement);
     }
 
-    private void GetCosts(PlayerSkill.SkillType type, ref int sp, ref int coin)
+    public void GetCosts(PlayerSkill.SkillType type, ref int sp, ref int coin)
     {
         switch (type)
         {
@@ -384,4 +401,29 @@ public class UI_SkillTree : MonoBehaviour
         treasure_UI.SetUnlocked(playerSkill.IsSkillUnlocked(PlayerSkill.SkillType.Treasure));
 
     }
+
+    public PlayerSkill GetPlayerSkill()
+    {
+        return playerSkill;
+    }
+
+    public void ShowSkillInfoUI(PlayerSkill.SkillType type)
+    {
+        if (descriptionPanel == null) return;
+
+        // Bật UI Description
+        descriptionPanel.SetActive(true);
+
+        string desc = playerSkill.GetSkillDescription(type);
+
+        txt_des.text = desc;
+
+        int sp = 0, coin = 0;
+        GetCosts(type, ref sp, ref coin);
+
+        txt_coin.text = coin.ToString();
+        txt_sp.text = sp.ToString();
+    }
+
+
 }

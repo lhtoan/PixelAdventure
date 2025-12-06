@@ -4,7 +4,7 @@ using System.Collections;
 public class RinoPatrol : MonoBehaviour
 {
     [Header("Charge Damage")]
-    public int chargeDamage = 1;
+    public float chargeDamage = 1f;
 
     [Header("Behavior Mode")]
     public bool usePatrol = true;   // TRUE = Patrol A-B | FALSE = Follow target

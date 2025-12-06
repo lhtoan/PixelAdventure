@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
 
-public class UI_SkillButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class UI_SkillButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public PlayerSkill.SkillType skillType;
 
@@ -14,17 +14,20 @@ public class UI_SkillButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     private List<UILineConnector> incomingLines = new();
     private List<UILineConnector> outgoingLines = new();
 
+    // double click
+    private float lastClickTime = 0f;
+    private const float doubleClickThreshold = 0.3f;
+
     void Awake()
     {
         rt = GetComponent<RectTransform>();
         CacheIncomingLines();
     }
 
-    // Tìm line có to == node này
     void CacheIncomingLines()
     {
         incomingLines.Clear();
-        outgoingLines.Clear(); // ★ THÊM
+        outgoingLines.Clear();
 
         UILineConnector[] allLines = FindObjectsByType<UILineConnector>(FindObjectsSortMode.None);
 
@@ -33,13 +36,11 @@ public class UI_SkillButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             if (line.to == rt)
                 incomingLines.Add(line);
 
-            if (line.from == rt)       // ★ THÊM: tìm line đi RA node này
+            if (line.from == rt)
                 outgoingLines.Add(line);
         }
     }
 
-
-    // Đổi màu khi unlock
     public void SetUnlocked(bool unlocked)
     {
         if (unblockedImage) unblockedImage.gameObject.SetActive(unlocked);
@@ -49,7 +50,88 @@ public class UI_SkillButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             line.SetUnlocked(unlocked);
     }
 
-    // ⭐⭐ HOVER → highlight toàn bộ đường dẫn mở node này
+    // CLICK HANDLER
+    // public void OnPointerClick(PointerEventData eventData)
+    // {
+    //     if (Time.unscaledTime - lastClickTime < doubleClickThreshold)
+    //     {
+    //         // DOUBLE CLICK → mở skill
+    //         UI_SkillTree.Instance.Unlock(skillType);
+    //     }
+    //     else
+    //     {
+    //         // SINGLE CLICK → mô tả skill + cost
+    //         ShowSkillInfo();
+    //     }
+
+    //     lastClickTime = Time.unscaledTime;
+    // }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (Time.unscaledTime - lastClickTime < doubleClickThreshold)
+        {
+            // DOUBLE CLICK → mở skill
+            UI_SkillTree.Instance.Unlock(skillType);
+        }
+        else
+        {
+            // SINGLE CLICK → hiện mô tả
+            ShowSkillInfo();
+        }
+
+        lastClickTime = Time.unscaledTime;
+    }
+
+
+    // private void ShowSkillInfo()
+    // {
+    //     var tree = UI_SkillTree.Instance;
+    //     var playerSkill = tree.GetPlayerSkill();   // ✔ FIXED
+
+    //     if (playerSkill == null)
+    //         return;
+
+    //     string desc = playerSkill.GetSkillDescription(skillType);
+
+    //     int sp = 0, coin = 0;
+    //     tree.GetCosts(skillType, ref sp, ref coin);
+
+    //     Debug.Log(
+    //         $"📘 SKILL INFO: {skillType}\n" +
+    //         $"➡ Mô tả: {desc}\n" +
+    //         $"➡ Cost: {sp} Skill Point, {coin} Coin\n" +
+    //         $"(Double-click để mở)"
+    //     );
+    // }
+
+    private void ShowSkillInfo()
+    {
+        var tree = UI_SkillTree.Instance;
+        var playerSkill = tree.GetPlayerSkill();
+
+        if (playerSkill == null)
+            return;
+
+        // ⭐ Hiện mô tả + cost trong UI
+        tree.ShowSkillInfoUI(skillType);
+
+        // log thêm nếu muốn
+        string desc = playerSkill.GetSkillDescription(skillType);
+
+        int sp = 0, coin = 0;
+        tree.GetCosts(skillType, ref sp, ref coin);
+
+        // Debug.Log(
+        //     $"📘 SKILL INFO: {skillType}\n" +
+        //     $"➡ Mô tả: {desc}\n" +
+        //     $"➡ Cost: {sp} Skill Point, {coin} Coin\n" +
+        //     $"(Double-click để mở)"
+        // );
+    }
+
+
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         HighlightRecursive(skillType, true);
@@ -60,10 +142,8 @@ public class UI_SkillButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         HighlightRecursive(skillType, false);
     }
 
-    // Đệ quy highlight theo prerequisite
     void HighlightRecursive(PlayerSkill.SkillType node, bool active)
     {
-        // 1) Highlight tất cả line dẫn vào node (kể cả từ icon)
         UILineConnector[] allLines = FindObjectsByType<UILineConnector>(FindObjectsSortMode.None);
 
         foreach (var line in allLines)
@@ -71,18 +151,15 @@ public class UI_SkillButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             UI_SkillButton toBtn = line.to.GetComponent<UI_SkillButton>();
             if (toBtn != null && toBtn.skillType == node)
             {
-                line.Highlight(active);   // sáng line icon → skill
+                line.Highlight(active);
             }
         }
 
-        // 2) Nếu node không có prerequisite, dừng
         if (!UI_SkillTree.Instance.prerequisite.ContainsKey(node))
             return;
 
-        // 3) Lặp cha của node
         foreach (var parent in UI_SkillTree.Instance.prerequisite[node])
         {
-            // highlight line CHA → NODE
             foreach (var line in allLines)
             {
                 UI_SkillButton fromBtn = line.from.GetComponent<UI_SkillButton>();
@@ -96,11 +173,7 @@ public class UI_SkillButton : MonoBehaviour, IPointerEnterHandler, IPointerExitH
                 }
             }
 
-            // Đệ quy CHA
             HighlightRecursive(parent, active);
         }
     }
-
-
-
 }

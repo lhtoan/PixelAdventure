@@ -102,6 +102,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2841537262026265120, guid: 7cf667c1d0df0c547bc1756b224ba1e2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 9151831527216882973}
+    - targetCorrespondingSourceObject: {fileID: 2841537262026265120, guid: 7cf667c1d0df0c547bc1756b224ba1e2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8134445944304296604}
   m_SourcePrefab: {fileID: 100100000, guid: 7cf667c1d0df0c547bc1756b224ba1e2, type: 3}
 --- !u!1 &1019732954679147986 stripped
 GameObject:
@@ -145,6 +148,23 @@ MonoBehaviour:
   enemyModel: {fileID: 1934642473626078572}
   anim: {fileID: 5253227873059803148}
   isFrozen: 0
+--- !u!114 &8134445944304296604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1019732954679147986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66c921f9c0f23c84f92a757174494770, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DropItem
+  drops:
+  - itemPrefab: {fileID: 7665941253087677646, guid: 4d50c4c3e3f4e4f418f665fa00454c32, type: 3}
+    minAmount: 1
+    maxAmount: 2
+    dropChance: 1
 --- !u!4 &1934642473626078572 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3715682696142906014, guid: 7cf667c1d0df0c547bc1756b224ba1e2, type: 3}

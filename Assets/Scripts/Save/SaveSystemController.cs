@@ -55,40 +55,6 @@ public class SaveSystemController : MonoBehaviour
         SaveManager.Save(data);
     }
 
-    // // ===============================================
-    // // LOAD
-    // // ===============================================
-    // public void LoadGame()
-    // {
-    //     SaveData data = SaveManager.Load();
-    //     if (data == null)
-    //     {
-    //         return;
-    //     }
-
-    //     // Load máu
-    //     playerHealth.SetHealth(data.health);
-
-    //     // Load coin & skill point
-    //     gameManager.ForceSetScore(data.score);
-    //     gameManager.ForceSetSkillPoints(data.skillPoints);
-
-    //     // Load skill
-    //     foreach (string s in data.unlockedSkills)
-    //     {
-    //         PlayerSkill.SkillType type =
-    //             (PlayerSkill.SkillType)System.Enum.Parse(typeof(PlayerSkill.SkillType), s);
-
-    //         playerSkill.UnlockSkill(type);
-    //     }
-
-    //     // Load respawn
-    //     playerRespawn.SetRespawnCount(data.respawnCount);
-
-    //     // Load checkpoint vị trí
-    //     MovePlayerToCheckpoint(data.checkpointID);
-
-    // }
 
     // ===============================================
     // LOAD

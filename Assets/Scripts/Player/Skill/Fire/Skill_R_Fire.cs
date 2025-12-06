@@ -24,7 +24,6 @@ public class Skill_R_Fire : MonoBehaviour
         playerStamina = GetComponentInParent<PlayerStamina>();
         playerSkill = GetComponentInParent<PlayerSkill>();
         if (skillBarIcon == null)
-            Debug.LogWarning("⚠ Fire_R missing skillBarIcon reference in Inspector!");
 
         // Ensure all pool objects start inactive
         for (int i = 0; i < tornadoPool.Count; i++)
@@ -64,14 +63,12 @@ public class Skill_R_Fire : MonoBehaviour
 
         if (R_FirePoint == null)
         {
-            Debug.LogError("[Skill_R_Fire] R_FirePoint is NOT assigned!");
             isOnCooldown = false;
             return;
         }
 
         if (tornadoPool == null || tornadoPool.Count == 0)
         {
-            Debug.LogError("[Skill_R_Fire] tornadoPool is empty.");
             isOnCooldown = false;
             return;
         }
@@ -123,7 +120,6 @@ public class Skill_R_Fire : MonoBehaviour
     public void ApplyCooldownUpgrade(float percent)
     {
         cooldown *= (1f - percent);
-        Debug.Log($"🔥 Fire R cooldown giảm còn: {cooldown}");
     }
 
 }

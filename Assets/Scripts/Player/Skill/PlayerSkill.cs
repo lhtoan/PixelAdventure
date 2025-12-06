@@ -47,6 +47,36 @@ public class PlayerSkill : MonoBehaviour
 
     };
 
+    private Dictionary<SkillType, string> skillDescriptions = new()
+    {
+        { SkillType.Fire_E,        "Shoots multiple fast-moving fireballs in all directions, each dealing damage and burning enemies on hit. [Cooldown: 10 seconds]" },
+        { SkillType.Fire_R,        "Summons a homing fire orb that burns and damages nearby enemies over time. [Cooldown: 15s]" },
+
+        { SkillType.Health_Up,     "Increases Max HP by 1." },
+        { SkillType.Health_Up_2,   "Increases Max HP by 1." },
+
+        { SkillType.Stamina_Up,    "Increases Max Stamina by 10." },
+        { SkillType.Stamina_Up_2,  "Increases Max Stamina by 40 and boosts Stamina regeneration by +10 per second." },
+
+        { SkillType.Fire_Cooldown, "Reduces cooldown of all Fire skills by 30% and increases Burn damage by 30%." },
+
+        { SkillType.Ice_E,         "Creates a protective ice shield for a short duration, dealing periodic damage and applying Freeze effects to enemies on contact. [Cooldown: 8 seconds]." },
+        { SkillType.Ice_R,         "Summons Ice Pillars forward, dealing multiple hits and freezing enemies on contact. [Cooldown: 10 second]" },
+
+        { SkillType.Treasure,      "Grants a 50% chance to double Coins and enemy drop rewards." },
+        { SkillType.IceStack,      "Ice attacks apply stacks to enemies. Every 3 stacks triggers an Ice Burst dealing accumulated Ice damage and freezes the target if not already frozen." },
+    };
+
+
+    public string GetSkillDescription(SkillType skill)
+    {
+        if (skillDescriptions.TryGetValue(skill, out string desc))
+            return desc;
+
+        return "Chưa có mô tả.";
+    }
+
+
 
     private void Awake()
     {
@@ -115,7 +145,7 @@ public class PlayerSkill : MonoBehaviour
                 break;
             case SkillType.Stamina_Up_2:
                 st?.IncreaseMaxStamina(50);
-                st?.IncreaseRegenRate(7);
+                st?.IncreaseRegenRate(10);
                 break;
             case SkillType.Fire_Cooldown:
 
@@ -236,12 +266,12 @@ public class PlayerSkill : MonoBehaviour
                 break;
 
             case SkillType.Stamina_Up_2:
-                st?.IncreaseMaxStamina(50);
-                st?.IncreaseRegenRate(7);
+                st?.IncreaseMaxStamina(40);
+                st?.IncreaseRegenRate(10);
                 break;
 
             case SkillType.Fire_Cooldown:
-                float reducePercent = 0.10f;
+                float reducePercent = 0.30f;
 
                 Skill_E_Fire fireE = GetComponentInChildren<Skill_E_Fire>();
                 Skill_R_Fire fireR = GetComponentInChildren<Skill_R_Fire>();

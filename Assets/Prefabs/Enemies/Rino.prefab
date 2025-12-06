@@ -83,6 +83,7 @@ GameObject:
   - component: {fileID: 3172175087794067718}
   - component: {fileID: 8367642689653730976}
   - component: {fileID: 5661145563246545432}
+  - component: {fileID: 6489636214530878334}
   m_Layer: 8
   m_Name: Rino
   m_TagString: Enemy
@@ -292,6 +293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b14fc2d39fe059c409c567c9056a21ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  chargeDamage: 0.5
   usePatrol: 0
   target: {fileID: 0}
   followRange: 20
@@ -354,6 +356,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyInfo
   enemyType: 0
+--- !u!114 &6489636214530878334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4710760165989034547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66c921f9c0f23c84f92a757174494770, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DropItem
+  drops:
+  - itemPrefab: {fileID: 7665941253087677646, guid: 4d50c4c3e3f4e4f418f665fa00454c32, type: 3}
+    minAmount: 1
+    maxAmount: 2
+    dropChance: 1
 --- !u!1 &5313141385629597644
 GameObject:
   m_ObjectHideFlags: 0
