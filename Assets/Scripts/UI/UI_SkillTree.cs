@@ -421,8 +421,9 @@ public class UI_SkillTree : MonoBehaviour
         int sp = 0, coin = 0;
         GetCosts(type, ref sp, ref coin);
 
-        txt_coin.text = coin.ToString();
-        txt_sp.text = sp.ToString();
+        txt_coin.text = "-" + coin.ToString();
+        txt_sp.text = "-" + sp.ToString();
+
     }
 
 

@@ -244,11 +244,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21bf2636ed915474ab642eefcbff8c85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useInvulnerability: 1
   startingHealth: 3
   iFramesDuration: 0
   numberOfFlashes: 0
   components:
   - {fileID: 7083805503773204361}
+  - {fileID: 4965069838667954128}
+  - {fileID: 4594266560758284299}
 --- !u!114 &4965069838667954128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -388,7 +391,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -409581179
-  m_SortingLayer: 4
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: -9077138917963713561, guid: 8dd33d5b996f9e241bf23a6a46a6ef02, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -478,7 +481,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -409581179
-  m_SortingLayer: 4
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 7614648247654082492, guid: 8dd33d5b996f9e241bf23a6a46a6ef02, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -568,7 +571,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -409581179
-  m_SortingLayer: 4
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: -7812202244882038895, guid: 8dd33d5b996f9e241bf23a6a46a6ef02, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

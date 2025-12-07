@@ -77,7 +77,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -409581179
-  m_SortingLayer: 4
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: -7812202244882038895, guid: 8dd33d5b996f9e241bf23a6a46a6ef02, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -178,7 +178,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 1414066947
-  m_SortingLayer: 6
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_Sprite: {fileID: -8566016935703454450, guid: e57875c24be4e2f4ba60a1d718b46d84, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -330,6 +330,7 @@ MonoBehaviour:
     m_Bits: 16512
   anim: {fileID: 4538873948810149795}
   explodeTrigger: explode
+  explosionCenter: {fileID: 0}
 --- !u!114 &52750476265566287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,12 +343,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21bf2636ed915474ab642eefcbff8c85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
+  useInvulnerability: 1
   startingHealth: 15
   iFramesDuration: 0
   numberOfFlashes: 0
   components:
   - {fileID: 4616857586046051889}
   - {fileID: 3329777138248698835}
+  - {fileID: 6109578174062658787}
+  - {fileID: 7196394845572982279}
 --- !u!114 &6109578174062658787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -469,7 +473,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -409581179
-  m_SortingLayer: 4
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 7614648247654082492, guid: 8dd33d5b996f9e241bf23a6a46a6ef02, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -559,7 +563,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -409581179
-  m_SortingLayer: 4
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: -9077138917963713561, guid: 8dd33d5b996f9e241bf23a6a46a6ef02, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -706,11 +710,26 @@ PrefabInstance:
       propertyPath: enemyHealth
       value: 
       objectReference: {fileID: 52750476265566287}
+    - target: {fileID: 6989783767364635814, guid: 0e4df4d5832482540a3c95cbe36a455b, type: 3}
+      propertyPath: totalHealthBar
+      value: 
+      objectReference: {fileID: 6703188692685372439}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0e4df4d5832482540a3c95cbe36a455b, type: 3}
+--- !u!114 &6703188692685372439 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6919116165371636640, guid: 0e4df4d5832482540a3c95cbe36a455b, type: 3}
+  m_PrefabInstance: {fileID: 4396394939769853879}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &7196814511413911699 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6837336479501219620, guid: 0e4df4d5832482540a3c95cbe36a455b, type: 3}

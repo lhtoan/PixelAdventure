@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: a549b703e9d0253479872d709225ddbc
+guid: 4b3cbd2a8d91d0947890734816555702
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7120874526274968602
-    second: 20250420manaSoulHeaderB-Sheet_0
+      213: -2083675357476093587
+    second: ChatGPT Image 13_39_06 7 thg 12, 2025_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -52,7 +52,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 16
-  spriteBorder: {x: 32, y: 0, z: 32, w: 0}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -100,23 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 20250420manaSoulHeaderB-Sheet_0
+      name: ChatGPT Image 13_39_06 7 thg 12, 2025_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 96
-        height: 22
+        width: 1536
+        height: 1024
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6e3a04ba8529d2d90800000000000000
-      internalID: -7120874526274968602
+      spriteID: d61076a5d4c4513e0800000000000000
+      internalID: -2083675357476093587
       vertices: []
       indices: 
       edges: []
@@ -126,7 +126,7 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    internalID: 0
     vertices: []
     indices: 
     edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      20250420manaSoulHeaderB-Sheet_0: -7120874526274968602
+      ChatGPT Image 13_39_06 7 thg 12, 2025_0: -2083675357476093587
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

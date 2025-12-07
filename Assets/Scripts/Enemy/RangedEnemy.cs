@@ -63,15 +63,15 @@ public class RangedEnemy : MonoBehaviour
         return 0;
     }
 
-    // private bool PlayerInSight()
-    // {
-    //     RaycastHit2D hit =
-    //         Physics2D.BoxCast(boxCollider.bounds.center + transform.right * range * transform.localScale.x * colliderDistance,
-    //         new Vector3(boxCollider.bounds.size.x * range, boxCollider.bounds.size.y, boxCollider.bounds.size.z),
-    //         0, Vector2.left, 0, playerLayer);
+    private bool PlayerInSight()
+    {
+        RaycastHit2D hit =
+            Physics2D.BoxCast(boxCollider.bounds.center + transform.right * range * transform.localScale.x * colliderDistance,
+            new Vector3(boxCollider.bounds.size.x * range, boxCollider.bounds.size.y, boxCollider.bounds.size.z),
+            0, Vector2.left, 0, playerLayer);
 
-    //     return hit.collider != null;
-    // }
+        return hit.collider != null;
+    }
 
     private void RangedAttack()
     {
@@ -84,40 +84,11 @@ public class RangedEnemy : MonoBehaviour
         fb.GetComponent<EnemyProjectile>().ActivateProjectile();
     }
 
-    private bool PlayerInSight()
-    {
-        Vector2 castDirection = firepoint.right;   // ⭐ HƯỚNG BẮN = HƯỚNG CAST
 
-        RaycastHit2D hit =
-            Physics2D.BoxCast(
-                boxCollider.bounds.center + (Vector3)(castDirection * range * colliderDistance),
-                new Vector3(boxCollider.bounds.size.x * range, boxCollider.bounds.size.y, boxCollider.bounds.size.z),
-                0f,
-                castDirection,
-                0f,
-                playerLayer
-            );
-
-        return hit.collider != null;
-    }
-
-
-    // private void OnDrawGizmos()
-    // {
-    //     Gizmos.color = Color.red;
-    //     Gizmos.DrawWireCube(boxCollider.bounds.center + transform.right * range * transform.localScale.x * colliderDistance,
-    //         new Vector3(boxCollider.bounds.size.x * range, boxCollider.bounds.size.y, boxCollider.bounds.size.z));
-    // }
     private void OnDrawGizmos()
     {
-        if (boxCollider == null) return;
-
-        Vector2 castDirection = Vector2.right * transform.localScale.x;
-
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(
-            boxCollider.bounds.center + (Vector3)(castDirection * range * colliderDistance),
-            new Vector3(boxCollider.bounds.size.x * range, boxCollider.bounds.size.y, boxCollider.bounds.size.z)
-        );
+        Gizmos.DrawWireCube(boxCollider.bounds.center + transform.right * range * transform.localScale.x * colliderDistance,
+            new Vector3(boxCollider.bounds.size.x * range, boxCollider.bounds.size.y, boxCollider.bounds.size.z));
     }
 }

@@ -147,6 +147,11 @@ public class DrawMinigame : MonoBehaviour
         // ⛔ Tắt UI thời gian
         if (drawTimeObject != null)
             drawTimeObject.SetActive(false);
+            
+        if (currentTreasure != null)
+        {
+            currentTreasure.OnMinigameClosedWithoutSuccess();
+        }
 
     }
 

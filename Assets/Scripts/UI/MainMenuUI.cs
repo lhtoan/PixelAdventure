@@ -14,15 +14,6 @@ public class MainMenuUI : MonoBehaviour
     [SerializeField] private PlayerController playerController;
     [SerializeField] private PlayerAttack playerAttack;
 
-    // private void Start()
-    // {
-    //     ShowStartMenu();
-
-    //     if (playerController) playerController.enabled = false;
-    //     if (playerAttack) playerAttack.inputLocked = true;
-
-    //     Time.timeScale = 0f;
-    // }
     private void Start()
     {
         if (PlayerPrefs.GetInt("IsReloadEvent", 0) == 1)
@@ -59,9 +50,18 @@ public class MainMenuUI : MonoBehaviour
 
     public void OnPlayClicked()
     {
-        StartGame();
-        Debug.Log("START GAME");
+        Debug.Log("START NEW GAME");
+
+        // Đánh dấu: KHÔNG load save
+        PlayerPrefs.SetInt("ShouldLoadSave", 0);
+        PlayerPrefs.SetInt("IsReloadEvent", 1);
+
+        Time.timeScale = 1f;
+
+        // Load lại scene → world reset, player reset
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
+
 
     public void OnQuitClicked()
     {
@@ -179,17 +179,6 @@ public class MainMenuUI : MonoBehaviour
         if (playerAttack) playerAttack.inputLocked = false;
     }
 
-    // public void OnReloadClicked()
-    // {
-    //     Debug.Log("RELOAD GAME FROM SAVE");
-
-    //     // 1) Load dữ liệu
-    //     FindFirstObjectByType<SaveSystemController>().LoadGame();
-
-    //     // 2) Thoát pause menu, tiếp tục chơi
-    //     ResumeGame();
-    // }
-
     public void OnReloadClicked()
     {
         Debug.Log("RELOAD GAME (OPTION A)");
@@ -236,7 +225,7 @@ public class MainMenuUI : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-
+    
 
 
 
