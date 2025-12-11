@@ -20,6 +20,8 @@ public class EnemySpawner : MonoBehaviour
     public float totalSpawnTime = 20f;
     public float minSpawnInterval = 0.2f;
     public float accelerationFactor = 0.98f;
+    private int[] originalSpawnCounts;
+
 
     [System.Serializable]
     public class BossSchedule
@@ -48,9 +50,20 @@ public class EnemySpawner : MonoBehaviour
 
     private void Awake()
     {
+        originalSpawnCounts = new int[spawnCounts.Length];
+        for (int i = 0; i < spawnCounts.Length; i++)
+            originalSpawnCounts[i] = spawnCounts[i];
+
+        CalculateTotalToSpawn();
+    }
+
+    private void CalculateTotalToSpawn()
+    {
+        totalToSpawn = 0;
         foreach (int c in spawnCounts)
             totalToSpawn += c;
     }
+
 
     public void StartSpawning()
     {
@@ -195,4 +208,32 @@ public class EnemySpawner : MonoBehaviour
         foreach (Transform child in enemyParent)
             Destroy(child.gameObject);
     }
+
+    public void ResetSpawner()
+    {
+        StopAllCoroutines();
+        spawning = false;
+
+        totalSpawned = 0;
+        elapsedTime = 0f;
+        bossIndex = 0;
+
+        for (int i = 0; i < spawnCounts.Length; i++)
+            spawnCounts[i] = originalSpawnCounts[i];
+
+        CalculateTotalToSpawn();
+
+        Debug.Log("✅ EnemySpawner reset");
+    }
+
+    public void DisableAllEnemies()
+    {
+        if (enemyParent == null) return;
+
+        foreach (Transform child in enemyParent)
+        {
+            child.gameObject.SetActive(false);
+        }
+    }
+
 }

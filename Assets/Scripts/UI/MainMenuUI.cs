@@ -9,6 +9,10 @@ public class MainMenuUI : MonoBehaviour
     [Header("Sub Menus")]
     [SerializeField] private GameObject startMenu;
     [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private GameObject confirmBackPanel;
+    [SerializeField] private GameObject confirmQuitPanel;
+
+
 
     [Header("Player")]
     [SerializeField] private PlayerController playerController;
@@ -63,15 +67,43 @@ public class MainMenuUI : MonoBehaviour
     }
 
 
+    // public void OnQuitClicked()
+    // {
+    //     Debug.Log("QUIT GAME");
+    //     Application.Quit();
+
+    // #if UNITY_EDITOR
+    //         UnityEditor.EditorApplication.isPlaying = false;
+    // #endif
+    // }
+
     public void OnQuitClicked()
     {
-        Debug.Log("QUIT GAME");
+        Debug.Log("SHOW CONFIRM QUIT POPUP");
+
+        confirmQuitPanel.SetActive(true);
+
+        // Vì đang ở menu, không cần thay đổi timeScale
+    }
+
+    public void OnConfirmQuitYes()
+    {
+        Debug.Log("QUIT GAME CONFIRMED");
         Application.Quit();
 
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#endif
+    #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+    #endif
     }
+
+    public void OnConfirmQuitNo()
+    {
+        Debug.Log("CANCEL QUIT");
+        confirmQuitPanel.SetActive(false);
+    }
+
+
+
 
     public void OnResumeClicked()
     {
@@ -86,29 +118,64 @@ public class MainMenuUI : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    // public void OnBackToMenuClicked()
+    // {
+    //     Debug.Log("RETURN TO MAIN MENU");
+
+    //     Time.timeScale = 0f;
+
+    //     menuRoot.SetActive(true);
+    //     startMenu.SetActive(true);
+    //     pauseMenu.SetActive(false);
+
+    //     if (playerController) playerController.enabled = false;
+    //     if (playerAttack) playerAttack.inputLocked = true;
+    // }
     public void OnBackToMenuClicked()
     {
-        Debug.Log("RETURN TO MAIN MENU");
+        Debug.Log("BACK → SHOW CONFIRM EXIT POPUP");
 
+        // Hiện panel Confirm Exit
+        confirmBackPanel.SetActive(true);
+
+        // Tạm dừng game (vì đang ở pause)
         Time.timeScale = 0f;
 
+        // Khóa input tấn công
+        if (playerAttack) playerAttack.inputLocked = true;
+    }
+
+    public void OnConfirmExitYes()
+    {
+        Debug.Log("CONFIRMED: RETURN TO MAIN MENU + AUTO SAVE");
+
+        var saver = FindFirstObjectByType<SaveSystemController>();
+        saver.ManualSave();   // ⭐ auto save trước khi thoát
+
+        // Trở về Menu chính
         menuRoot.SetActive(true);
         startMenu.SetActive(true);
         pauseMenu.SetActive(false);
+        confirmBackPanel.SetActive(false);
+
+        Time.timeScale = 0f;
 
         if (playerController) playerController.enabled = false;
         if (playerAttack) playerAttack.inputLocked = true;
     }
 
-    // public void OnPlayAgainClicked()
-    // {
-    //     Debug.Log("PLAY AGAIN");
 
-    //     Time.timeScale = 1f;
+    public void OnConfirmExitNo()
+    {
+        Debug.Log("CANCEL EXIT");
 
-    //     // Load lại scene -> game mới hoàn toàn
-    //     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    // }
+        confirmBackPanel.SetActive(false);
+
+        // Quay lại Pause Menu
+        pauseMenu.SetActive(true);
+    }
+
+
     public void OnPlayAgainClicked()
     {
         Debug.Log("PLAY AGAIN (OPTION A)");
@@ -125,10 +192,6 @@ public class MainMenuUI : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-
-    // =============================
-    // MENU CONTROL
-    // =============================
 
     public void StartGame()
     {
@@ -193,15 +256,7 @@ public class MainMenuUI : MonoBehaviour
     public void OnManualSaveClicked()
     {
         var saver = FindFirstObjectByType<SaveSystemController>();
-        SaveData data = saver.BuildSaveData();
-
-        data.isManualSave = true;
-
-        Vector3 pos = saver.GetPlayerPosition();
-        data.posX = pos.x;
-        data.posY = pos.y;
-
-        SaveManager.Save(data);
+        saver.ManualSave();
 
     }
 

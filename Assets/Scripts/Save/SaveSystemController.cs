@@ -49,11 +49,11 @@ public class SaveSystemController : MonoBehaviour
     // ===============================================
     // SAVE
     // ===============================================
-    public void SaveGame()
-    {
-        SaveData data = BuildSaveData();
-        SaveManager.Save(data);
-    }
+    // public void SaveGame()
+    // {
+    //     SaveData data = BuildSaveData();
+    //     SaveManager.Save(data);
+    // }
 
 
     // ===============================================
@@ -117,6 +117,31 @@ public class SaveSystemController : MonoBehaviour
             }
         }
     }
+
+    public void SaveAtCheckpoint()
+    {
+        SaveData data = BuildSaveData();
+
+        data.isManualSave = false;   // ✅ RẤT QUAN TRỌNG
+        data.posX = 0;
+        data.posY = 0;
+
+        SaveManager.Save(data);
+    }
+
+    public void ManualSave()
+    {
+        SaveData data = BuildSaveData();
+
+        data.isManualSave = true;    // ✅ PHÂN BIỆT RÕ
+        Vector3 pos = GetPlayerPosition();
+        data.posX = pos.x;
+        data.posY = pos.y;
+
+        SaveManager.Save(data);
+    }
+
+
 
     public void DebugSaveData(SaveData data)
     {

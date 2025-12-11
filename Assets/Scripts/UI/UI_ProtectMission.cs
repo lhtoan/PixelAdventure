@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class UI_ProtectMission : MonoBehaviour
 {
@@ -33,6 +34,9 @@ public class UI_ProtectMission : MonoBehaviour
     private float maxHp;
     private bool isMissionFailed = false;
     public EndStateUI endState;
+    [Header("Mission Owner")]
+    public InteractNPC missionNPC;
+
 
 
     // 🔥 NEW — Thưởng coin khi bảo vệ NPC thành công
@@ -97,24 +101,11 @@ public class UI_ProtectMission : MonoBehaviour
         // ❌ NPC chết → thất bại
         if (!isMissionFailed && npcHealth != null && npcHealth.currentHealth <= 0)
         {
-            isMissionFailed = true;
-            running = false;
-
-            if (spawner != null)
-            {
-                spawner.StopSpawning();
-                spawner.ClearAllEnemies();
-            }
-
-            if (trapManager != null)
-                trapManager.StopTrapCycle();
-
-            if (endState != null)
-                endState.ShowLose();
-
-
+            MissionFail();
             return;
         }
+
+
     }
 
     private void UpdateTimer()
@@ -155,44 +146,6 @@ public class UI_ProtectMission : MonoBehaviour
     }
 
 
-    // ======================================================
-    // ⭐⭐⭐ NEW: MISSION SUCCESS
-    // ======================================================
-    // private void MissionSuccess()
-    // {
-    //     Debug.Log("🎉 NPC protected successfully — Mission Completed!");
-
-    //     // Dừng spawner & trap
-    //     if (spawner != null)
-    //         spawner.StopSpawning();
-    //         spawner.ClearAllEnemies();
-
-    //     if (trapManager != null)
-    //         trapManager.StopTrapCycle();
-
-    //     if (endState != null)
-    //         endState.ShowWin();
-
-
-    //     // 🎁 THƯỞNG COIN
-    //     if (gameManager != null)
-    //     {
-    //         int reward = Random.Range(minCoin, maxCoin + 1);
-    //         Debug.Log($"💰 You earned {reward} coins!");
-    //         gameManager.AddScore(reward);
-    //     }
-
-    //     // Ẩn UI nếu muốn
-    //     // gameObject.SetActive(false);
-
-    //     // Tắt HUD nhưng KHÔNG tắt Protect_Mission
-    //     foreach (Transform child in transform)
-    //     {
-    //         if (child.name != "EndProtect") // hoặc "EndProtect"
-    //             child.gameObject.SetActive(false);
-    //     }
-
-    // }
     private void MissionSuccess()
     {
         Debug.Log("🎉 NPC protected successfully — Mission Completed!");
@@ -210,7 +163,8 @@ public class UI_ProtectMission : MonoBehaviour
 
         // Hiện UI thắng
         if (endState != null)
-            endState.ShowWin();
+            StartCoroutine(ShowWinAfterCamera());
+
 
         // 🎁 THƯỞNG COIN
         if (gameManager != null)
@@ -227,6 +181,9 @@ public class UI_ProtectMission : MonoBehaviour
         // ⭐ ẨN deleteItems khi thắng
         if (deleteItems != null)
             deleteItems.SetActive(false);
+        if (missionNPC != null)
+            missionNPC.OnMissionSuccess();
+
 
         // Tắt HUD
         foreach (Transform child in transform)
@@ -235,6 +192,65 @@ public class UI_ProtectMission : MonoBehaviour
                 child.gameObject.SetActive(false);
         }
     }
+
+    private void MissionFail()
+    {
+        Debug.Log("❌ NPC died — Mission Failed!");
+
+        isMissionFailed = true;
+        running = false;
+
+        // ✅ CHUYỂN CAMERA TRƯỚC
+        if (missionNPC != null)
+            missionNPC.OnMissionFailed();
+
+        // Stop spawn & trap
+        if (spawner != null)
+        {
+            spawner.StopSpawning();
+            spawner.DisableAllEnemies();   // ✅ BIẾN MẤT
+            spawner.ResetSpawner();
+        }
+
+        if (trapManager != null)
+            trapManager.StopTrapCycle();
+
+        // ✅ SAU CÙNG mới show UI Lose
+        if (endState != null)
+            StartCoroutine(ShowLoseAfterCamera());
+
+
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject != endState.gameObject)
+                child.gameObject.SetActive(false);
+        }
+
+    }
+
+    IEnumerator ShowWinAfterCamera()
+    {
+        if (missionNPC != null)
+            missionNPC.OnMissionSuccess();   // reset cam trước
+
+        yield return new WaitForSecondsRealtime(1.1f); // = transitionDuration
+
+        if (endState != null)
+            endState.ShowWin();
+    }
+
+    IEnumerator ShowLoseAfterCamera()
+    {
+        if (missionNPC != null)
+            missionNPC.OnMissionFailed();
+
+        yield return new WaitForSecondsRealtime(1.1f);
+
+        if (endState != null)
+            endState.ShowLose();
+    }
+
+    
 
 
 }

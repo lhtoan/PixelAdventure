@@ -7,6 +7,7 @@
 
 //     [Header("Cooldown Settings")]
 //     public float skillCooldown = 1.5f;
+//     [SerializeField] private float postSkillDelay = 2f;
 
 //     [Header("Attack Settings")]
 //     [SerializeField] private float attackAnimDuration = 0.8f;
@@ -23,12 +24,15 @@
 //     [SerializeField] private BossSkill1 skill1;
 //     [SerializeField] private BossSkill2 skill2;
 
+//     private FrostBossFollow bossFollow;   // ⭐ Thêm follow check
 //     private bool isUsingSkill = false;
+//     private int lastSkill = -1;
 
 //     private void Awake()
 //     {
 //         anim = GetComponent<Animator>();
 //         bossAttack = GetComponent<BossAttack>();
+//         bossFollow = GetComponent<FrostBossFollow>(); // ⭐ Lấy script follow
 //     }
 
 //     private void Start()
@@ -40,67 +44,90 @@
 //     {
 //         while (true)
 //         {
+//             // Boss đang tung skill
 //             if (isUsingSkill)
 //             {
 //                 yield return null;
 //                 continue;
 //             }
 
+//             // Chưa có target
 //             if (target == null)
 //             {
 //                 yield return null;
 //                 continue;
 //             }
 
+//             // ⭐ Chỉ dùng skill khi player nằm trong detectRange
+//             if (bossFollow != null)
+//             {
+//                 float dist = Vector2.Distance(transform.position, target.position);
+
+//                 if (dist > bossFollow.detectRange)
+//                 {
+//                     // Player còn quá xa → boss không dùng skill
+//                     yield return null;
+//                     continue;
+//                 }
+//             }
+
+//             // Chọn skill ngẫu nhiên
 //             int skill = GetWeightedRandomSkill();
+//             lastSkill = skill;
+
 //             isUsingSkill = true;
 
 //             switch (skill)
 //             {
 //                 case 0:
-//                     Debug.Log("[BossSkill] Use Attack");
-
 //                     if (!bossAttack.TryPerformAttack())
 //                     {
 //                         isUsingSkill = false;
 //                         continue;
 //                     }
-
 //                     yield return new WaitForSeconds(attackAnimDuration);
 //                     break;
 
 //                 case 1:
-//                     Debug.Log("[BossSkill] Use Skill 1");
 //                     if (skill1 != null)
 //                         yield return StartCoroutine(skill1.CastSkill1());
 //                     break;
 
 //                 case 2:
-//                     Debug.Log("[BossSkill] Use Skill 2");
 //                     if (skill2 != null)
-//                         yield return StartCoroutine(skill2.CastSkill2()); // ⭐ GIỐNG SKILL 1
+//                         yield return StartCoroutine(skill2.CastSkill2());
 //                     break;
 //             }
 
+//             // Cooldown giữa các skill
 //             yield return new WaitForSeconds(skillCooldown);
+
+//             // Thêm delay sau skill
+//             yield return new WaitForSeconds(postSkillDelay);
+
 //             isUsingSkill = false;
 //         }
 //     }
 
 //     private int GetWeightedRandomSkill()
 //     {
-//         int total = attackWeight + skill1Weight + skill2Weight;
-//         int rand = Random.Range(0, total);
+//         while (true)
+//         {
+//             int total = attackWeight + skill1Weight + skill2Weight;
+//             int rand = Random.Range(0, total);
 
-//         if (rand < attackWeight)
-//             return 0;
+//             int skill = -1;
 
-//         rand -= attackWeight;
+//             if (rand < attackWeight)
+//                 skill = 0;
+//             else if (rand < attackWeight + skill1Weight)
+//                 skill = 1;
+//             else
+//                 skill = 2;
 
-//         if (rand < skill1Weight)
-//             return 1;
-
-//         return 2;
+//             if (skill != lastSkill)
+//                 return skill;
+//         }
 //     }
 
 //     public bool IsUsingSkill => isUsingSkill;
@@ -131,15 +158,29 @@ public class BossSkillController : MonoBehaviour
     [SerializeField] private BossSkill1 skill1;
     [SerializeField] private BossSkill2 skill2;
 
-    private FrostBossFollow bossFollow;   // ⭐ Thêm follow check
+    private FrostBossFollow bossFollow;
+
     private bool isUsingSkill = false;
     private int lastSkill = -1;
+
+    // ⭐ Boss HP
+    [Header("Boss Health Reference")]
+    [SerializeField] private Health bossHealth;
+
+    // ⭐ Phase chỉ chạy 1 lần
+    private bool phaseSkillTriggered = false;
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
         bossAttack = GetComponent<BossAttack>();
-        bossFollow = GetComponent<FrostBossFollow>(); // ⭐ Lấy script follow
+        bossFollow = GetComponent<FrostBossFollow>();
+
+        if (bossHealth == null)
+            bossHealth = GetComponent<Health>();
+
+        // ⭐ Lắng nghe sự kiện HP thay đổi
+        bossHealth.OnHealthChanged += OnBossHealthChanged;
     }
 
     private void Start()
@@ -147,38 +188,48 @@ public class BossSkillController : MonoBehaviour
         StartCoroutine(SkillLoop());
     }
 
+    // ⭐⭐⭐ HP GIẢM → CHECK PHASE 50% ⭐⭐⭐
+    private void OnBossHealthChanged(float oldHP, float newHP)
+    {
+        if (!phaseSkillTriggered &&
+            newHP <= bossHealth.GetStartingHealth() * 0.5f)
+        {
+            phaseSkillTriggered = true;
+
+            Debug.Log("🔥 BOSS TRIGGER PHASE 50%!");
+
+            StartCoroutine(SpamSkill1For5Seconds());
+        }
+    }
+
     private IEnumerator SkillLoop()
     {
         while (true)
         {
-            // Boss đang tung skill
             if (isUsingSkill)
             {
                 yield return null;
                 continue;
             }
 
-            // Chưa có target
             if (target == null)
             {
                 yield return null;
                 continue;
             }
 
-            // ⭐ Chỉ dùng skill khi player nằm trong detectRange
+            // ⭐ Check detect range
             if (bossFollow != null)
             {
                 float dist = Vector2.Distance(transform.position, target.position);
-
                 if (dist > bossFollow.detectRange)
                 {
-                    // Player còn quá xa → boss không dùng skill
                     yield return null;
                     continue;
                 }
             }
 
-            // Chọn skill ngẫu nhiên
+            // Random skill như cũ
             int skill = GetWeightedRandomSkill();
             lastSkill = skill;
 
@@ -206,14 +257,38 @@ public class BossSkillController : MonoBehaviour
                     break;
             }
 
-            // Cooldown giữa các skill
             yield return new WaitForSeconds(skillCooldown);
-
-            // Thêm delay sau skill
             yield return new WaitForSeconds(postSkillDelay);
 
             isUsingSkill = false;
         }
+    }
+
+    // ⭐⭐⭐ PHASE 50% — BẤT TỬ & SPAM SKILL1 ⭐⭐⭐
+    private IEnumerator SpamSkill1For5Seconds()
+    {
+        Debug.Log("🔥 Boss HP <= 50% → UNSTOPPABLE + SPAM SKILL1!");
+
+        // ⭐ Bất tử
+        bool oldInvul = bossHealth.useInvulnerability;
+        bossHealth.useInvulnerability = true;
+
+        float timer = 5f;
+
+        while (timer > 0f)
+        {
+            timer -= 1f;
+
+            if (skill1 != null)
+                StartCoroutine(skill1.CastSkill1());
+
+            yield return new WaitForSeconds(1f);
+        }
+
+        // ⭐ Hết bất tử
+        bossHealth.useInvulnerability = oldInvul;
+
+        Debug.Log("⚠ Boss trở lại trạng thái bình thường!");
     }
 
     private int GetWeightedRandomSkill()

@@ -221,11 +221,21 @@ public class Spikehead : EnemyDamage
             base.OnTriggerEnter2D(collision);
             StopTemporarilyOrForever();
         }
-        else if (collision.CompareTag("Ground"))
+    }
+
+    protected override void OnCollisionEnter2D(Collision2D collision)
+    {
+        // Nếu Spikehead chạm Ground → biến mất
+        if (collision.collider.CompareTag("Ground"))
         {
             StopTemporarilyOrForever();
         }
+
+        // // Vẫn giữ lại chức năng gây damage của EnemyDamage 
+        // base.OnCollisionEnter2D(collision);
     }
+
+
 
     private void StopTemporarilyOrForever()
     {

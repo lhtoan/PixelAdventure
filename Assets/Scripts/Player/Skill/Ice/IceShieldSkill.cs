@@ -41,13 +41,32 @@ public class IceShieldSkill : MonoBehaviour
     private void Update()
     {
         // ⭐ CHẶN KHI ĐANG COOLDOWN
-        if (isOnCooldown) return;
+        // if (isOnCooldown) return;
 
-        // ⭐ NHẤN E + đúng hệ + đúng skill
-        if (Input.GetKeyDown(KeyCode.E) &&
-            playerAttack.CurrentElement == PlayerAttack.Element.Ice)
+        // // ⭐ NHẤN E + đúng hệ + đúng skill
+        // if (Input.GetKeyDown(KeyCode.E) &&
+        //     playerAttack.CurrentElement == PlayerAttack.Element.Ice)
+        // {
+        //     TryActivateShield();
+        // }
+
+
+        if (Input.GetKeyDown(KeyCode.E) && !isOnCooldown)
         {
-            TryActivateShield();
+            // ⭐ CHECK MỞ KHÓA SKILL
+            if (!playerSkill.IsSkillUnlocked(PlayerSkill.SkillType.Ice_E))
+            {
+                return;
+            }
+
+            // ⭐ CHECK Stamina + đúng hệ
+            if (playerAttack != null &&
+                playerAttack.CurrentElement == PlayerAttack.Element.Ice &&
+                playerStamina != null &&
+                playerStamina.CanUse(staminaCost))
+            {
+                TryActivateShield();
+            }
         }
     }
 

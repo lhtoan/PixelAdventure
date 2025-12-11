@@ -80,7 +80,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1094849337
-  m_SortingLayer: 5
+  m_SortingLayer: 6
   m_SortingOrder: 999
   m_Sprite: {fileID: 7675826601332790545, guid: e4c413d05154c894589b8b51133e1cde, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -163,3 +163,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 725c66d5278e80842b34784d110cbb17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  pickSound: {fileID: 8300000, guid: 1c70ec5011a645040b8f2bd7e8a18182, type: 3}
+  volume: 1

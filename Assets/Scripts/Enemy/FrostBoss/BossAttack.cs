@@ -141,5 +141,5 @@ public class BossAttack : MonoBehaviour
     }
     public bool IsAttacking => anim.GetBool("attack");
 
-
+     
 }

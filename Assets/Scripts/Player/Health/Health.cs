@@ -4,7 +4,7 @@ using System.Collections;
 public class Health : MonoBehaviour
 {
     [Header("Health")]
-    [SerializeField] private bool useInvulnerability = true;
+    [SerializeField] public bool useInvulnerability = true;
     [SerializeField] private float startingHealth;
     public float currentHealth { get; private set; }
     private Animator anim;
@@ -33,56 +33,22 @@ public class Health : MonoBehaviour
         spriteRend = GetComponent<SpriteRenderer>();
         respawnManager = GetComponent<PlayerRespawn>();
     }
-    // public void TakeDamage(float _damage)
-    // {
-
-    //     if (shieldActive) return;
-    //     if (invulnerable) return;
-    //     currentHealth = Mathf.Clamp(currentHealth - _damage, 0, startingHealth);
-
-    //     if (currentHealth > 0)
-    //     {
-    //         if (HasParameter(anim, "hurt"))
-    //             anim.SetTrigger("hurt");
-
-    //         Debug.Log(currentHealth);
-
-    //         StartCoroutine(Invunerability());
-    //     }
-    //     else
-    //     {
-    //         if (!dead)
-    //         {
-    //             // Deactivate all attached component classes
-    //             foreach (Behaviour component in components)
-    //                 component.enabled = false;
-
-    //             if (HasParameter(anim, "die"))
-    //                 anim.SetTrigger("die");
-
-
-    //             dead = true;
-
-    //             StartCoroutine(DieCoroutine());
-    //         }
-    //     }
-    // }
-
     public void TakeDamage(float _damage)
     {
         if (shieldActive) return;
 
-        // chỉ player mới dùng invulnerability
         if (useInvulnerability && invulnerable) return;
 
+        float oldHP = currentHealth;  // ⭐ Lưu HP cũ
+
         currentHealth = Mathf.Clamp(currentHealth - _damage, 0, startingHealth);
+
+        OnHealthChanged?.Invoke(oldHP, currentHealth); // ⭐ BÁO HP GIẢM CHO BOSS
 
         if (currentHealth > 0)
         {
             if (HasParameter(anim, "hurt"))
                 anim.SetTrigger("hurt");
-
-            // Debug.Log(currentHealth);
 
             if (useInvulnerability)
                 StartCoroutine(Invunerability());
@@ -98,42 +64,49 @@ public class Health : MonoBehaviour
                     anim.SetTrigger("die");
 
                 dead = true;
-
                 StartCoroutine(DieCoroutine());
             }
         }
     }
 
-    // public void TakeDamage(float _damage, bool triggerAnimation = true)
-    // {
 
+    // public void TakeDamage(float _damage)
+    // {
     //     if (shieldActive) return;
-    //     if (invulnerable && triggerAnimation) return;
+
+    //     // chỉ player mới dùng invulnerability
+    //     if (useInvulnerability && invulnerable) return;
 
     //     currentHealth = Mathf.Clamp(currentHealth - _damage, 0, startingHealth);
 
     //     if (currentHealth > 0)
     //     {
-    //         if (triggerAnimation && HasParameter(anim, "hurt"))
+    //         if (HasParameter(anim, "hurt"))
     //             anim.SetTrigger("hurt");
 
-    //         if (triggerAnimation)
+    //         // Debug.Log(currentHealth);
+
+    //         if (useInvulnerability)
     //             StartCoroutine(Invunerability());
-
-    //         Debug.Log(currentHealth);
     //     }
-    //     else if (!dead)
+    //     else
     //     {
-    //         foreach (Behaviour component in components)
-    //             component.enabled = false;
+    //         if (!dead)
+    //         {
+    //             foreach (Behaviour component in components)
+    //                 component.enabled = false;
 
-    //         if (HasParameter(anim, "die"))
-    //             anim.SetTrigger("die");
+    //             if (HasParameter(anim, "die"))
+    //                 anim.SetTrigger("die");
 
-    //         dead = true;
-    //         StartCoroutine(DieCoroutine());
+    //             dead = true;
+
+    //             StartCoroutine(DieCoroutine());
+    //         }
     //     }
     // }
+
+    
     public void TakeDamage(float _damage, bool triggerAnimation = true)
     {
         if (shieldActive) return;
@@ -270,6 +243,8 @@ public class Health : MonoBehaviour
     }
 
     public float GetStartingHealth() => startingHealth;
+    public System.Action<float, float> OnHealthChanged;
+
 
 
 }

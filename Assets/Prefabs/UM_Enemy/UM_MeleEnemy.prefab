@@ -180,7 +180,7 @@ MonoBehaviour:
   - itemPrefab: {fileID: 7665941253087677646, guid: 4d50c4c3e3f4e4f418f665fa00454c32, type: 3}
     minAmount: 1
     maxAmount: 2
-    dropChance: 1
+    dropChance: 0.3
 --- !u!4 &1934642473626078572 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3715682696142906014, guid: 7cf667c1d0df0c547bc1756b224ba1e2, type: 3}

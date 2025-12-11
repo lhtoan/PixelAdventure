@@ -496,7 +496,7 @@ MonoBehaviour:
   - itemPrefab: {fileID: 7665941253087677646, guid: 4d50c4c3e3f4e4f418f665fa00454c32, type: 3}
     minAmount: 1
     maxAmount: 3
-    dropChance: 1
+    dropChance: 0.5
 --- !u!1 &6777304072610816504
 GameObject:
   m_ObjectHideFlags: 0

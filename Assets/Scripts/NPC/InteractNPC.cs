@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class InteractNPC : MonoBehaviour
@@ -18,6 +19,9 @@ public class InteractNPC : MonoBehaviour
     public Vector3 rightOffset = new Vector3(1f, 0.5f, 0f);
 
     private bool missionStarted = false;
+    [Header("NPC Health Reference")]
+    public Health npcHealth;
+
 
     void Start()
     {
@@ -57,20 +61,58 @@ public class InteractNPC : MonoBehaviour
     {
         missionStarted = true;
 
+        if (npcHealth != null)
+            npcHealth.SetHealth(npcHealth.GetStartingHealth()); // ⭐ BẮT BUỘC
+
         if (buttonF != null)
             buttonF.SetActive(false);
 
         if (timerUI != null)
             timerUI.StartTimer(spawner.totalSpawnTime);
 
-        // if (trapManager != null)
-        //     trapManager.StartTrapCycle();
-
         spawner.StartSpawning();
-        Debug.Log("Mission Started!");
 
-        // ⭐ Camera zoom-out + pixel perfect change
         if (cameraControl != null)
             cameraControl.ApplyMissionCamera();
     }
+
+
+    public void OnMissionFailed()
+    {
+        missionStarted = false;
+
+        if (npcHealth != null)
+            npcHealth.SetHealth(npcHealth.GetStartingHealth());
+
+        if (spawner != null)
+            spawner.ResetSpawner();
+
+        if (buttonF != null)
+            buttonF.SetActive(false);
+
+        if (cameraControl != null)
+            cameraControl.ApplyDefaultCamera();
+
+    Debug.Log("Mission Failed → Ready to retry");
+    }
+
+
+
+    public void OnMissionSuccess()
+    {
+        missionStarted = false;
+
+        if (spawner != null)
+            spawner.ResetSpawner();
+
+        if (cameraControl != null)
+            cameraControl.ApplyDefaultCamera();
+
+    Debug.Log("Mission Success → Can interact again");
+    }
+
+
+    
+
+
 }
