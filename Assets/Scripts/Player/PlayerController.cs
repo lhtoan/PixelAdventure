@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Jump Settings")]
     [SerializeField] private float jumpStaminaCost = 2f;
+    [SerializeField] private AudioManager audioManager;
 
     private bool isGrounded;
     private bool canDoubleJump;
@@ -23,6 +24,13 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         stamina = GetComponent<PlayerStamina>();
+
+        if (audioManager == null)
+        {
+            GameObject gm = GameObject.FindGameObjectWithTag("GameManager");
+            if (gm != null)
+                audioManager = gm.GetComponent<AudioManager>();
+        }
     }
 
     private void Update()
@@ -55,18 +63,22 @@ public class PlayerController : MonoBehaviour
 
     private void HandleJump()
     {
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.3f, groundLayer);
 
         if (Input.GetButtonDown("Jump") && isGrounded && stamina.CanUse(jumpStaminaCost))
         {
             stamina.Use(jumpStaminaCost);
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            if (audioManager != null && audioManager.jumpClip != null)
+                audioManager.PlaySFX(audioManager.jumpClip, 1);
             canDoubleJump = true;
         }
         else if (canDoubleJump && Input.GetButtonDown("Jump") && stamina.CanUse(jumpStaminaCost))
         {
             stamina.Use(jumpStaminaCost);
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            if (audioManager != null && audioManager.jumpClip != null)
+                audioManager.PlaySFX(audioManager.jumpClip, 1);
             canDoubleJump = false;
         }
 

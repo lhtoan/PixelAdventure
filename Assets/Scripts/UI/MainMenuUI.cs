@@ -11,12 +11,24 @@ public class MainMenuUI : MonoBehaviour
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject confirmBackPanel;
     [SerializeField] private GameObject confirmQuitPanel;
+    [SerializeField] private GameObject againPanel;
 
 
 
     [Header("Player")]
     [SerializeField] private PlayerController playerController;
     [SerializeField] private PlayerAttack playerAttack;
+
+    private void Awake()
+    {
+        // Nếu là lần đầu vào game → khóa player ngay lập tức
+        if (PlayerPrefs.GetInt("IsReloadEvent", 0) == 0)
+        {
+            if (playerController) playerController.enabled = false;
+            if (playerAttack) playerAttack.inputLocked = true;
+        }
+    }
+
 
     private void Start()
     {
@@ -157,9 +169,32 @@ public class MainMenuUI : MonoBehaviour
         startMenu.SetActive(true);
         pauseMenu.SetActive(false);
         confirmBackPanel.SetActive(false);
+        againPanel.SetActive(false);
 
         Time.timeScale = 0f;
 
+        if (playerController) playerController.enabled = false;
+        if (playerAttack) playerAttack.inputLocked = true;
+    }
+
+    // BACK ở UI AGAIN (Game Over)
+    public void OnAgainBackClicked()
+    {
+        Debug.Log("AGAIN → BACK TO MENU");
+
+        // Tắt panel again
+        againPanel.SetActive(false);
+
+        // Quay về Start Menu
+        menuRoot.SetActive(true);
+        startMenu.SetActive(true);
+        pauseMenu.SetActive(false);
+        confirmBackPanel.SetActive(false);
+
+        // Dừng thời gian
+        Time.timeScale = 0f;
+
+        // Khóa player
         if (playerController) playerController.enabled = false;
         if (playerAttack) playerAttack.inputLocked = true;
     }

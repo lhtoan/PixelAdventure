@@ -12,10 +12,19 @@ public class PlayerRespawn : MonoBehaviour
     [SerializeField] private int maxRespawn = 2;
 
     [SerializeField] private GameObject gameOverUI;
+    [SerializeField] private AudioManager audioManager;
+
 
     private void Awake()
     {
         playerHealth = GetComponent<Health>();
+
+        if (audioManager == null)
+        {
+            GameObject gm = GameObject.FindGameObjectWithTag("GameManager");
+            if (gm != null)
+                audioManager = gm.GetComponent<AudioManager>();
+        }
     }
 
     public void RespawnCheck()
@@ -45,7 +54,12 @@ public class PlayerRespawn : MonoBehaviour
         foreach (Transform child in gameOverUI.transform)
             child.gameObject.SetActive(true);
 
-        Debug.Log("GAME OVER!");
+        if (audioManager != null && audioManager.gameoverClip != null)
+            audioManager.PlaySFX(audioManager.gameoverClip, 1f);
+
+        // ⭐ (optional) stop BGM để tiếng game over rõ hơn
+        if (audioManager != null)
+            audioManager.StopBGM();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -56,7 +70,6 @@ public class PlayerRespawn : MonoBehaviour
             if (cp != null)
             {
                 currentCheckpointID = cp.checkpointID;
-                Debug.Log("✅ Checkpoint reached: " + currentCheckpointID);
             }
 
             currentCheckpoint = collision.transform;
@@ -64,14 +77,18 @@ public class PlayerRespawn : MonoBehaviour
             collision.GetComponent<Collider2D>().enabled = false;
             collision.GetComponent<Animator>().SetTrigger("appear");
 
-            Debug.Log("checkpoint");
-
-            // ⭐ SAVE CHECKPOINT NGAY LẬP TỨC
-            var saver = FindFirstObjectByType<SaveSystemController>();
-            if (saver != null)
+            if (PlayerPrefs.GetInt("IsReloadEvent", 0) == 0)
             {
-                saver.SaveAtCheckpoint();     // Lưu file thật
+                var saver = FindFirstObjectByType<SaveSystemController>();
+                if (saver != null)
+                    saver.SaveAtCheckpoint();
             }
+
+
+            if (audioManager != null && audioManager.checkpointClip != null)
+                audioManager.PlaySFX(audioManager.checkpointClip, 1);
+
+
 
         }
     }
@@ -109,5 +126,12 @@ public class PlayerRespawn : MonoBehaviour
         transform.position = pos;
     }
 
+    public void SetLoadedCheckpoint(string id)
+{
+    currentCheckpointID = id;
+    // tìm checkpoint Transform cho chắc (optional)
+}
+
+    
 
 }

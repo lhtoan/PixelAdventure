@@ -21,6 +21,7 @@ TagManager:
   - HiddenArea
   - NPC
   - SkillPoint
+  - GameManager
   layers:
   - Default
   - TransparentFX

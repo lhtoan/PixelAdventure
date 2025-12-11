@@ -35,7 +35,7 @@ public class SaveSystemController : MonoBehaviour
         SaveData data = new SaveData();
 
         data.checkpointID = playerRespawn.GetCheckpointID();
-        data.respawnCount = playerRespawn.RespawnCount;
+        data.respawnCount = 0;
 
         data.health = playerHealth.currentHealth;
         data.score = gameManager.Score;
@@ -80,7 +80,7 @@ public class SaveSystemController : MonoBehaviour
         }
 
         // Load respawn
-        playerRespawn.SetRespawnCount(data.respawnCount);
+        playerRespawn.SetRespawnCount(0);
 
         // ⭐ Load vị trí
         // ⭐ Load vị trí nếu manual save
@@ -112,7 +112,9 @@ public class SaveSystemController : MonoBehaviour
         {
             if (cp.checkpointID == cpID)
             {
-                playerRespawn.TeleportToCheckpoint(cp.transform);
+                // playerRespawn.TeleportToCheckpoint(cp.transform);
+                playerRespawn.SetLoadedCheckpoint(cp.checkpointID);   // ⭐ FIX RẤT QUAN TRỌNG
+
                 break;
             }
         }
