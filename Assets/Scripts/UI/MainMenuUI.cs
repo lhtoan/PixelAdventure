@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -12,6 +13,8 @@ public class MainMenuUI : MonoBehaviour
     [SerializeField] private GameObject confirmBackPanel;
     [SerializeField] private GameObject confirmQuitPanel;
     [SerializeField] private GameObject againPanel;
+    [SerializeField] private GameObject bossWinPanel;
+
 
 
 
@@ -130,19 +133,6 @@ public class MainMenuUI : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    // public void OnBackToMenuClicked()
-    // {
-    //     Debug.Log("RETURN TO MAIN MENU");
-
-    //     Time.timeScale = 0f;
-
-    //     menuRoot.SetActive(true);
-    //     startMenu.SetActive(true);
-    //     pauseMenu.SetActive(false);
-
-    //     if (playerController) playerController.enabled = false;
-    //     if (playerAttack) playerAttack.inputLocked = true;
-    // }
     public void OnBackToMenuClicked()
     {
         Debug.Log("BACK → SHOW CONFIRM EXIT POPUP");
@@ -315,7 +305,53 @@ public class MainMenuUI : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    
+
+    public void ShowBossWin()
+    {
+        StartCoroutine(ShowBossWinAfterDelay());
+
+    }
+
+    private IEnumerator ShowBossWinAfterDelay()
+    {
+        // Chờ camera transition xong
+        yield return new WaitForSecondsRealtime(2f);
+
+        // ⭐ CHỈ BẬT UI TẠI ĐÂY — CAMERA ĐÃ ỔN ĐỊNH ⭐
+        bossWinPanel.SetActive(true);
+        menuRoot.SetActive(true);
+
+        Time.timeScale = 0f;
+
+        if (playerController) playerController.enabled = false;
+        if (playerAttack) playerAttack.inputLocked = true;
+    }
+
+    public void ResumeGameWin()
+    {
+        bossWinPanel.SetActive(false);
+
+        startMenu.SetActive(false);
+
+        Time.timeScale = 1f;
+
+        if (playerController) playerController.enabled = true;   // ⭐ MUST
+        if (playerAttack) playerAttack.inputLocked = false;      // attack unlock
+    }
+
+
+    public void OnBossWinBack()
+    {
+        bossWinPanel.SetActive(false);
+
+        menuRoot.SetActive(true);
+        startMenu.SetActive(true);
+
+        Time.timeScale = 0f;
+
+        if (playerController) playerController.enabled = false;
+        if (playerAttack) playerAttack.inputLocked = true;
+    }
 
 
 

@@ -21,6 +21,16 @@ public class InteractNPC : MonoBehaviour
     private bool missionStarted = false;
     [Header("NPC Health Reference")]
     public Health npcHealth;
+    [SerializeField] private AudioManager audioManager;
+
+    private void Awake()
+    {
+        if (audioManager == null)
+        {
+            GameObject gm = GameObject.FindGameObjectWithTag("GameManager");
+            if (gm != null) audioManager = gm.GetComponent<AudioManager>();
+        }
+    }
 
 
     void Start()
@@ -60,6 +70,11 @@ public class InteractNPC : MonoBehaviour
     void StartMission()
     {
         missionStarted = true;
+        if (audioManager != null && audioManager.bossBgmClip != null)
+        {
+            audioManager.StopBGM();                       // ⭐ BẮT BUỘC
+            audioManager.PlayBGM(audioManager.bossBgmClip, 0.6f);
+        }
 
         if (npcHealth != null)
             npcHealth.SetHealth(npcHealth.GetStartingHealth()); // ⭐ BẮT BUỘC
@@ -93,7 +108,13 @@ public class InteractNPC : MonoBehaviour
         if (cameraControl != null)
             cameraControl.ApplyDefaultCamera();
 
-    Debug.Log("Mission Failed → Ready to retry");
+        if (audioManager.bgmClip != null)
+        {
+            audioManager.StopBGM();                       // ⭐ BẮT BUỘC
+            audioManager.PlayBGM(audioManager.bgmClip, 0.6f);
+        }
+
+        Debug.Log("Mission Failed → Ready to retry");
     }
 
 
@@ -108,7 +129,13 @@ public class InteractNPC : MonoBehaviour
         if (cameraControl != null)
             cameraControl.ApplyDefaultCamera();
 
-    Debug.Log("Mission Success → Can interact again");
+        if (audioManager.bgmClip != null)
+        {
+            audioManager.StopBGM();                       // ⭐ BẮT BUỘC
+            audioManager.PlayBGM(audioManager.bgmClip, 0.6f);
+        }
+
+        Debug.Log("Mission Success → Can interact again");
     }
 
 

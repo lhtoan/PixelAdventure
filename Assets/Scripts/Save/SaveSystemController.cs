@@ -112,7 +112,7 @@ public class SaveSystemController : MonoBehaviour
         {
             if (cp.checkpointID == cpID)
             {
-                // playerRespawn.TeleportToCheckpoint(cp.transform);
+                playerRespawn.TeleportToCheckpoint(cp.transform);
                 playerRespawn.SetLoadedCheckpoint(cp.checkpointID);   // ⭐ FIX RẤT QUAN TRỌNG
 
                 break;

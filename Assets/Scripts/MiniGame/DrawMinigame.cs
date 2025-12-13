@@ -147,7 +147,7 @@ public class DrawMinigame : MonoBehaviour
         // ⛔ Tắt UI thời gian
         if (drawTimeObject != null)
             drawTimeObject.SetActive(false);
-            
+
         if (currentTreasure != null)
         {
             currentTreasure.OnMinigameClosedWithoutSuccess();
@@ -200,7 +200,7 @@ public class DrawMinigame : MonoBehaviour
 
         if (enableRecording && recorder != null)
             recorder.BeginRecording();
-            
+
     }
 
     private void HandleRecording(List<Vector2> normalizedPts)
@@ -450,4 +450,43 @@ public class DrawMinigame : MonoBehaviour
             CloseUI();
         }
     }
+
+    //Log point
+    // [Header("Debug Gesture Capture")]
+    // public List<List<Vector2>> capturedGestures = new List<List<Vector2>>();
+    // public void OnPlayerDrawFinished(List<Vector2> normalizedPts)
+    // {
+    //     if (!isOpen)
+    //         return;
+
+    //     capturedGestures.Add(new List<Vector2>(normalizedPts));
+
+    //     // ⭐ In toàn bộ trong MỘT LOG
+    //     PrintGestureSingleLog(normalizedPts);
+
+    //     if (enableRecording)
+    //     {
+    //         HandleRecording(normalizedPts);
+    //         return;
+    //     }
+
+    //     HandleMatching(normalizedPts);
+    // }
+
+
+
+    // public void PrintGestureSingleLog(List<Vector2> pts)
+    // {
+    //     System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+    //     sb.AppendLine("=== Captured Gesture (one-log print) ===");
+
+    //     foreach (var p in pts)
+    //         sb.AppendLine($"- {{x: {p.x}, y: {p.y}}}");
+
+    //     Debug.Log(sb.ToString());
+    // }
+
+
+
 }

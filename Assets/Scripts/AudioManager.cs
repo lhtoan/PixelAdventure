@@ -6,22 +6,27 @@ public class AudioManager : MonoBehaviour
     public AudioSource vfxAudioSource;
 
     public AudioClip bgmClip;
+    public AudioClip bossBgmClip;
     public AudioClip gameoverClip;
+    public AudioClip gamewinClip;
 
     public AudioClip coinClip;
     public AudioClip checkpointClip;
     public AudioClip jumpClip;
     public AudioClip skillpointClip;
-    
+    public AudioClip iceAttackClip;
+    public AudioClip fireAttackClip;
+
 
     private void Start()
     {
+        Debug.Log("🔥 AudioManager Start() CALLED on " + gameObject.name);
         if (bgmClip != null)
-            PlayBGM(bgmClip, 1f);
+            PlayBGM(bgmClip, 0.6f);
     }
 
 
-    public void PlaySFX(AudioClip sfxClip, float volume = 1f)
+    public void PlaySFX(AudioClip sfxClip, float volume = 0.5f)
     {
         if (sfxClip == null || vfxAudioSource == null) return;
         vfxAudioSource.PlayOneShot(sfxClip, volume);

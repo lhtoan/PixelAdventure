@@ -238,6 +238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyHealth: {fileID: 9154297618072882733}
+  totalHealthBar: {fileID: 0}
   currentHealthBar: {fileID: 5955879856089219589}
   enemy: {fileID: 0}
 --- !u!1 &3280565178991236841
@@ -578,7 +579,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21bf2636ed915474ab642eefcbff8c85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useInvulnerability: 1
+  useInvulnerability: 0
   startingHealth: 50
   iFramesDuration: 0
   numberOfFlashes: 0
@@ -792,8 +793,8 @@ MonoBehaviour:
   rightEdge: {fileID: 4014975016400692916}
   enemy: {fileID: 5229698110105060633}
   speed: 2
-  idleDuration: 1
   startMovingLeft: 1
+  idleDuration: 1
   anim: {fileID: 1564274742973875445}
   isFrozen: 0
 --- !u!1 &5866200127906582057

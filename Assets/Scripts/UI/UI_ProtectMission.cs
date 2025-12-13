@@ -25,6 +25,7 @@ public class UI_ProtectMission : MonoBehaviour
     public GameObject rewardItems;
     [Header("Delete Items")]
     public GameObject deleteItems;
+    [SerializeField] private AudioManager audioManager;
 
 
 
@@ -47,7 +48,11 @@ public class UI_ProtectMission : MonoBehaviour
 
     private void Awake()
     {
-        // intentionally empty
+        if(audioManager == null)
+        {
+            GameObject gm = GameObject.FindGameObjectWithTag("GameManager");
+            if (gm != null) audioManager = gm.GetComponent<AudioManager>();
+        }
     }
 
     private void OnEnable()
@@ -74,12 +79,19 @@ public class UI_ProtectMission : MonoBehaviour
 
     public void StartTimer(float duration)
     {
+        // ⭐ BẬT LẠI TOÀN BỘ UI CON
+        foreach (Transform child in transform)
+        {
+            child.gameObject.SetActive(true);
+        }
+
         if (transform.parent != null && !transform.parent.gameObject.activeInHierarchy)
         {
             transform.parent.gameObject.SetActive(true);
         }
 
         gameObject.SetActive(true);
+
         maxTime = duration;
         currentTime = 0f;
 
@@ -90,6 +102,7 @@ public class UI_ProtectMission : MonoBehaviour
         running = true;
         isMissionFailed = false;
     }
+
 
     private void Update()
     {
@@ -161,6 +174,12 @@ public class UI_ProtectMission : MonoBehaviour
         if (spawner != null)
             spawner.ClearAllEnemies();
 
+        
+        if (audioManager != null && audioManager.gamewinClip != null)
+            audioManager.PlaySFX(audioManager.gamewinClip, 0.5f);
+
+
+
         // Hiện UI thắng
         if (endState != null)
             StartCoroutine(ShowWinAfterCamera());
@@ -214,6 +233,11 @@ public class UI_ProtectMission : MonoBehaviour
 
         if (trapManager != null)
             trapManager.StopTrapCycle();
+
+        if (audioManager != null && audioManager.gameoverClip != null)
+            audioManager.PlaySFX(audioManager.gameoverClip, 0.5f);
+
+
 
         // ✅ SAU CÙNG mới show UI Lose
         if (endState != null)

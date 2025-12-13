@@ -85,6 +85,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7720688989178269228, guid: 7cf667c1d0df0c547bc1756b224ba1e2, type: 3}
+      propertyPath: useInvulnerability
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7720688989178269228, guid: 7cf667c1d0df0c547bc1756b224ba1e2, type: 3}
       propertyPath: components.Array.size
       value: 3
       objectReference: {fileID: 0}

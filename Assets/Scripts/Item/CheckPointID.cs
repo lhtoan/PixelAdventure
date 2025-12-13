@@ -1,28 +1,38 @@
 using UnityEngine;
-using UnityEditor;
 using System;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class CheckpointID : MonoBehaviour
 {
-    public string checkpointID; // auto-generated
+    public string checkpointID;
 
-    private void Reset()
-    {
-        GenerateID();
-    }
-
+#if UNITY_EDITOR
     private void OnValidate()
     {
-        // Nếu ID rỗng → tạo mới
+        // Không chạy trong PlayMode
+        if (Application.isPlaying)
+            return;
+
+        // Nếu là prefab gốc → KHÔNG tạo ID
+        if (PrefabUtility.IsPartOfPrefabAsset(gameObject))
+            return;
+
+        // Nếu object là instance trong scene nhưng ID rỗng → tạo ID mới
         if (string.IsNullOrEmpty(checkpointID))
+        {
             GenerateID();
+        }
     }
+#endif
 
     private void GenerateID()
     {
-        checkpointID = Guid.NewGuid().ToString(); // tạo ID duy nhất
+        checkpointID = Guid.NewGuid().ToString();
+
 #if UNITY_EDITOR
-        EditorUtility.SetDirty(this); // lưu thay đổi vào scene
+        EditorUtility.SetDirty(this);
 #endif
     }
 }

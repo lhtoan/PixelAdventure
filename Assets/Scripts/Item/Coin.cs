@@ -3,7 +3,7 @@ using UnityEngine;
 public class Coin : MonoBehaviour
 {
     [SerializeField] private AudioManager audioManager;
-    [SerializeField] private float volume = 1f;
+    [SerializeField] private float volume = 0.4f;
 
     private bool picked = false;
 

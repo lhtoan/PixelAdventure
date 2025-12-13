@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
+    [SerializeField] private AudioManager audioManager;
     [Header("Attack Settings")]
     [SerializeField] private float attackCooldown = 0.5f;
     [SerializeField] private Transform firePoint;
@@ -32,6 +33,12 @@ public class PlayerAttack : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         stamina = GetComponent<PlayerStamina>();
+
+        if (audioManager == null)
+        {
+            GameObject gm = GameObject.FindGameObjectWithTag("GameManager");
+            if (gm != null) audioManager = gm.GetComponent<AudioManager>();
+        }
     }
 
     private void Update()
@@ -76,33 +83,14 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
-    // private void FireAttack()
-    // {
-    //     anim.SetTrigger("attack");
-    //     cooldownTimer = 0;
-
-    //     float dir = Mathf.Sign(transform.localScale.x);
-    //     float[] angles = { 0f, 45f, -45f };
-    //     foreach (float angle in angles)
-    //     {
-    //         int index = FindInactive(fireballs);
-    //         GameObject fireball = fireballs[index];
-    //         fireball.transform.position = firePoint.position;
-
-    //         Projecttile proj = fireball.GetComponent<Projecttile>();
-    //         proj.SetAttacker(this);            // ⭐ Gán attacker vào projectile
-    //         proj.SetDirection(dir, angle);
-
-    //         fireball.tag = "Fire";
-    //     }
-
-    // }
-
     // FIRE — bắn theo chuột
     private void FireAttack()
     {
         anim.SetTrigger("attack");
         cooldownTimer = 0;
+
+        if (audioManager != null && audioManager.fireAttackClip != null)
+            audioManager.PlaySFX(audioManager.fireAttackClip, 0.5f);
 
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mouseWorldPos.z = 0;
@@ -122,27 +110,13 @@ public class PlayerAttack : MonoBehaviour
     }
 
 
-    // private void IceAttack()
-    // {
-    //     anim.SetTrigger("attack");
-    //     cooldownTimer = 0;
-
-    //     float dir = Mathf.Sign(transform.localScale.x);
-    //     int index = FindInactive(iceballs);
-
-    //     GameObject iceball = iceballs[index];
-    //     iceball.transform.position = firePoint.position;
-
-    //     Projecttile proj = iceball.GetComponent<Projecttile>();
-    //     proj.SetAttacker(this);          // ⭐ BẮT BUỘC – để IceStack biết attacker
-    //     proj.SetDirection(dir);
-
-    //     iceball.tag = "Ice";
-    // }
     private void IceAttack()
     {
         anim.SetTrigger("attack");
         cooldownTimer = 0;
+
+        if (audioManager != null && audioManager.iceAttackClip != null)
+            audioManager.PlaySFX(audioManager.iceAttackClip, 0.5f);
 
         // 1. Lấy vị trí chuột thế giới
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);

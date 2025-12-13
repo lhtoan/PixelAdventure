@@ -43,16 +43,17 @@ public class RangedEnemy : MonoBehaviour
             }
         }
 
-        // if (enemyPatrol != null)
-        //     enemyPatrol.enabled = !PlayerInSight();
+        if (enemyPatrol != null)
+            enemyPatrol.enabled = !PlayerInSight();
     }
 
-    // private void RangedAttack()
-    // {
-    //     cooldownTimer = 0;
-    //     fireballs[FindFireball()].transform.position = firepoint.position;
-    //     fireballs[FindFireball()].GetComponent<EnemyProjectile>().ActivateProjectile();
-    // }
+    private void RangedAttack()
+    {
+        cooldownTimer = 0;
+        fireballs[FindFireball()].transform.position = firepoint.position;
+        fireballs[FindFireball()].GetComponent<EnemyProjectile>().ActivateProjectile();
+    }
+    
     private int FindFireball()
     {
         for (int i = 0; i < fireballs.Length; i++)
@@ -72,19 +73,6 @@ public class RangedEnemy : MonoBehaviour
 
         return hit.collider != null;
     }
-
-    private void RangedAttack()
-    {
-        cooldownTimer = 0;
-
-        int index = FindFireball();
-        var fb = fireballs[index];
-
-        fb.transform.position = firepoint.position;
-        fb.GetComponent<EnemyProjectile>().ActivateProjectile();
-    }
-
-
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

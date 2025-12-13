@@ -127,11 +127,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4265063888519517408, guid: ef0d321a135401a4d816c51895017180, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.0936623
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4265063888519517408, guid: ef0d321a135401a4d816c51895017180, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.9235535
+      value: 1.35
       objectReference: {fileID: 0}
     - target: {fileID: 4265063888519517408, guid: ef0d321a135401a4d816c51895017180, type: 3}
       propertyPath: m_LocalPosition.z
@@ -261,11 +261,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6837336479501219620, guid: 0e4df4d5832482540a3c95cbe36a455b, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 6.0936623
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6837336479501219620, guid: 0e4df4d5832482540a3c95cbe36a455b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 4.9235535
+      value: 0.47
       objectReference: {fileID: 0}
     - target: {fileID: 6837336479501219620, guid: 0e4df4d5832482540a3c95cbe36a455b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -441,6 +441,22 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.53
       objectReference: {fileID: 0}
+    - target: {fileID: 5079280691532892396, guid: f642837cc94907040acd7ccc6c0f7665, type: 3}
+      propertyPath: useInvulnerability
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079280691532892396, guid: f642837cc94907040acd7ccc6c0f7665, type: 3}
+      propertyPath: components.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079280691532892396, guid: f642837cc94907040acd7ccc6c0f7665, type: 3}
+      propertyPath: 'components.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8906149518958674708}
+    - target: {fileID: 5079280691532892396, guid: f642837cc94907040acd7ccc6c0f7665, type: 3}
+      propertyPath: 'components.Array.data[2]'
+      value: 
+      objectReference: {fileID: 7359373874903089187}
     - target: {fileID: 5658973989525140764, guid: f642837cc94907040acd7ccc6c0f7665, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -522,6 +538,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8132821539832293001, guid: f642837cc94907040acd7ccc6c0f7665, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6347859292066890791}
+    - targetCorrespondingSourceObject: {fileID: 8132821539832293001, guid: f642837cc94907040acd7ccc6c0f7665, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8906149518958674708}
+    - targetCorrespondingSourceObject: {fileID: 8132821539832293001, guid: f642837cc94907040acd7ccc6c0f7665, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7359373874903089187}
   m_SourcePrefab: {fileID: 100100000, guid: f642837cc94907040acd7ccc6c0f7665, type: 3}
 --- !u!1 &1385080354978319537 stripped
 GameObject:
@@ -555,6 +577,37 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &8906149518958674708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1385080354978319537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b42d74af154ee624c86966210aadc2c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FreezeEnemy
+  customMovementScript: {fileID: 2430547703477853238}
+  iceHitsToFreeze: 3
+  freezeDuration: 2
+  iceStateParent: {fileID: 4040238308612783996}
+  stackResetDelay: 2
+--- !u!114 &7359373874903089187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1385080354978319537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99aa14064120e624b9669140c5a65a34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BurnEnemy
+  burnDuration: 3
+  burnDamagePerSecond: 5
 --- !u!95 &5851628238642741150 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 3661555991951070630, guid: f642837cc94907040acd7ccc6c0f7665, type: 3}

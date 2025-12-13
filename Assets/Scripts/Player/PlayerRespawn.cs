@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class PlayerRespawn : MonoBehaviour
 {
-    [SerializeField] private AudioClip checkpoint;
     private Transform currentCheckpoint;
     private string currentCheckpointID;
 
@@ -55,7 +54,7 @@ public class PlayerRespawn : MonoBehaviour
             child.gameObject.SetActive(true);
 
         if (audioManager != null && audioManager.gameoverClip != null)
-            audioManager.PlaySFX(audioManager.gameoverClip, 1f);
+            audioManager.PlaySFX(audioManager.gameoverClip, 0.5f);
 
         // ⭐ (optional) stop BGM để tiếng game over rõ hơn
         if (audioManager != null)
@@ -127,10 +126,10 @@ public class PlayerRespawn : MonoBehaviour
     }
 
     public void SetLoadedCheckpoint(string id)
-{
-    currentCheckpointID = id;
-    // tìm checkpoint Transform cho chắc (optional)
-}
+    {
+        currentCheckpointID = id;
+        // tìm checkpoint Transform cho chắc (optional)
+    }
 
     
 

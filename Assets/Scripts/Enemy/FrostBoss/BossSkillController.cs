@@ -147,9 +147,9 @@ public class BossSkillController : MonoBehaviour
     [SerializeField] private float attackAnimDuration = 0.8f;
 
     [Header("Skill Weights")]
-    [SerializeField] private int attackWeight = 10;
-    [SerializeField] private int skill1Weight = 10;
-    [SerializeField] private int skill2Weight = 80;
+    [SerializeField] private int attackWeight = 50;
+    [SerializeField] private int skill1Weight = 60;
+    [SerializeField] private int skill2Weight = 50;
 
     private Animator anim;
     private BossAttack bossAttack;
@@ -170,6 +170,7 @@ public class BossSkillController : MonoBehaviour
     // ⭐ Phase chỉ chạy 1 lần
     private bool phaseSkillTriggered = false;
 
+
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -188,6 +189,7 @@ public class BossSkillController : MonoBehaviour
         StartCoroutine(SkillLoop());
     }
 
+    // ⭐⭐⭐ HP GIẢM → CHECK PHASE 50% ⭐⭐⭐
     // ⭐⭐⭐ HP GIẢM → CHECK PHASE 50% ⭐⭐⭐
     private void OnBossHealthChanged(float oldHP, float newHP)
     {
@@ -313,4 +315,6 @@ public class BossSkillController : MonoBehaviour
     }
 
     public bool IsUsingSkill => isUsingSkill;
+
+    
 }

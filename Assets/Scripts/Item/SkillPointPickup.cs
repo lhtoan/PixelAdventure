@@ -22,7 +22,7 @@ public class SkillPointPickup : MonoBehaviour
         picked = true; // đánh dấu nhặt rồi
 
         if (audioManager != null && audioManager.skillpointClip != null)
-            audioManager.PlaySFX(audioManager.skillpointClip, 1);
+            audioManager.PlaySFX(audioManager.skillpointClip, 0.4f);
 
         FindAnyObjectByType<GameManager>().AddSkillPoint(1);
 

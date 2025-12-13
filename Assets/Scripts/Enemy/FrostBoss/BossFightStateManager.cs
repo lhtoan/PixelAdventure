@@ -1,11 +1,11 @@
+using System.Collections;
 using UnityEngine;
 
 public class BossFightStateManager : MonoBehaviour
 {
-    [Header("References")]
-    public Health bossHealth;      // kéo Boss.FrostBoss → Health
-    public Health playerHealth;    // kéo Player → Health
-    public EndStateUI endUI;       // kéo object EndBoss vào đây
+    public Health bossHealth;
+    public Health playerHealth;
+    public MainMenuUI menuUI;   // ⭐ đổi thành MainMenuUI
 
     private bool ended = false;
 
@@ -13,26 +13,23 @@ public class BossFightStateManager : MonoBehaviour
     {
         if (ended) return;
 
-        if (bossHealth == null || playerHealth == null || endUI == null)
-        {
-            Debug.LogWarning("❌ Missing reference in BossFightStateManager");
-            return;
-        }
-
-        // ⭐ Boss chết → WIN
         if (bossHealth.currentHealth <= 0)
         {
             ended = true;
-            endUI.ShowWin();
-            return;
-        }
 
-        // ⭐ Player chết trước boss → LOSE
-        // if (playerHealth.currentHealth <= 0)
-        // {
-        //     ended = true;
-        //     endUI.ShowLose();
-        //     return;
-        // }
+            // ⭐ KHÔNG show Win UI ngay lập tức
+            StartCoroutine(HandleBossWin());
+        }
     }
+
+    private IEnumerator HandleBossWin()
+    {
+        // 1) Chờ camera về default (CameraMissionController đang chạy animation)
+        yield return new WaitForSecondsRealtime(0); // transitionDuration của bạn = 1s → chờ ~80%
+
+        // 2) Hiện Win UI
+        menuUI.ShowBossWin();
+    }
+
+
 }

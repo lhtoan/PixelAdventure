@@ -40,6 +40,7 @@ public class CameraMissionController : MonoBehaviour
         transitionRoutine = StartCoroutine(TransitionCamera(targetSize, targetPPU));
     }
 
+
     private IEnumerator TransitionCamera(float targetSize, int targetPPU)
     {
         float startSize = vcam.Lens.OrthographicSize;
